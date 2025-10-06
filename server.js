@@ -1,67 +1,75 @@
 import express from "express";
-import cors from "cors";
-import morgan from "morgan";
-import dotenv from "dotenv";
 import Stripe from "stripe";
+import dotenv from "dotenv";
 import OpenAI from "openai";
+import path from "path";
+import { fileURLToPath } from "url";
 
 dotenv.config();
-
 const app = express();
+const PORT = process.env.PORT || 10000;
+
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-app.use(cors());
-app.use(express.json({ limit: "2mb" }));
-app.use(morgan("dev"));
-app.use(express.static("public")); // serves index.html + assets from /public
+// Helpers for file paths
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-// ✅ Health check
-app.get("/api/ping", (req, res) => res.json({ ok: true, version: "1.0" }));
+// Middleware
+app.use(express.json());
+app.use(express.static(path.join(__dirname, "public")));
 
-// ✅ Stripe checkout sessions
-app.post("/api/checkout", async (req, res) => {
+// ---- Stripe Checkout ----
+app.get("/create-checkout-session", async (req, res) => {
   try {
-    const { priceId } = req.body;
+    const plan = req.query.plan;
+    let priceId;
+
+    if (plan === "pro") priceId = process.env.PRICE_PRO;
+    else if (plan === "team") priceId = process.env.PRICE_TEAM;
+    else return res.status(400).send("Invalid plan");
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
-      mode: "subscription",
       line_items: [{ price: priceId, quantity: 1 }],
-      success_url: "https://codexa.codes?success=true",
-      cancel_url: "https://codexa.codes?canceled=true",
+      mode: "subscription",
+      success_url: `${req.headers.origin}/success.html`,
+      cancel_url: `${req.headers.origin}/cancel.html`,
     });
-    res.json({ url: session.url });
+
+    res.redirect(303, session.url);
   } catch (err) {
-    console.error("Stripe error:", err.message);
-    res.status(500).json({ error: err.message });
+    res.status(500).send({ error: err.message });
   }
 });
 
-// ✅ OpenAI generate endpoint
-app.post("/api/generate", async (req, res) => {
-  try {
-    const prompt = (req.body?.prompt || "").trim();
-    if (!prompt) return res.status(400).json({ error: "No prompt provided" });
+// ---- Free Signup Redirect ----
+app.get("/signup-free", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "signup-free.html"));
+});
 
+// ---- AI Code Generator ----
+app.post("/generate", async (req, res) => {
+  try {
+    const { prompt } = req.body;
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
-        { role: "system", content: "You are a coding assistant." },
+        { role: "system", content: "You are a helpful AI code generator." },
         { role: "user", content: prompt },
       ],
-      max_tokens: 800,
     });
 
-    const text = completion.choices?.[0]?.message?.content || "";
-    res.json({ output: text });
+    const code = completion.choices[0].message.content;
+    res.json({ code });
   } catch (err) {
-    console.error("OpenAI error:", err.message);
-    res.status(500).json({ error: err.message });
+    console.error(err);
+    res.status(500).json({ error: "Failed to generate code." });
   }
 });
 
-// ✅ Start server
-const PORT = process.env.PORT || 5000;
+// ---- Start Server ----
 app.listen(PORT, () => {
-  console.log(`✅ Codexa server running at http://localhost:${PORT}`);
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
 });

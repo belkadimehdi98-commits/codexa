@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Codexa - AI Code Generator</title>
+  <style>
+    body { margin:0; font-family: 'Segoe UI', Arial, sans-serif; background:#f8f9fb; color:#333; scroll-behavior:smooth; }
+
+    /* Navbar */
+    header { background:#2c3e50; color:white; padding:15px 30px; display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; z-index:1000; }
+    header h1 { margin:0; font-size:22px; display:flex; align-items:center; }
+    header img { height:32px; margin-right:10px; }
+    nav a { color:white; text-decoration:none; margin:0 12px; font-weight:500; }
+    nav a:hover { text-decoration:underline; }
+
+    /* Hero */
+    .hero { text-align:center; padding:70px 20px; background:linear-gradient(135deg,#3498db,#2ecc71); color:white; }
+    .hero h2 { font-size:42px; margin-bottom:15px; }
+    .hero p { font-size:18px; margin-bottom:25px; }
+    .hero button { padding:14px 28px; border:none; background:#2c3e50; color:white; font-size:16px; border-radius:6px; cursor:pointer; }
+    .hero button:hover { background:#1a252f; }
+
+    /* Generator Box */
+    main { max-width:900px; margin:50px auto; padding:30px; background:white; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.1); }
+    textarea { width:100%; height:120px; padding:12px; border:1px solid #ccc; border-radius:6px; font-size:16px; resize:vertical; }
+    .actions { margin-top:15px; display:flex; gap:10px; flex-wrap:wrap; }
+    button.action { flex:1; background:#3498db; color:white; border:none; padding:12px 20px; font-size:16px; border-radius:6px; cursor:pointer; }
+    button.action:hover { background:#2980b9; }
+    pre { margin-top:20px; padding:15px; background:#272822; color:#f8f8f2; border-radius:6px; overflow-x:auto; white-space:pre-wrap; font-size:14px; min-height:100px; }
+
+    /* Features */
+    .features { max-width:1000px; margin:60px auto; display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:20px; padding:0 20px; }
+    .feature { background:white; padding:20px; border-radius:8px; text-align:center; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
+    .feature h3 { margin-bottom:10px; color:#3498db; }
+
+    /* Pricing */
+    .pricing { background:#fff; padding:60px 20px; text-align:center; }
+    .pricing h2 { font-size:32px; margin-bottom:40px; }
+    .plans { display:grid; grid-template-columns:repeat(auto-fit, minmax(250px,1fr)); gap:20px; max-width:1000px; margin:0 auto; }
+    .plan { background:#f9f9f9; border-radius:8px; padding:30px; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
+    .plan h3 { margin-bottom:10px; }
+    .price { font-size:24px; margin:15px 0; color:#3498db; }
+    .plan ul { list-style:none; padding:0; margin:20px 0; }
+    .plan ul li { margin:8px 0; }
+    .plan button { background:#3498db; color:white; border:none; padding:12px 20px; border-radius:6px; cursor:pointer; }
+    .plan button:hover { background:#2980b9; }
+
+    /* Contact */
+    .contact { background:#f4f4f4; padding:50px 20px; text-align:center; }
+    .contact h2 { margin-bottom:20px; }
+
+    /* Footer */
+    footer { background:#2c3e50; color:white; text-align:center; padding:20px; margin-top:60px; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <header>
+    <h1><img src="logo.png" alt="Codexa Logo"> Codexa</h1>
+    <nav>
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#contact">Contact</a>
+      <a href="#">Sign In</a>
+      <a href="#">Sign Up</a>
+    </nav>
+  </header>
+<img src="logo.png" alt="Codexa Logo">
+
+  <!-- Hero -->
+  <section class="hero">
+    <h2>⚡ Generate Code in Seconds</h2>
+    <p>Your AI coding assistant — fast, reliable, professional.</p>
+    <button onclick="document.getElementById('prompt').focus()">Try it Free</button>
+  </section>
+
+  <!-- AI Generator -->
+  <main>
+    <h3>AI Code Generator</h3>
+    <textarea id="prompt" placeholder="e.g. Create a webpage with a red button"></textarea>
+    <div class="actions">
+      <button class="action" onclick="generateCode()">Generate</button>
+      <button class="action" onclick="copyCode()">Copy</button>
+      <button class="action" onclick="downloadCode()">Download</button>
+    </div>
+    <pre id="output">Your code will appear here...</pre>
+  </main>
+
+  <!-- Features -->
+  <section id="features" class="features">
+    <div class="feature">
+      <h3>⚡ Instant Code</h3>
+      <p>Type your idea, get production-ready code in seconds.</p>
+    </div>
+    <div class="feature">
+      <h3>🌍 Multi-language</h3>
+      <p>Supports HTML, CSS, JS, Python, and more.</p>
+    </div>
+    <div class="feature">
+      <h3>💾 Save & Download</h3>
+      <p>Copy or download your code with one click.</p>
+    </div>
+    <div class="feature">
+      <h3>🔒 Secure</h3>
+      <p>Powered by Atlas CodeSmith with enterprise security.</p>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing" class="pricing">
+    <h2>Choose Your Plan</h2>
+    <div class="plans">
+      <div class="plan">
+        <h3>Trial</h3>
+        <p class="price">Free</p>
+        <ul>
+          <li>3 free generations</li>
+          <li>No credit card required</li>
+          <li>Preview Codexa instantly</li>
+        </ul>
+        <button>Start Free</button>
+      </div>
+      <div class="plan">
+        <h3>Pro</h3>
+        <p class="price">$9 / month</p>
+        <ul>
+          <li>Unlimited generations</li>
+          <li>1 user account</li>
+          <li>Email support</li>
+        </ul>
+        <button>Upgrade to Pro</button>
+      </div>
+      <div class="plan">
+        <h3>Team</h3>
+        <p class="price">$29 / month</p>
+        <ul>
+          <li>Unlimited generations</li>
+          <li>Up to 5 users</li>
+          <li>Priority support</li>
+        </ul>
+        <button>Get Team Plan</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="contact">
+    <h2>Contact Us</h2>
+    <p>Email: <a href="mailto:support@codexa.ai">support@codexa.ai</a></p>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Codexa by Atlas CodeSmith | All Rights Reserved</p>
+  </footer>
+
+  <script>
+    async function generateCode() {
+      const prompt = document.getElementById('prompt').value.trim();
+      if (!prompt) {
+        alert("Please type a request first!");
+        return;
+      }
+      document.getElementById('output').textContent = "⏳ Generating code...";
+
+      try {
+        const res = await fetch('/api/generate', {
+          method: 'POST',
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt })
+        });
+        const data = await res.json();
+        document.getElementById('output').textContent = data.output || "⚠️ No code returned.";
+      } catch (err) {
+        document.getElementById('output').textContent = "❌ Error: " + err.message;
+      }
+    }
+
+    function copyCode() {
+      const code = document.getElementById('output').textContent;
+      navigator.clipboard.writeText(code).then(() => {
+        alert("✅ Code copied to clipboard!");
+      });
+    }
+
+    function downloadCode() {
+      const code = document.getElementById('output').textContent;
+      const blob = new Blob([code], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "codexa-code.txt";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // Enter key = generate, Shift+Enter = new line
+    document.getElementById('prompt').addEventListener("keydown", function(e) {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        generateCode();
+      }
+    });
+  </script>
+</body>
+</html>

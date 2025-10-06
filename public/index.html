@@ -1,138 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Codexa AI</title>
-  <link rel="stylesheet" href="styles.css">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: linear-gradient(145deg, #0f2027, #203a43, #2c5364);
-      color: white;
-      text-align: center;
-    }
-    header {
-      padding: 20px;
-      font-size: 2rem;
-      font-weight: bold;
-    }
-    .plans {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      margin: 40px;
-      flex-wrap: wrap;
-    }
-    .plan {
-      background: #1e2a38;
-      padding: 20px;
-      border-radius: 12px;
-      width: 300px;
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
-    }
-    .plan h2 {
-      margin: 10px 0;
-    }
-    .price {
-      font-size: 1.8rem;
-      color: #00d9ff;
-      margin: 10px 0;
-    }
-    .btn {
-      display: inline-block;
-      margin-top: 15px;
-      padding: 12px 20px;
-      background: #00d9ff;
-      color: #000;
-      font-weight: bold;
-      text-decoration: none;
-      border-radius: 8px;
-      transition: 0.3s;
-    }
-    .btn:hover {
-      background: #00aacc;
-    }
-    .generator {
-      margin: 60px auto;
-      background: #1e2a38;
-      padding: 30px;
-      border-radius: 12px;
-      width: 80%;
-      max-width: 700px;
-    }
-    textarea {
-      width: 100%;
-      height: 120px;
-      border-radius: 8px;
-      padding: 10px;
-      border: none;
-      resize: none;
-      font-size: 1rem;
-    }
-    #output {
-      margin-top: 20px;
-      text-align: left;
-      white-space: pre-wrap;
-      background: #0f1c28;
-      padding: 15px;
-      border-radius: 8px;
-      font-family: monospace;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Codexa</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
 </head>
-<body>
-  <header>⚡ Codexa AI – Code Smarter, Faster</header>
+<body class="bg-gray-50 text-gray-800">
 
-  <section class="plans">
-    <div class="plan">
-      <h2>Free Plan</h2>
-      <p>Basic features, great for starters.</p>
-      <div class="price">€0</div>
-      <a href="/signup-free" class="btn">Start Free</a>
-    </div>
+  <header class="p-6 flex justify-between items-center bg-white shadow">
+    <img src="logo.png" alt="Codexa Logo" class="h-10">
+    <nav>
+      <button id="start-free" class="px-4 py-2 bg-blue-500 text-white rounded-lg mr-2">Start Free</button>
+      <button id="pro-plan" class="px-4 py-2 bg-green-500 text-white rounded-lg mr-2">Upgrade to Pro</button>
+      <button id="team-plan" class="px-4 py-2 bg-purple-500 text-white rounded-lg">Get Team Plan</button>
+    </nav>
+  </header>
 
-    <div class="plan">
-      <h2>Pro Plan</h2>
-      <p>Advanced features for professionals.</p>
-      <div class="price">€19.99 / month</div>
-      <a href="/create-checkout-session?plan=pro" class="btn">Upgrade to Pro</a>
-    </div>
+  <main class="max-w-3xl mx-auto text-center py-20">
+    <h1 class="text-4xl font-bold mb-6">Welcome to Codexa</h1>
+    <p class="mb-6 text-lg">Your AI-powered coding assistant.</p>
 
-    <div class="plan">
-      <h2>Team Plan</h2>
-      <p>Collaboration tools + all Pro features.</p>
-      <div class="price">€49.99 / month</div>
-      <a href="/create-checkout-session?plan=team" class="btn">Get Team Plan</a>
-    </div>
-  </section>
-
-  <section class="generator">
-    <h2>🚀 AI Code Generator</h2>
-    <p>Describe the code you want, and AI will generate it for you:</p>
-    <textarea id="prompt" placeholder="e.g., Write a Python function that sorts a list of numbers"></textarea>
-    <br>
-    <button class="btn" onclick="generateCode()">Generate Code Now</button>
-    <div id="output"></div>
-  </section>
+    <button id="generate-code" class="px-6 py-3 bg-indigo-600 text-white rounded-lg shadow-lg">
+      ⚡ Generate Code Now
+    </button>
+  </main>
 
   <script>
-    async function generateCode() {
-      const prompt = document.getElementById("prompt").value;
-      if (!prompt) {
-        alert("Please enter a description first.");
-        return;
-      }
-      document.getElementById("output").innerText = "⏳ Generating code...";
-      const res = await fetch("/generate", {
+    const PUBLIC_KEY = "pk_live_51SEW0g50pz2SntAR9AD7gJop6Ld4LgZVVve4enxE7GkyD8mV4RaAm6tOaovxtWBMMQXfOrPopueiXya0R5nMTSVJ00PJ7m7y3v";
+
+    document.getElementById("start-free").addEventListener("click", () => {
+      window.location.href = "/free.html";
+    });
+
+    async function checkout(priceId) {
+      const res = await fetch("/create-checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt })
+        body: JSON.stringify({ priceId })
       });
       const data = await res.json();
-      document.getElementById("output").innerText = data.code || "❌ Error generating code.";
+      if (data.url) window.location.href = data.url;
     }
+
+    document.getElementById("pro-plan").addEventListener("click", () => {
+      checkout("prod_TBcbJUfyISCnWg");
+    });
+
+    document.getElementById("team-plan").addEventListener("click", () => {
+      checkout("prod_TBceBoDcVSuXas");
+    });
+
+    document.getElementById("generate-code").addEventListener("click", () => {
+      alert("AI Code Generator coming soon! 🚀");
+    });
   </script>
 </body>
 </html>

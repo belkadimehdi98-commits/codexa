@@ -3,56 +3,229 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Codexa</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
-</head>
-<body class="bg-gray-50 text-gray-800">
-
-  <header class="p-6 flex justify-between items-center bg-white shadow">
-    <img src="logo.png" alt="Codexa Logo" class="h-10">
-    <nav>
-      <button id="start-free" class="px-4 py-2 bg-blue-500 text-white rounded-lg mr-2">Start Free</button>
-      <button id="pro-plan" class="px-4 py-2 bg-green-500 text-white rounded-lg mr-2">Upgrade to Pro</button>
-      <button id="team-plan" class="px-4 py-2 bg-purple-500 text-white rounded-lg">Get Team Plan</button>
-    </nav>
-  </header>
-
-  <main class="max-w-3xl mx-auto text-center py-20">
-    <h1 class="text-4xl font-bold mb-6">Welcome to Codexa</h1>
-    <p class="mb-6 text-lg">Your AI-powered coding assistant.</p>
-
-    <button id="generate-code" class="px-6 py-3 bg-indigo-600 text-white rounded-lg shadow-lg">
-      ⚡ Generate Code Now
-    </button>
-  </main>
-
-  <script>
-    const PUBLIC_KEY = "pk_live_51SEW0g50pz2SntAR9AD7gJop6Ld4LgZVVve4enxE7GkyD8mV4RaAm6tOaovxtWBMMQXfOrPopueiXya0R5nMTSVJ00PJ7m7y3v";
-
-    document.getElementById("start-free").addEventListener("click", () => {
-      window.location.href = "/free.html";
-    });
-
-    async function checkout(priceId) {
-      const res = await fetch("/create-checkout-session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ priceId })
-      });
-      const data = await res.json();
-      if (data.url) window.location.href = data.url;
+  <title>Codexa – AI Code Assistant</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      line-height: 1.6;
     }
 
-    document.getElementById("pro-plan").addEventListener("click", () => {
-      checkout("prod_TBcbJUfyISCnWg");
-    });
+    /* Navbar */
+    header {
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(10px);
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #ffcc00;
+    }
+    .nav-links a {
+      margin-left: 15px;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: 600;
+      transition: 0.2s ease-in-out;
+    }
+    .btn.blue { background: #007bff; color: #fff; }
+    .btn.green { background: #28a745; color: #fff; }
+    .btn.purple { background: #6f42c1; color: #fff; }
+    .nav-links a:hover { opacity: 0.85; }
 
-    document.getElementById("team-plan").addEventListener("click", () => {
-      checkout("prod_TBceBoDcVSuXas");
-    });
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 100px 20px 60px;
+    }
+    .hero h1 {
+      font-size: 2.8rem;
+      margin-bottom: 15px;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      margin-bottom: 25px;
+    }
+    .hero .btn-primary {
+      background: #ff6a00;
+      padding: 15px 30px;
+      border-radius: 8px;
+      color: #fff;
+      font-weight: bold;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+    .hero .btn-primary:hover { background: #ff8533; }
 
-    document.getElementById("generate-code").addEventListener("click", () => {
-      alert("AI Code Generator coming soon! 🚀");
+    /* Pricing */
+    .pricing {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding: 40px 20px;
+    }
+    .plan {
+      background: #1b1f2a;
+      border-radius: 12px;
+      padding: 30px;
+      width: 280px;
+      text-align: center;
+      transition: transform 0.2s;
+    }
+    .plan:hover { transform: translateY(-5px); }
+    .plan h3 { font-size: 1.5rem; margin-bottom: 10px; }
+    .plan p { margin-bottom: 20px; font-size: 0.95rem; color: #ccc; }
+    .plan .price {
+      font-size: 1.4rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #ffcc00;
+    }
+    .plan button {
+      background: #007bff;
+      color: #fff;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .plan button:hover { opacity: 0.9; }
+
+    /* Generator */
+    .generator {
+      max-width: 700px;
+      margin: 50px auto;
+      background: #1b1f2a;
+      padding: 30px;
+      border-radius: 12px;
+      text-align: center;
+    }
+    .generator h2 { margin-bottom: 20px; }
+    .generator textarea {
+      width: 100%;
+      height: 120px;
+      border-radius: 8px;
+      border: none;
+      padding: 15px;
+      font-size: 1rem;
+      margin-bottom: 20px;
+      resize: none;
+    }
+    .generator button {
+      background: #ff6a00;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 8px;
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .generator button:hover { background: #ff8533; }
+    #output {
+      margin-top: 20px;
+      text-align: left;
+      white-space: pre-wrap;
+      background: #111;
+      padding: 15px;
+      border-radius: 6px;
+      max-height: 300px;
+      overflow-y: auto;
+      font-family: monospace;
+      font-size: 0.9rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      font-size: 0.85rem;
+      color: #bbb;
+      margin-top: 40px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <header>
+    <div class="logo">⚡ Codexa</div>
+    <div class="nav-links">
+      <a href="free.html" class="btn blue">Start Free</a>
+      <a href="/create-checkout-session?plan=pro" class="btn green">Upgrade to Pro</a>
+      <a href="/create-checkout-session?plan=team" class="btn purple">Get Team Plan</a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <h1>Welcome to Codexa</h1>
+    <p>Your AI-powered coding assistant</p>
+    <a href="#generator" class="btn-primary">⚡ Generate Code Now</a>
+  </section>
+
+  <!-- Pricing -->
+  <section class="pricing">
+    <div class="plan">
+      <h3>Free Plan</h3>
+      <p>Basic features, great for starters.</p>
+      <div class="price">€0</div>
+      <a href="free.html"><button>Start Free</button></a>
+    </div>
+    <div class="plan">
+      <h3>Pro Plan</h3>
+      <p>Advanced features for professionals.</p>
+      <div class="price">€19.99 / month</div>
+      <a href="/create-checkout-session?plan=pro"><button>Upgrade to Pro</button></a>
+    </div>
+    <div class="plan">
+      <h3>Team Plan</h3>
+      <p>Collaboration tools + Pro features.</p>
+      <div class="price">€49.99 / month</div>
+      <a href="/create-checkout-session?plan=team"><button>Get Team Plan</button></a>
+    </div>
+  </section>
+
+  <!-- AI Generator -->
+  <section id="generator" class="generator">
+    <h2>🚀 AI Code Generator</h2>
+    <p>Describe the code you want, and AI will generate it for you:</p>
+    <textarea id="prompt" placeholder="e.g. Create a Python function to reverse a string"></textarea>
+    <button id="generateBtn">Generate Code Now</button>
+    <pre id="output"></pre>
+  </section>
+
+  <footer>
+    © 2025 Codexa. All rights reserved.
+  </footer>
+
+  <script>
+    document.getElementById("generateBtn").addEventListener("click", async () => {
+      const prompt = document.getElementById("prompt").value;
+      const output = document.getElementById("output");
+      output.textContent = "⏳ Generating code...";
+      try {
+        const res = await fetch("/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt })
+        });
+        const data = await res.json();
+        output.textContent = data.code || "⚠️ Error generating code.";
+      } catch (err) {
+        output.textContent = "❌ Server error: " + err.message;
+      }
     });
   </script>
 </body>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Codexa - Pricing</title>
+  <script src="https://js.stripe.com/v3/"></script>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 1000px;
+    }
+    .plan {
+      background: #1e2a38;
+      padding: 2rem;
+      border-radius: 12px;
+      text-align: center;
+      flex: 1;
+      min-width: 250px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+      transition: transform 0.2s ease;
+    }
+    .plan:hover {
+      transform: scale(1.05);
+    }
+    .plan h2 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+    .price {
+      font-size: 2rem;
+      margin: 1rem 0;
+      font-weight: bold;
+      color: #00d4ff;
+    }
+    button {
+      background: #00d4ff;
+      border: none;
+      padding: 12px 24px;
+      color: #000;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #00aacc;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Free Plan -->
+    <div class="plan">
+      <h2>Free Plan</h2>
+      <p>Basic features, great for starters.</p>
+      <div class="price">€0</div>
+      <button onclick="window.location.href='/signup-free'">Start Free</button>
+    </div>
+
+    <!-- Pro Plan -->
+    <div class="plan">
+      <h2>Pro Plan</h2>
+      <p>Advanced features for professionals.</p>
+      <div class="price">€19.99 / month</div>
+      <button onclick="subscribe('pro')">Upgrade to Pro</button>
+    </div>
+
+    <!-- Team Plan -->
+    <div class="plan">
+      <h2>Team Plan</h2>
+      <p>Collaboration tools + all Pro features.</p>
+      <div class="price">€49.99 / month</div>
+      <button onclick="subscribe('team')">Get Team Plan</button>
+    </div>
+  </div>
+
+  <script>
+    const stripe = Stripe("pk_test_12345"); // ✅ Replace with process.env.STRIPE_PUBLISHABLE_KEY in server injection
+
+    async function subscribe(plan) {
+      const res = await fetch("/create-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ plan }),
+      });
+
+      const data = await res.json();
+
+      if (data.id) {
+        stripe.redirectToCheckout({ sessionId: data.id });
+      } else {
+        alert("Error: " + data.error);
+      }
+    }
+  </script>
+</body>
+</html>

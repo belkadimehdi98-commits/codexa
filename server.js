@@ -11,10 +11,10 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 10000;
 
-// --- Stripe ---
+// Stripe
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-// --- paths / static ---
+// Paths
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(express.json());
@@ -23,18 +23,14 @@ app.get("/", (_req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-// ---------- STRIPE CHECKOUT ----------
+// Stripe Checkout
 app.post("/create-checkout-session", async (req, res) => {
   try {
-    const incoming = (req.body?.priceId || req.body?.plan || "").toString();
-
+    const incoming = (req.body?.priceId || "").toString();
     const map = {
       PRICE_PRO: process.env.PRICE_PRO,
       PRICE_TEAM: process.env.PRICE_TEAM,
-      PRO: process.env.PRICE_PRO,
-      TEAM: process.env.PRICE_TEAM,
     };
-
     const stripePriceId = incoming.startsWith("price_")
       ? incoming
       : map[incoming];
@@ -44,7 +40,6 @@ app.post("/create-checkout-session", async (req, res) => {
     }
 
     const domain = process.env.DOMAIN || `https://${req.headers.host}`;
-
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       payment_method_types: ["card"],
@@ -56,21 +51,20 @@ app.post("/create-checkout-session", async (req, res) => {
     return res.json({ url: session.url });
   } catch (err) {
     console.error("Stripe checkout error:", err);
-    return res.status(500).json({
-      error:
-        err?.raw?.message ||
-        err?.message ||
-        "Failed to create checkout session",
-    });
+    return res.status(500).json({ error: err.message });
   }
 });
 
-// ---------- AI CHAT & GENERATION ----------
-app.post("/chat", async (req, res) => {
-  try {
-    const { prompt } = req.body || {};
-    if (!prompt) return res.status(400).json({ error: "Prompt is required" });
+// ---------- Streaming AI Chat ----------
+app.get("/chat-stream", async (req, res) => {
+  const prompt = req.query.prompt || "";
+  if (!prompt) return res.status(400).send("Prompt required");
 
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
+
+  try {
     const r = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -79,64 +73,49 @@ app.post("/chat", async (req, res) => {
       },
       body: JSON.stringify({
         model: "gpt-4o-mini",
-        messages: [
-          {
-            role: "system",
-            content:
-              "You are a friendly AI assistant. You can chat naturally, and if the user asks for a website, guide them.",
-          },
-          { role: "user", content: prompt },
-        ],
-        max_tokens: 500,
-      }),
-    });
-
-    const data = await r.json();
-    if (data?.error) {
-      return res.status(500).json({ error: data.error.message });
-    }
-    const reply = data?.choices?.[0]?.message?.content || "🤖 Sorry, no reply.";
-    return res.json({ reply });
-  } catch (err) {
-    console.error("Chat error:", err);
-    return res.status(500).json({ error: "Failed to chat" });
-  }
-});
-
-app.post("/generate", async (req, res) => {
-  try {
-    const { prompt } = req.body || {};
-    if (!prompt) return res.status(400).json({ error: "Prompt is required" });
-
-    const r = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
-        messages: [
-          {
-            role: "system",
-            content:
-              "You generate clean, production-ready website code (HTML/CSS/JS). Reply with code only in a single file.",
-          },
-          { role: "user", content: prompt },
-        ],
+        messages: [{ role: "user", content: prompt }],
         max_tokens: 1500,
+        stream: true,
       }),
     });
 
-    const data = await r.json();
-    if (data?.error) {
-      return res.status(500).json({ error: data.error.message });
+    if (!r.ok) {
+      const errText = await r.text();
+      res.write(`data: ${JSON.stringify({ error: errText })}\n\n`);
+      res.end();
+      return;
     }
-    const code = data?.choices?.[0]?.message?.content || "";
-    return res.json({ code });
+
+    const reader = r.body.getReader();
+    const decoder = new TextDecoder();
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      const chunk = decoder.decode(value);
+      const lines = chunk.split("\n").filter(line => line.trim() !== "");
+      for (const line of lines) {
+        if (line.includes("[DONE]")) {
+          res.write("event: done\ndata: [DONE]\n\n");
+          res.end();
+          return;
+        }
+        if (line.startsWith("data:")) {
+          const json = line.replace("data:", "").trim();
+          try {
+            const data = JSON.parse(json);
+            const token = data.choices?.[0]?.delta?.content || "";
+            if (token) {
+              res.write(`data: ${JSON.stringify({ token })}\n\n`);
+            }
+          } catch {}
+        }
+      }
+    }
   } catch (err) {
-    console.error("Generate error:", err);
-    return res.status(500).json({ error: "Failed to generate code" });
+    console.error("Streaming error:", err);
+    res.write(`data: ${JSON.stringify({ error: err.message })}\n\n`);
+    res.end();
   }
 });
 

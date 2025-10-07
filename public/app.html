@@ -1,200 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Codexa AI</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Codexa AI Generator</title>
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0d1117;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-    }
-    header {
-      background: #161b22;
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    header img {
-      height: 40px;
-    }
-    .chat-container {
-      flex: 1;
-      padding: 1rem;
-      overflow-y: auto;
-    }
-    .message {
-      margin: 0.8rem 0;
-      padding: 0.8rem 1rem;
-      border-radius: 8px;
-      max-width: 70%;
-      line-height: 1.4;
-    }
-    .user {
-      background: #3b82f6;
-      margin-left: auto;
-    }
-    .bot {
-      background: #1e2633;
-      margin-right: auto;
-    }
-    .input-bar {
-      display: flex;
-      padding: 1rem;
-      background: #161b22;
-    }
-    .input-bar input {
-      flex: 1;
-      padding: 0.8rem;
-      border: none;
-      border-radius: 6px;
-      outline: none;
-      background: #0d1117;
-      color: #fff;
-    }
-    .input-bar button {
-      margin-left: 0.8rem;
-      padding: 0.8rem 1.2rem;
-      border: none;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .btn-blue { background: #3b82f6; color: #fff; }
-    .btn-green { background: #22c55e; color: #fff; }
-    .btn-purple { background: #a855f7; color: #fff; }
-    pre {
-      background: #000;
-      padding: 1rem;
-      border-radius: 6px;
-      overflow-x: auto;
-      white-space: pre-wrap;
-      margin-top: 1rem;
-    }
-    footer {
-      background: #161b22;
-      text-align: center;
-      padding: 1rem;
-      color: #aaa;
-    }
+    body { font-family: Arial, sans-serif; margin:0; background:#0d1117; color:#fff; display:flex; flex-direction:column; height:100vh; }
+    header { background:#161b22; padding:1rem; display:flex; align-items:center; justify-content:space-between; }
+    header img { height:35px; }
+    header nav a { color:#fff; margin-left:1.5rem; text-decoration:none; }
+    #chat { flex:1; overflow-y:auto; padding:1rem; }
+    .msg { max-width:70%; margin:0.5rem; padding:0.8rem 1rem; border-radius:8px; line-height:1.5; }
+    .msg.user { background:#2563eb; margin-left:auto; text-align:right; }
+    .msg.ai { background:#1e2633; margin-right:auto; text-align:left; }
+    .msg pre { background:#0d1117; padding:0.8rem; border-radius:6px; overflow-x:auto; white-space:pre-wrap; word-wrap:break-word; }
+    .typing { color:#aaa; font-style:italic; }
+    footer { background:#161b22; padding:1rem; display:flex; align-items:center; gap:0.5rem; }
+    #prompt { flex:1; padding:0.8rem; border-radius:6px; border:none; background:#1e2633; color:#fff; }
+    button { padding:0.6rem 1rem; border:none; border-radius:6px; cursor:pointer; font-weight:bold; }
+    .btn-blue { background:#3b82f6; color:#fff; }
+    .btn-green { background:#22c55e; color:#fff; }
+    .floating { position:fixed; bottom:90px; right:20px; display:none; }
   </style>
 </head>
 <body>
   <header>
     <img src="logo.png" alt="Codexa Logo">
-    <strong>⚡ Build Smarter with Codexa</strong>
+    <nav>
+      <a href="/tutorial.html">Tutorial</a>
+    </nav>
   </header>
 
-  <div class="chat-container" id="chat"></div>
+  <div id="chat"></div>
 
-  <div id="codeSection" style="display:none; padding:1rem; background:#0d1117;">
-    <h3>💻 Generated Code</h3>
-    <pre id="codeOutput"></pre>
-    <button class="btn-green" onclick="copyCode()">Copy</button>
-    <button class="btn-purple" onclick="downloadCode()">Download</button>
-  </div>
+  <footer>
+    <input id="prompt" placeholder="Type your message..." />
+    <button id="sendBtn" class="btn-blue">💬 Chat</button>
+  </footer>
 
-  <div class="input-bar">
-    <input type="text" id="userInput" placeholder="Type your message..."/>
-    <button class="btn-blue" onclick="sendMessage()">Send</button>
-    <button id="genBtn" class="btn-green" style="display:none;" onclick="generateCode()">Generate Code</button>
-  </div>
-
-  <footer>© 2025 Codexa. All rights reserved.</footer>
+  <button id="generateBtn" class="btn-green floating">💻 Generate Code</button>
 
   <script>
-    const chatBox = document.getElementById("chat");
-    const userInput = document.getElementById("userInput");
-    const genBtn = document.getElementById("genBtn");
-    const codeSection = document.getElementById("codeSection");
-    const codeOutput = document.getElementById("codeOutput");
-    let lastPrompt = "";
-    let generatedCode = "";
+    const chatDiv = document.getElementById("chat");
+    const promptInput = document.getElementById("prompt");
+    const sendBtn = document.getElementById("sendBtn");
+    const generateBtn = document.getElementById("generateBtn");
+    let lastMessage = "";
 
-    function addMessage(content, sender="bot") {
-      const div = document.createElement("div");
-      div.className = "message " + sender;
-      div.innerText = content;
-      chatBox.appendChild(div);
-      chatBox.scrollTop = chatBox.scrollHeight;
-    }
-
-    async function sendMessage() {
-      const text = userInput.value.trim();
-      if (!text) return;
-      addMessage(text, "user");
-      lastPrompt = text;
-      userInput.value = "";
-
-      addMessage("⏳ Thinking...", "bot");
-      try {
-        const res = await fetch("/chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt: text })
-        });
-        const data = await res.json();
-        chatBox.lastChild.innerText = data.reply || "❌ Error.";
-        // If AI detects it's about building a site, show Generate button
-        if (/site|website|page|code|html|css|javascript/i.test(text)) {
-          genBtn.style.display = "inline-block";
-        }
-      } catch (err) {
-        chatBox.lastChild.innerText = "❌ Server error: " + err.message;
+    function addMessage(text, sender="ai", isCode=false) {
+      const msgDiv = document.createElement("div");
+      msgDiv.className = `msg ${sender}`;
+      if (isCode) {
+        msgDiv.innerHTML = `
+          <pre>${text}</pre>
+          <div style="margin-top:5px;">
+            <button onclick="navigator.clipboard.writeText(\`${text}\`)">📋 Copy</button>
+            <button onclick="downloadGenerated('${Date.now()}', \`${text}\`)">⬇️ Download</button>
+          </div>
+        `;
+      } else {
+        msgDiv.textContent = text;
       }
+      chatDiv.appendChild(msgDiv);
+      chatDiv.scrollTop = chatDiv.scrollHeight;
     }
 
-    async function generateCode() {
-      if (!lastPrompt) {
-        alert("Please describe what you want first!");
-        return;
-      }
-      addMessage("⏳ Generating code for: " + lastPrompt, "bot");
-      try {
-        const res = await fetch("/generate", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt: lastPrompt })
-        });
-        const data = await res.json();
-        if (data.code) {
-          generatedCode = data.code;
-          codeOutput.innerText = data.code;
-          codeSection.style.display = "block";
-          addMessage("✅ Code ready! Scroll down to see it.", "bot");
-        } else {
-          addMessage("❌ Error generating code.", "bot");
-        }
-      } catch (err) {
-        addMessage("❌ Server error: " + err.message, "bot");
-      }
+    function showTyping() {
+      const typingDiv = document.createElement("div");
+      typingDiv.className = "msg ai typing";
+      typingDiv.id = "typing";
+      typingDiv.textContent = "AI is typing...";
+      chatDiv.appendChild(typingDiv);
+      chatDiv.scrollTop = chatDiv.scrollHeight;
     }
 
-    function copyCode() {
-      navigator.clipboard.writeText(generatedCode).then(() => {
-        alert("Code copied!");
-      });
+    function removeTyping() {
+      const t = document.getElementById("typing");
+      if (t) t.remove();
     }
 
-    function downloadCode() {
-      const blob = new Blob([generatedCode], { type: "text/html" });
+    function downloadGenerated(name, content) {
+      const blob = new Blob([content], { type:"text/html" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "index.html";
+      a.download = `${name}.html`;
       a.click();
       URL.revokeObjectURL(url);
     }
 
-    userInput.addEventListener("keydown", e => {
-      if (e.key === "Enter") sendMessage();
-    });
+    async function streamChat(prompt) {
+      addMessage(prompt, "user");
+      showTyping();
+
+      const aiDiv = document.createElement("div");
+      aiDiv.className = "msg ai";
+      aiDiv.innerHTML = "";
+      chatDiv.appendChild(aiDiv);
+
+      let msg = "";
+      const evtSource = new EventSource(`/chat-stream?prompt=${encodeURIComponent(prompt)}`);
+
+      evtSource.onmessage = (event) => {
+        removeTyping();
+        const data = JSON.parse(event.data);
+        if (data.token) {
+          msg += data.token;
+          aiDiv.innerHTML = msg;
+          chatDiv.scrollTop = chatDiv.scrollHeight;
+        }
+      };
+
+      evtSource.addEventListener("done", () => {
+        evtSource.close();
+        lastMessage = msg;
+        if (msg.includes("<html") || msg.includes("<!DOCTYPE") || msg.includes("function")) {
+          generateBtn.style.display = "inline-block";
+          addMessage("👉 Tip: Click '💻 Generate Code' to save this file.", "ai");
+        }
+      });
+
+      evtSource.onerror = () => evtSource.close();
+    }
+
+    sendBtn.onclick = () => {
+      const prompt = promptInput.value.trim();
+      if (!prompt) return;
+      promptInput.value = "";
+      streamChat(prompt);
+    };
+
+    generateBtn.onclick = () => {
+      if (lastMessage) {
+        addMessage(lastMessage, "ai", true);
+        generateBtn.style.display = "none";
+      }
+    };
   </script>
 </body>
 </html>

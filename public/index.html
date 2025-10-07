@@ -1,32 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Codexa | AI Website Builder</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Codexa | AI Code Generator</title>
   <style>
-    body {
-      margin: 0; font-family: Arial, sans-serif;
-      background: #0d1117; color: #fff; text-align: center;
-    }
-    header { padding: 2rem; font-size: 2rem; font-weight: bold; }
-    .hero { margin-top: 5rem; }
-    button {
-      background: #3b82f6; border: none; border-radius: 6px;
-      padding: 1rem 2rem; font-size: 1.2rem; font-weight: bold;
-      cursor: pointer; transition: 0.2s;
-    }
-    button:hover { background: #2563eb; }
-    footer { margin-top: 5rem; color: #aaa; }
+    body { font-family: Arial, sans-serif; margin:0; background:#0d1117; color:#fff; }
+    header { display:flex; justify-content:space-between; align-items:center; padding:1rem 2rem; background:#161b22; }
+    header img { height:40px; }
+    nav a { color:#fff; margin-left:1.5rem; text-decoration:none; }
+    .hero { text-align:center; padding:6rem 2rem; }
+    .hero h1 { font-size:2.5rem; margin-bottom:1rem; }
+    .hero p { font-size:1.2rem; margin-bottom:2rem; color:#aaa; }
+    .btn { padding:0.9rem 1.8rem; margin:0.5rem; border:none; border-radius:8px; cursor:pointer; font-weight:bold; font-size:1rem; }
+    .btn-green { background:#22c55e; color:#fff; }
+    .btn-blue { background:#3b82f6; color:#fff; }
+    .btn-purple { background:#a855f7; color:#fff; }
+    section { padding:4rem 2rem; text-align:center; }
+    section h2 { font-size:2rem; margin-bottom:1rem; }
+    section p { max-width:700px; margin:auto; line-height:1.6; color:#ccc; }
+    footer { text-align:center; padding:2rem; background:#161b22; color:#aaa; margin-top:3rem; }
   </style>
 </head>
 <body>
-  <header>⚡ Codexa</header>
+  <header>
+    <img src="logo.png" alt="Codexa Logo"/>
+    <nav>
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
   <div class="hero">
-    <h1>Build Your First Website in Minutes</h1>
-    <p>No coding skills needed. AI will generate everything for you.</p>
-    <button onclick="window.location.href='/app.html'">🚀 Start AI Generator</button>
+    <h1>⚡ Build websites at the speed of thought</h1>
+    <p>Chat with AI, generate ready-to-use code, and deploy in minutes.</p>
+    <button onclick="window.location.href='/app.html'" class="btn btn-green">🚀 Try AI Generator</button>
+    <button id="proPlan" class="btn btn-blue">Upgrade to Pro</button>
+    <button id="teamPlan" class="btn btn-purple">Team Plan</button>
   </div>
-  <footer>© 2025 Codexa</footer>
+
+  <section id="features">
+    <h2>✨ Features</h2>
+    <p>
+      💬 Real-time AI chat (like ChatGPT)<br>
+      💻 One-click code generation with copy & download<br>
+      📂 Save your history & revisit old projects<br>
+      📖 Beginner-friendly tutorial included
+    </p>
+  </section>
+
+  <section id="pricing">
+    <h2>💳 Pricing</h2>
+    <p>Free trial (2 generations). Upgrade to Pro for unlimited code. Team plans available.</p>
+  </section>
+
+  <section id="contact">
+    <h2>📩 Contact</h2>
+    <p>Email us at <a href="mailto:support@codexa.codes" style="color:#3b82f6;">support@codexa.codes</a></p>
+  </section>
+
+  <footer>
+    <p>© 2025 Codexa. All rights reserved.</p>
+  </footer>
+
+  <script>
+    document.getElementById("proPlan").addEventListener("click", () => {
+      fetch("/create-checkout-session", {
+        method:"POST", headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({ priceId:"PRICE_PRO" })
+      }).then(r=>r.json()).then(d=>{ if(d.url) window.location.href=d.url; else alert("Error with Pro plan."); });
+    });
+    document.getElementById("teamPlan").addEventListener("click", () => {
+      fetch("/create-checkout-session", {
+        method:"POST", headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({ priceId:"PRICE_TEAM" })
+      }).then(r=>r.json()).then(d=>{ if(d.url) window.location.href=d.url; else alert("Error with Team plan."); });
+    });
+  </script>
 </body>
 </html>

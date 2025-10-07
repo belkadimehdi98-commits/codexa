@@ -3,43 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Codexa AI</title>
+  <title>Codexa AI Generator</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 0;
       background: #0d1117;
       color: #fff;
+      text-align: center;
     }
     header {
       padding: 1rem;
       background: #161b22;
       font-size: 1.5rem;
       font-weight: bold;
-      text-align: center;
-    }
-    nav {
       display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin-top: 1rem;
+      justify-content: space-between;
+      align-items: center;
     }
-    nav button {
-      background: #1f2937;
+    header nav a {
       color: #fff;
-      padding: 0.6rem 1.2rem;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: 0.2s;
-    }
-    nav button.active {
-      background: #3b82f6;
-    }
-    main {
-      text-align: center;
-      padding: 2rem;
+      margin-left: 1.5rem;
+      text-decoration: none;
+      font-size: 1rem;
     }
     textarea {
       width: 60%;
@@ -54,18 +40,19 @@
       background: #161b22;
       color: #fff;
     }
-    .btn {
+    button {
       padding: 0.8rem 1.6rem;
       margin: 0.5rem;
       border: none;
       border-radius: 6px;
       cursor: pointer;
       font-weight: bold;
+      transition: 0.2s;
     }
     .btn-blue { background: #3b82f6; color: #fff; }
     .btn-green { background: #22c55e; color: #fff; }
     .btn-purple { background: #a855f7; color: #fff; }
-    pre, .chat-output {
+    pre {
       text-align: left;
       background: #161b22;
       padding: 1rem;
@@ -75,6 +62,7 @@
       overflow-x: auto;
       white-space: pre-wrap;
       word-wrap: break-word;
+      color: #9cdcfe;
     }
     .history {
       margin-top: 2rem;
@@ -89,42 +77,42 @@
       border-radius: 6px;
       margin-bottom: 1rem;
     }
+    .history-item pre {
+      background: #0d1117;
+      padding: 0.5rem;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
     footer {
       margin-top: 3rem;
       padding: 1rem;
       background: #161b22;
       color: #aaa;
-      text-align: center;
     }
   </style>
 </head>
 <body>
-  <header>⚡ Codexa AI</header>
-
-  <nav>
-    <button id="tabCode" class="active">💻 Generate Code</button>
-    <button id="tabChat">💬 Chat with AI</button>
-  </nav>
+  <!-- Header with Tutorial link -->
+  <header>
+    ⚡ Codexa AI Generator
+    <nav>
+      <a href="/tutorial.html">Tutorial</a>
+    </nav>
+  </header>
 
   <main>
-    <div id="codeSection">
-      <textarea id="codePrompt" placeholder="Describe your site idea..."></textarea><br>
-      <button id="generateBtn" class="btn btn-blue">⚡ Generate Website Code</button>
-      <div id="status"></div>
-      <div id="result" style="display:none;">
-        <h3>✅ Done!</h3>
-        <pre id="codeOutput"></pre>
-        <button class="btn-green" onclick="copyCode()">Copy</button>
-        <button class="btn-purple" onclick="downloadCode()">Download</button>
-      </div>
+    <textarea id="prompt" placeholder="Describe your site idea..."></textarea><br>
+    <button id="generateBtn" class="btn-blue">✨ Generate My Code</button>
+    <div id="status"></div>
+
+    <div id="result" style="display:none;">
+      <h3>✅ Done!</h3>
+      <pre id="codeOutput"></pre>
+      <button class="btn-green" onclick="copyCode()">Copy</button>
+      <button class="btn-purple" onclick="downloadCode()">Download</button>
     </div>
 
-    <div id="chatSection" style="display:none;">
-      <textarea id="chatPrompt" placeholder="Ask me anything..."></textarea><br>
-      <button id="chatBtn" class="btn btn-blue">💬 Send</button>
-      <div id="chatOutput" class="chat-output"></div>
-    </div>
-
+    <!-- History Section -->
     <section class="history">
       <h2>📂 History</h2>
       <div id="historyList"></div>
@@ -136,25 +124,25 @@
   <footer>© 2025 Codexa. All rights reserved.</footer>
 
   <script>
-    // Tab switching
-    document.getElementById("tabCode").addEventListener("click", () => {
-      document.getElementById("codeSection").style.display = "block";
-      document.getElementById("chatSection").style.display = "none";
-      document.getElementById("tabCode").classList.add("active");
-      document.getElementById("tabChat").classList.remove("active");
-    });
-    document.getElementById("tabChat").addEventListener("click", () => {
-      document.getElementById("codeSection").style.display = "none";
-      document.getElementById("chatSection").style.display = "block";
-      document.getElementById("tabChat").classList.add("active");
-      document.getElementById("tabCode").classList.remove("active");
-    });
-
+    const MAX_FREE_TRIALS = 2;
     let generatedCode = "";
 
-    function copyCode() {
-      navigator.clipboard.writeText(generatedCode).then(() => alert("Code copied!"));
+    function getUsageCount() {
+      return parseInt(localStorage.getItem("generationCount") || "0", 10);
     }
+
+    function increaseUsageCount() {
+      let count = getUsageCount() + 1;
+      localStorage.setItem("generationCount", count);
+      return count;
+    }
+
+    function copyCode() {
+      navigator.clipboard.writeText(generatedCode).then(() => {
+        alert("✅ Code copied!");
+      });
+    }
+
     function downloadCode() {
       const blob = new Blob([generatedCode], { type: "text/html" });
       const url = URL.createObjectURL(blob);
@@ -165,37 +153,54 @@
       URL.revokeObjectURL(url);
     }
 
-    function saveHistory(type, prompt, output) {
+    function saveHistory(prompt, code) {
       let history = JSON.parse(localStorage.getItem("history") || "[]");
-      history.push({ type, prompt, output, time: new Date().toLocaleString() });
+      history.push({ prompt, code, time: new Date().toLocaleString() });
       localStorage.setItem("history", JSON.stringify(history));
       renderHistory();
     }
+
     function renderHistory() {
       let history = JSON.parse(localStorage.getItem("history") || "[]");
       const list = document.getElementById("historyList");
       list.innerHTML = "";
-      history.forEach((item, i) => {
+      history.forEach((item, index) => {
         const div = document.createElement("div");
         div.className = "history-item";
         div.innerHTML = `
-          <b>${item.type}</b> | <small>${item.time}</small><br>
-          <i>${item.prompt}</i><br>
-          <button class="btn-blue" onclick="loadHistory(${i})">Load</button>
+          <b>${item.prompt || "(no prompt)"}</b><br>
+          <small>${item.time}</small>
+          <pre>${item.code.replace(/</g,"&lt;").replace(/>/g,"&gt;")}</pre>
+          <button class="btn-blue" onclick="loadHistory(${index})">Load</button>
+          <button class="btn-purple" onclick="navigator.clipboard.writeText(\`${item.code}\`)">Copy</button>
+          <button class="btn-green" onclick="downloadFromHistory(${index})">Download</button>
         `;
         list.appendChild(div);
       });
     }
-    function loadHistory(i) {
+
+    function loadHistory(index) {
       let history = JSON.parse(localStorage.getItem("history") || "[]");
-      if (!history[i]) return;
-      if (history[i].type === "code") {
-        document.getElementById("codeOutput").innerText = history[i].output;
+      if (history[index]) {
+        document.getElementById("prompt").value = history[index].prompt;
+        document.getElementById("codeOutput").innerText = history[index].code;
         document.getElementById("result").style.display = "block";
-      } else {
-        document.getElementById("chatOutput").innerText = history[i].output;
       }
     }
+
+    function downloadFromHistory(index) {
+      let history = JSON.parse(localStorage.getItem("history") || "[]");
+      if (history[index]) {
+        const blob = new Blob([history[index].code], { type: "text/html" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "index.html";
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+    }
+
     function exportHistory() {
       let history = localStorage.getItem("history");
       const blob = new Blob([history], { type: "application/json" });
@@ -206,49 +211,43 @@
       a.click();
       URL.revokeObjectURL(url);
     }
+
     function clearHistory() {
       localStorage.removeItem("history");
       renderHistory();
     }
 
-    // Code generator
     document.getElementById("generateBtn").addEventListener("click", async () => {
-      const prompt = document.getElementById("codePrompt").value.trim();
-      if (!prompt) return alert("Enter a prompt first!");
+      const prompt = document.getElementById("prompt").value.trim();
+      const count = getUsageCount();
+
+      if (count >= MAX_FREE_TRIALS) {
+        alert("⚠️ Free trial limit reached. Please upgrade to continue.");
+        window.location.href = "/checkout.html";
+        return;
+      }
+
       document.getElementById("status").innerText = "⏳ Generating...";
       try {
-        const r = await fetch("/generate", {
+        const response = await fetch("/generate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt, mode: "code" })
+          body: JSON.stringify({ prompt })
         });
-        const data = await r.json();
-        generatedCode = data.code || "";
-        document.getElementById("codeOutput").innerText = generatedCode;
-        document.getElementById("result").style.display = "block";
-        document.getElementById("status").innerText = "✅ Done!";
-        saveHistory("code", prompt, generatedCode);
-      } catch (e) {
-        document.getElementById("status").innerText = "❌ Error: " + e.message;
-      }
-    });
 
-    // AI chat
-    document.getElementById("chatBtn").addEventListener("click", async () => {
-      const prompt = document.getElementById("chatPrompt").value.trim();
-      if (!prompt) return alert("Enter a message first!");
-      document.getElementById("chatOutput").innerText = "⏳ Thinking...";
-      try {
-        const r = await fetch("/generate", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt, mode: "chat" })
-        });
-        const data = await r.json();
-        document.getElementById("chatOutput").innerText = data.code || data.error || "No response";
-        saveHistory("chat", prompt, data.code);
-      } catch (e) {
-        document.getElementById("chatOutput").innerText = "❌ Error: " + e.message;
+        const data = await response.json();
+        if (data.code) {
+          generatedCode = data.code;
+          document.getElementById("codeOutput").innerText = data.code;
+          document.getElementById("result").style.display = "block";
+          document.getElementById("status").innerText = "✅ Done!";
+          saveHistory(prompt, data.code);
+          increaseUsageCount();
+        } else {
+          document.getElementById("status").innerText = "❌ Error: " + (data.error || "Something went wrong");
+        }
+      } catch (err) {
+        document.getElementById("status").innerText = "❌ Server error: " + err.message;
       }
     });
 

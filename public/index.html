@@ -2,81 +2,68 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Codexa | AI Code Generator</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin:0; background:#0d1117; color:#fff; }
-    header { display:flex; justify-content:space-between; align-items:center; padding:1rem 2rem; background:#161b22; }
-    header img { height:40px; }
-    nav a { color:#fff; margin-left:1.5rem; text-decoration:none; }
-    .hero { text-align:center; padding:6rem 2rem; }
-    .hero h1 { font-size:2.5rem; margin-bottom:1rem; }
-    .hero p { font-size:1.2rem; margin-bottom:2rem; color:#aaa; }
-    .btn { padding:0.9rem 1.8rem; margin:0.5rem; border:none; border-radius:8px; cursor:pointer; font-weight:bold; font-size:1rem; }
-    .btn-green { background:#22c55e; color:#fff; }
-    .btn-blue { background:#3b82f6; color:#fff; }
-    .btn-purple { background:#a855f7; color:#fff; }
-    section { padding:4rem 2rem; text-align:center; }
-    section h2 { font-size:2rem; margin-bottom:1rem; }
-    section p { max-width:700px; margin:auto; line-height:1.6; color:#ccc; }
-    footer { text-align:center; padding:2rem; background:#161b22; color:#aaa; margin-top:3rem; }
-  </style>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header>
-    <img src="logo.png" alt="Codexa Logo"/>
+  <!-- Header -->
+  <header class="navbar">
+    <div class="logo">
+      ⚡ Codexa
+    </div>
     <nav>
       <a href="#features">Features</a>
       <a href="#pricing">Pricing</a>
-      <a href="#contact">Contact</a>
+      <a href="app.html">AI Generator</a>
+      <a href="tutorial.html">Tutorial</a>
     </nav>
   </header>
 
-  <div class="hero">
-    <h1>⚡ Build websites at the speed of thought</h1>
-    <p>Chat with AI, generate ready-to-use code, and deploy in minutes.</p>
-    <button onclick="window.location.href='/app.html'" class="btn btn-green">🚀 Try AI Generator</button>
-    <button id="proPlan" class="btn btn-blue">Upgrade to Pro</button>
-    <button id="teamPlan" class="btn btn-purple">Team Plan</button>
-  </div>
+  <!-- Hero -->
+  <section class="hero">
+    <h1>Build Your First Website in Minutes</h1>
+    <p>No coding skills needed. Codexa AI will generate everything for you.</p>
+    <a href="app.html" class="cta-button">🚀 Start AI Generator</a>
+  </section>
 
-  <section id="features">
+  <!-- Features -->
+  <section id="features" class="features">
     <h2>✨ Features</h2>
-    <p>
-      💬 Real-time AI chat (like ChatGPT)<br>
-      💻 One-click code generation with copy & download<br>
-      📂 Save your history & revisit old projects<br>
-      📖 Beginner-friendly tutorial included
-    </p>
+    <ul>
+      <li>💬 Real-time AI chat with Codexa</li>
+      <li>💻 One-click code generation with copy & download</li>
+      <li>📂 Save your history & revisit old projects</li>
+      <li>📖 Beginner-friendly tutorial included</li>
+    </ul>
   </section>
 
-  <section id="pricing">
-    <h2>💳 Pricing</h2>
-    <p>Free trial (2 generations). Upgrade to Pro for unlimited code. Team plans available.</p>
+  <!-- Pricing -->
+  <section id="pricing" class="pricing">
+    <h2>💰 Pricing</h2>
+    <p>Free trial available. Upgrade for unlimited code generations & team features.</p>
+    <div class="plans">
+      <div class="plan">
+        <h3>Free</h3>
+        <p>10 generations</p>
+        <p>$0/month</p>
+      </div>
+      <div class="plan">
+        <h3>Pro</h3>
+        <p>Unlimited generations</p>
+        <p>$15/month</p>
+      </div>
+      <div class="plan">
+        <h3>Team</h3>
+        <p>Collaboration & support</p>
+        <p>$49/month</p>
+      </div>
+    </div>
   </section>
 
-  <section id="contact">
-    <h2>📩 Contact</h2>
-    <p>Email us at <a href="mailto:support@codexa.codes" style="color:#3b82f6;">support@codexa.codes</a></p>
-  </section>
-
+  <!-- Footer -->
   <footer>
     <p>© 2025 Codexa. All rights reserved.</p>
   </footer>
-
-  <script>
-    document.getElementById("proPlan").addEventListener("click", () => {
-      fetch("/create-checkout-session", {
-        method:"POST", headers:{"Content-Type":"application/json"},
-        body: JSON.stringify({ priceId:"PRICE_PRO" })
-      }).then(r=>r.json()).then(d=>{ if(d.url) window.location.href=d.url; else alert("Error with Pro plan."); });
-    });
-    document.getElementById("teamPlan").addEventListener("click", () => {
-      fetch("/create-checkout-session", {
-        method:"POST", headers:{"Content-Type":"application/json"},
-        body: JSON.stringify({ priceId:"PRICE_TEAM" })
-      }).then(r=>r.json()).then(d=>{ if(d.url) window.location.href=d.url; else alert("Error with Team plan."); });
-    });
-  </script>
 </body>
 </html>

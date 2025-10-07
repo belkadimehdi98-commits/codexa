@@ -3,143 +3,98 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Codexa AI Generator</title>
+  <title>Codexa | AI Generator</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #0d1117;
-      color: #fff;
-      text-align: center;
-    }
-    header {
-      padding: 1rem;
-      background: #161b22;
-      font-size: 1.5rem;
-      font-weight: bold;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    header nav a {
-      color: #fff;
-      margin-left: 1.5rem;
-      text-decoration: none;
-      font-size: 1rem;
-    }
-    textarea {
-      width: 60%;
-      height: 100px;
-      margin: 1rem 0;
-      border-radius: 8px;
-      padding: 1rem;
-      font-size: 1rem;
-      border: none;
-      outline: none;
-      resize: vertical;
-      background: #161b22;
-      color: #fff;
-    }
-    button {
-      padding: 0.8rem 1.6rem;
-      margin: 0.5rem;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: 0.2s;
-    }
-    .btn-blue { background: #3b82f6; color: #fff; }
-    .btn-green { background: #22c55e; color: #fff; }
-    .btn-purple { background: #a855f7; color: #fff; }
-    pre {
-      text-align: left;
-      background: #0d1117;
-      padding: 1rem;
-      border-radius: 8px;
-      margin: 1rem auto;
-      width: 90%;
-      overflow-x: auto;
-      max-height: 400px;
-      white-space: pre-wrap;
-      word-wrap: break-word;
-      font-size: 0.9rem;
-      line-height: 1.4;
-      color: #e5e7eb;
-      border: 1px solid #2d333b;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-    }
-    .history {
-      margin-top: 2rem;
-      text-align: left;
-      width: 80%;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .history-item {
-      background: #161b22;
-      padding: 1.2rem;
-      border-radius: 12px;
-      margin-bottom: 1rem;
-      border: 1px solid #2d333b;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-    }
-    footer {
-      margin-top: 3rem;
-      padding: 1rem;
-      background: #161b22;
-      color: #aaa;
-    }
+    body { margin:0; font-family:Arial,sans-serif; background:#0d1117; color:#fff; text-align:center; }
+    header { background:#161b22; padding:1rem; font-size:1.5rem; font-weight:bold; }
+    section { display:none; padding:2rem; max-width:800px; margin:auto; }
+    section.active { display:block; }
+    textarea { width:80%; height:100px; padding:1rem; border-radius:6px; border:none; outline:none; background:#161b22; color:#fff; }
+    button { padding:0.8rem 1.6rem; margin:1rem; border:none; border-radius:6px; font-weight:bold; cursor:pointer; }
+    .btn-blue { background:#3b82f6; color:#fff; }
+    .btn-green { background:#22c55e; color:#fff; }
+    .btn-purple { background:#a855f7; color:#fff; }
+    pre { background:#161b22; padding:1rem; border-radius:6px; text-align:left; white-space:pre-wrap; word-wrap:break-word; }
   </style>
 </head>
 <body>
-  <!-- Header -->
-  <header>
-    ⚡ Codexa AI Generator
-    <nav>
-      <a href="/tutorial.html">Tutorial</a>
-    </nav>
-  </header>
+  <header>⚡ Codexa AI Generator</header>
 
-  <main>
-    <textarea id="prompt" placeholder="Describe your site idea..."></textarea><br>
-    <button id="generateBtn" class="btn-blue">✨ Generate My Code</button>
-    <div id="status"></div>
+  <!-- Step 1 -->
+  <section id="step1" class="active">
+    <h2>Step 1: Describe Your Website Idea</h2>
+    <textarea id="prompt" placeholder="e.g. A portfolio site with dark theme and contact form"></textarea><br>
+    <button class="btn-blue" onclick="nextStep(2)">Next → Generate Code</button>
+  </section>
 
+  <!-- Step 2 -->
+  <section id="step2">
+    <h2>Step 2: Your Generated Code</h2>
+    <div id="status">⏳ Waiting for generation...</div>
     <div id="result" style="display:none;">
-      <h3>✅ Done!</h3>
       <pre id="codeOutput"></pre>
-      <button class="btn-green" onclick="copyCode()">Copy</button>
-      <button class="btn-purple" onclick="downloadCode()">Download</button>
+      <button class="btn-purple" onclick="copyCode()">Copy</button>
+      <button class="btn-green" onclick="downloadCode()">Download</button>
     </div>
+    <button class="btn-blue" onclick="nextStep(3)">Next → Learn How to Use</button>
+  </section>
 
-    <!-- History -->
-    <section class="history">
-      <h2>📂 History</h2>
-      <div id="historyList"></div>
-      <button onclick="exportHistory()" class="btn-blue">Export History</button>
-      <button onclick="clearHistory()" class="btn-purple">Clear History</button>
-    </section>
-  </main>
+  <!-- Step 3 -->
+  <section id="step3">
+    <h2>Step 3: How to Use Your Code</h2>
+    <ol style="text-align:left; max-width:600px; margin:auto; line-height:1.6;">
+      <li>Copy or Download your code above.</li>
+      <li>Open VS Code or any text editor.</li>
+      <li>Paste the code and save it as <b>index.html</b>.</li>
+      <li>Double click index.html → your site opens in the browser.</li>
+      <li>Optional: Host online with Netlify, Vercel, or GitHub Pages.</li>
+    </ol>
+    <p><a href="/tutorial.html" style="color:#3b82f6;">See Full Tutorial</a></p>
+  </section>
 
-  <footer>© 2025 Codexa. All rights reserved.</footer>
+  <footer style="margin-top:2rem; color:#aaa;">© 2025 Codexa</footer>
 
   <script>
-    const MAX_FREE_TRIALS = 2;
     let generatedCode = "";
 
-    function getUsageCount() {
-      return parseInt(localStorage.getItem("generationCount") || "0", 10);
+    function nextStep(step) {
+      document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
+      document.getElementById("step" + step).classList.add("active");
+
+      if (step === 2) generateCode();
     }
-    function increaseUsageCount() {
-      let count = getUsageCount() + 1;
-      localStorage.setItem("generationCount", count);
-      return count;
+
+    async function generateCode() {
+      const prompt = document.getElementById("prompt").value.trim();
+      if (!prompt) { alert("Please enter a description"); return; }
+
+      document.getElementById("status").innerText = "⏳ Generating...";
+
+      try {
+        const response = await fetch("/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt })
+        });
+        const data = await response.json();
+
+        if (data.code) {
+          // clean output (remove ``` wrappers if present)
+          generatedCode = data.code.replace(/```[a-z]*\n?/gi, "").replace(/```/g, "");
+          document.getElementById("codeOutput").innerText = generatedCode;
+          document.getElementById("result").style.display = "block";
+          document.getElementById("status").innerText = "✅ Done!";
+        } else {
+          document.getElementById("status").innerText = "❌ Error: " + (data.error || "Something went wrong");
+        }
+      } catch (err) {
+        document.getElementById("status").innerText = "❌ Server error: " + err.message;
+      }
     }
 
     function copyCode() {
       navigator.clipboard.writeText(generatedCode).then(() => {
-        alert("Code copied to clipboard!");
+        alert("Code copied!");
       });
     }
     function downloadCode() {
@@ -151,105 +106,6 @@
       a.click();
       URL.revokeObjectURL(url);
     }
-
-    function saveHistory(prompt, code) {
-      let history = JSON.parse(localStorage.getItem("history") || "[]");
-      history.push({ prompt, code, time: new Date().toLocaleString() });
-      localStorage.setItem("history", JSON.stringify(history));
-      renderHistory();
-    }
-
-    function renderHistory() {
-      let history = JSON.parse(localStorage.getItem("history") || "[]");
-      const list = document.getElementById("historyList");
-      list.innerHTML = "";
-      history.forEach((item, index) => {
-        const div = document.createElement("div");
-        div.className = "history-item";
-        div.innerHTML = `
-          <b style="color:#3b82f6;">${item.prompt || "(no prompt)"}</b><br>
-          <small style="color:#aaa;">${item.time}</small>
-          <pre>${item.code}</pre>
-          <div style="margin-top:0.8rem;">
-            <button class="btn-blue" onclick="loadHistory(${index})">Load</button>
-            <button class="btn-purple" onclick="navigator.clipboard.writeText(\`${item.code}\`)">Copy</button>
-            <button class="btn-green" onclick="downloadFromHistory(${index})">Download</button>
-          </div>
-        `;
-        list.appendChild(div);
-      });
-    }
-
-    function loadHistory(index) {
-      let history = JSON.parse(localStorage.getItem("history") || "[]");
-      if (history[index]) {
-        document.getElementById("prompt").value = history[index].prompt;
-        document.getElementById("codeOutput").innerText = history[index].code;
-        document.getElementById("result").style.display = "block";
-      }
-    }
-    function downloadFromHistory(index) {
-      let history = JSON.parse(localStorage.getItem("history") || "[]");
-      if (history[index]) {
-        const blob = new Blob([history[index].code], { type: "text/html" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "index.html";
-        a.click();
-        URL.revokeObjectURL(url);
-      }
-    }
-    function exportHistory() {
-      let history = localStorage.getItem("history");
-      const blob = new Blob([history], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "codexa-history.json";
-      a.click();
-      URL.revokeObjectURL(url);
-    }
-    function clearHistory() {
-      localStorage.removeItem("history");
-      renderHistory();
-    }
-
-    document.getElementById("generateBtn").addEventListener("click", async () => {
-      const prompt = document.getElementById("prompt").value.trim();
-      const count = getUsageCount();
-
-      if (count >= MAX_FREE_TRIALS) {
-        alert("⚠️ Free trial limit reached. Please upgrade to continue.");
-        window.location.href = "/checkout.html";
-        return;
-      }
-
-      document.getElementById("status").innerText = "⏳ Generating...";
-      try {
-        const response = await fetch("/generate", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt })
-        });
-
-        const data = await response.json();
-        if (data.code) {
-          generatedCode = data.code;
-          document.getElementById("codeOutput").innerText = data.code;
-          document.getElementById("result").style.display = "block";
-          document.getElementById("status").innerText = "✅ Done!";
-          saveHistory(prompt, data.code);
-          increaseUsageCount();
-        } else {
-          document.getElementById("status").innerText = "❌ Error: " + (data.error || "Something went wrong");
-        }
-      } catch (err) {
-        document.getElementById("status").innerText = "❌ Server error: " + err.message;
-      }
-    });
-
-    renderHistory();
   </script>
 </body>
 </html>

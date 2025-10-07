@@ -10,11 +10,13 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 10000;
+
+// --- Stripe ---
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
+// --- paths / static ---
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -25,10 +27,14 @@ app.get("/", (_req, res) => {
 // ---------- STRIPE CHECKOUT ----------
 app.post("/create-checkout-session", async (req, res) => {
   try {
-    const incoming = (req.body?.priceId || "").toString();
+    const incoming = (req.body?.priceId || req.body?.plan || "").toString();
+
+    // Map simple labels to env vars
     const map = {
       PRICE_PRO: process.env.PRICE_PRO,
       PRICE_TEAM: process.env.PRICE_TEAM,
+      PRO: process.env.PRICE_PRO,
+      TEAM: process.env.PRICE_TEAM,
     };
 
     const stripePriceId = incoming.startsWith("price_")
@@ -40,6 +46,7 @@ app.post("/create-checkout-session", async (req, res) => {
     }
 
     const domain = process.env.DOMAIN || `https://${req.headers.host}`;
+
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       payment_method_types: ["card"],
@@ -60,16 +67,11 @@ app.post("/create-checkout-session", async (req, res) => {
   }
 });
 
-// ---------- AI GENERATION (dual mode: code + chat) ----------
+// ---------- AI CODE GENERATION ----------
 app.post("/generate", async (req, res) => {
   try {
-    const { prompt, mode } = req.body || {};
+    const { prompt } = req.body || {};
     if (!prompt) return res.status(400).json({ error: "Prompt is required" });
-
-    const systemMessage =
-      mode === "code"
-        ? "You are an assistant that generates production-ready HTML/CSS/JS code in a single file. Keep responses clean and code-focused."
-        : "You are a helpful assistant like ChatGPT. Answer flexibly, explain concepts, and provide code when useful.";
 
     const r = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
@@ -80,10 +82,14 @@ app.post("/generate", async (req, res) => {
       body: JSON.stringify({
         model: "gpt-4o-mini",
         messages: [
-          { role: "system", content: systemMessage },
+          {
+            role: "system",
+            content:
+              "You are Codexa AI. Generate clean, production-ready HTML/CSS/JS websites. Do not include markdown fences (```html). Return only the raw code.",
+          },
           { role: "user", content: prompt },
         ],
-        max_tokens: 2000,
+        max_tokens: 1500,
       }),
     });
 
@@ -91,11 +97,16 @@ app.post("/generate", async (req, res) => {
     if (data?.error) {
       return res.status(500).json({ error: data.error.message });
     }
-    const code = data?.choices?.[0]?.message?.content || "";
+
+    let code = data?.choices?.[0]?.message?.content || "";
+
+    // Remove markdown fences if present
+    code = code.replace(/```html|```/g, "").trim();
+
     return res.json({ code });
   } catch (err) {
-    console.error("AI generation error:", err);
-    return res.status(500).json({ error: "Failed to generate response" });
+    console.error("Generate error:", err);
+    return res.status(500).json({ error: "Failed to generate code" });
   }
 });
 

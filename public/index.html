@@ -61,20 +61,26 @@
       fetch("/create-checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ priceId: process.env.PRICE_PRO || "PRICE_PRO_ENV" })
+        body: JSON.stringify({ plan: "pro" })
       })
       .then(res => res.json())
-      .then(data => window.location.href = data.url);
+      .then(data => {
+        if (data.url) window.location.href = data.url;
+        else alert("Something went wrong: " + (data.error || "Unknown error"));
+      });
     });
 
     document.getElementById("teamPlan").addEventListener("click", () => {
       fetch("/create-checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ priceId: process.env.PRICE_TEAM || "PRICE_TEAM_ENV" })
+        body: JSON.stringify({ plan: "team" })
       })
       .then(res => res.json())
-      .then(data => window.location.href = data.url);
+      .then(data => {
+        if (data.url) window.location.href = data.url;
+        else alert("Something went wrong: " + (data.error || "Unknown error"));
+      });
     });
   </script>
 </body>

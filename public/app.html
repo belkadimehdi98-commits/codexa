@@ -85,7 +85,6 @@
   </style>
 </head>
 <body>
-  <!-- Header with Tutorial link -->
   <header>
     ⚡ Codexa AI Generator
     <nav>
@@ -94,8 +93,8 @@
   </header>
 
   <main>
-    <textarea id="prompt" placeholder="Describe your site idea..."></textarea><br>
-    <button id="generateBtn" class="btn-blue">Get Your Code Now</button>
+    <textarea id="prompt" placeholder="Describe your idea or ask anything..."></textarea><br>
+    <button id="generateBtn" class="btn-blue">✨ Generate My Code</button>
     <div id="status"></div>
 
     <div id="result" style="display:none;">
@@ -105,7 +104,6 @@
       <button class="btn-purple" onclick="downloadCode()">Download</button>
     </div>
 
-    <!-- Quick Start Guide -->
     <section id="howto" style="margin-top:2rem; display:none;">
       <h2>📖 How to Use Your Code</h2>
       <ol style="text-align:left; max-width:700px; margin:auto; line-height:1.6;">
@@ -115,10 +113,8 @@
         <li>Double-click <code>index.html</code> → your site opens in the browser.</li>
         <li>Optional: Host online with <b>Netlify</b>, <b>Vercel</b>, or <b>GitHub Pages</b>.</li>
       </ol>
-      <p style="color:#aaa;">Need more help? See the <a href="/tutorial.html" style="color:#3b82f6;">Full Tutorial</a>.</p>
     </section>
 
-    <!-- History Section -->
     <section class="history">
       <h2>📂 History</h2>
       <div id="historyList"></div>
@@ -136,7 +132,6 @@
     function getUsageCount() {
       return parseInt(localStorage.getItem("generationCount") || "0", 10);
     }
-
     function increaseUsageCount() {
       let count = getUsageCount() + 1;
       localStorage.setItem("generationCount", count);
@@ -145,7 +140,7 @@
 
     function copyCode() {
       navigator.clipboard.writeText(generatedCode).then(() => {
-        alert("Code copied to clipboard!");
+        alert("Code copied!");
       });
     }
 
@@ -161,11 +156,7 @@
 
     function saveHistory(prompt, code) {
       let history = JSON.parse(localStorage.getItem("history") || "[]");
-      history.push({
-        prompt,
-        code,
-        time: new Date().toLocaleString()
-      });
+      history.push({ prompt, code, time: new Date().toLocaleString() });
       localStorage.setItem("history", JSON.stringify(history));
       renderHistory();
     }
@@ -181,7 +172,7 @@
           <b>${item.prompt || "(no prompt)"}</b> <br>
           <small>${item.time}</small><br>
           <button class="btn-blue" onclick="loadHistory(${index})">Load</button>
-          <button class="btn-purple" onclick="navigator.clipboard.writeText(\`${item.code}\`)">Copy</button>
+          <button class="btn-purple" onclick="navigator.clipboard.writeText(\`${item.code.replace(/`/g,"\\`")}\`)">Copy</button>
           <button class="btn-green" onclick="downloadFromHistory(${index})">Download</button>
         `;
         list.appendChild(div);

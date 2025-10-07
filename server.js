@@ -1,4 +1,3 @@
-// server.js
 import express from "express";
 import dotenv from "dotenv";
 import Stripe from "stripe";
@@ -10,57 +9,29 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 10000;
-
-// --- Stripe ---
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-// --- paths / static ---
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 app.get("/", (_req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-// ---------- STRIPE CHECKOUT (accepts several formats) ----------
+// Stripe Checkout
 app.post("/create-checkout-session", async (req, res) => {
   try {
-    const incoming = (req.body?.priceId || req.body?.plan || "").toString();
-
-    // Map keys coming from the browser to real Stripe price IDs
+    const incoming = (req.body?.priceId || "").toString();
     const map = {
       PRICE_PRO: process.env.PRICE_PRO,
       PRICE_TEAM: process.env.PRICE_TEAM,
-      PRO: process.env.PRICE_PRO,
-      TEAM: process.env.PRICE_TEAM,
     };
-
-    // Allow sending the real price_… id directly too
-    const stripePriceId = incoming.startsWith("price_")
-      ? incoming
-      : map[incoming];
-
-    if (!stripePriceId) {
-      return res.status(400).json({ error: "Invalid plan/priceId" });
-    }
-
-    // Final sanity check that env vars exist
-    if (
-      (incoming === "PRICE_PRO" || incoming === "PRO") &&
-      !process.env.PRICE_PRO
-    ) {
-      return res.status(500).json({ error: "PRICE_PRO env var missing" });
-    }
-    if (
-      (incoming === "PRICE_TEAM" || incoming === "TEAM") &&
-      !process.env.PRICE_TEAM
-    ) {
-      return res.status(500).json({ error: "PRICE_TEAM env var missing" });
-    }
+    const stripePriceId = incoming.startsWith("price_") ? incoming : map[incoming];
+    if (!stripePriceId) return res.status(400).json({ error: "Invalid plan/priceId" });
 
     const domain = process.env.DOMAIN || `https://${req.headers.host}`;
-
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       payment_method_types: ["card"],
@@ -68,21 +39,14 @@ app.post("/create-checkout-session", async (req, res) => {
       success_url: `${domain}/success.html`,
       cancel_url: `${domain}/cancel.html`,
     });
-
     return res.json({ url: session.url });
   } catch (err) {
-    console.error("Stripe checkout error:", err);
-    // surface a readable message to the client
-    return res.status(500).json({
-      error:
-        err?.raw?.message ||
-        err?.message ||
-        "Failed to create checkout session",
-    });
+    console.error("Stripe error:", err);
+    return res.status(500).json({ error: "Stripe checkout failed" });
   }
 });
 
-// ---------- AI CODE GENERATION ----------
+// AI Generation (flexible)
 app.post("/generate", async (req, res) => {
   try {
     const { prompt } = req.body || {};
@@ -100,22 +64,20 @@ app.post("/generate", async (req, res) => {
           {
             role: "system",
             content:
-              "You generate clean, production-ready website code (HTML/CSS/JS). Reply with code only in a single file.",
+              "You are a helpful AI assistant for Codexa. You generate websites, code, or explanations. Be natural, helpful, and flexible like ChatGPT.",
           },
           { role: "user", content: prompt },
         ],
-        max_tokens: 1500,
+        max_tokens: 2000,
       }),
     });
 
     const data = await r.json();
-    if (data?.error) {
-      return res.status(500).json({ error: data.error.message });
-    }
+    if (data?.error) return res.status(500).json({ error: data.error.message });
     const code = data?.choices?.[0]?.message?.content || "";
     return res.json({ code });
   } catch (err) {
-    console.error("Generate error:", err);
+    console.error("AI generation error:", err);
     return res.status(500).json({ error: "Failed to generate code" });
   }
 });

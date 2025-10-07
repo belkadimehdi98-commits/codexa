@@ -2,235 +2,265 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Codexa Generator</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Codexa AI Generator</title>
   <style>
-    .container { max-width: 900px; margin: 0 auto; }
-    .row { margin-top: 1rem; }
-    .select { background:#161b22; color:#fff; border:none; padding:.7rem; border-radius:6px; }
-    .panel { background:#161b22; padding:1rem; border-radius:8px; }
-    #resultBox { white-space: pre-wrap; overflow-x: auto; }
-    .history-item { text-align:left; background:#0f1620; padding:.7rem 1rem; border-radius:8px; margin-bottom:.6rem; cursor:pointer; }
-    .history-actions { display:flex; gap:.5rem; margin-top:.5rem; }
-    .muted { color:#a9a9a9; font-size:.9rem; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #0d1117;
+      color: #fff;
+      text-align: center;
+    }
+    header {
+      padding: 1rem;
+      background: #161b22;
+      font-size: 1.5rem;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header nav a {
+      color: #fff;
+      margin-left: 1.5rem;
+      text-decoration: none;
+      font-size: 1rem;
+    }
+    textarea {
+      width: 60%;
+      height: 100px;
+      margin: 1rem 0;
+      border-radius: 8px;
+      padding: 1rem;
+      font-size: 1rem;
+      border: none;
+      outline: none;
+      resize: vertical;
+      background: #161b22;
+      color: #fff;
+    }
+    button {
+      padding: 0.8rem 1.6rem;
+      margin: 0.5rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+    .btn-blue { background: #3b82f6; color: #fff; }
+    .btn-green { background: #22c55e; color: #fff; }
+    .btn-purple { background: #a855f7; color: #fff; }
+    pre {
+      text-align: left;
+      background: #161b22;
+      padding: 1rem;
+      border-radius: 6px;
+      margin: 1rem auto;
+      width: 80%;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    .history {
+      margin-top: 2rem;
+      text-align: left;
+      width: 80%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .history-item {
+      background: #1e2633;
+      padding: 1rem;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+    }
+    footer {
+      margin-top: 3rem;
+      padding: 1rem;
+      background: #161b22;
+      color: #aaa;
+    }
   </style>
 </head>
 <body>
-  <div class="container center" style="align-items:stretch">
-    <h1>⚡ Codexa AI Generator</h1>
+  <!-- Header with Tutorial link -->
+  <header>
+    ⚡ Codexa AI Generator
+    <nav>
+      <a href="/tutorial.html">Tutorial</a>
+    </nav>
+  </header>
 
-    <!-- Mode -->
-    <div class="row">
-      <select id="mode" class="select">
-        <option value="chat">Chat (Full GPT)</option>
-        <option value="site">Site Builder (HTML/CSS/JS)</option>
-      </select>
+  <main>
+    <textarea id="prompt" placeholder="Describe your site idea..."></textarea><br>
+    <button id="generateBtn" class="btn-blue">Get Your Code Now</button>
+    <div id="status"></div>
+
+    <div id="result" style="display:none;">
+      <h3>✅ Done!</h3>
+      <pre id="codeOutput"></pre>
+      <button class="btn-green" onclick="copyCode()">Copy</button>
+      <button class="btn-purple" onclick="downloadCode()">Download</button>
     </div>
 
-    <!-- Prompt -->
-    <div class="row">
-      <textarea id="prompt" placeholder="Describe your site idea or ask anything..."></textarea>
-    </div>
+    <!-- Quick Start Guide -->
+    <section id="howto" style="margin-top:2rem; display:none;">
+      <h2>📖 How to Use Your Code</h2>
+      <ol style="text-align:left; max-width:700px; margin:auto; line-height:1.6;">
+        <li><b>Copy</b> or <b>Download</b> your code above.</li>
+        <li>Open a text editor (like <b>VS Code</b>).</li>
+        <li>Paste the code into a new file and save as <code>index.html</code>.</li>
+        <li>Double-click <code>index.html</code> → your site opens in the browser.</li>
+        <li>Optional: Host online with <b>Netlify</b>, <b>Vercel</b>, or <b>GitHub Pages</b>.</li>
+      </ol>
+      <p style="color:#aaa;">Need more help? See the <a href="/tutorial.html" style="color:#3b82f6;">Full Tutorial</a>.</p>
+    </section>
 
-    <!-- Actions -->
-    <div class="row" style="display:flex; gap:.6rem; justify-content:center;">
-      <button id="generateBtn" class="btn btn-blue">Get Your Code / Answer</button>
-      <button id="copyBtn" class="btn btn-purple" disabled>Copy</button>
-      <button id="downloadBtn" class="btn btn-green" disabled>Download</button>
-      <button id="clearBtn" class="btn" style="background:#444" title="Clear output only">Clear</button>
-    </div>
-
-    <p id="status" class="row"></p>
-
-    <!-- Output -->
-    <div id="outputPanel" class="row panel" style="display:none;">
-      <pre id="resultBox"></pre>
-    </div>
-
-    <!-- History -->
-    <div class="row">
-      <h2>🗂️ History</h2>
-      <p class="muted">Saved locally on your device. Click an item to load it.</p>
+    <!-- History Section -->
+    <section class="history">
+      <h2>📂 History</h2>
       <div id="historyList"></div>
-      <div class="row" style="display:flex; gap:.6rem; justify-content:center;">
-        <button id="exportHistory" class="btn">Export History</button>
-        <button id="clearHistory" class="btn" style="background:#444">Clear History</button>
-      </div>
-    </div>
-  </div>
+      <button onclick="exportHistory()">Export History</button>
+      <button onclick="clearHistory()">Clear History</button>
+    </section>
+  </main>
+
+  <footer>© 2025 Codexa. All rights reserved.</footer>
 
   <script>
-    const modeEl = document.getElementById("mode");
-    const promptEl = document.getElementById("prompt");
-    const statusEl = document.getElementById("status");
-    const resultBox = document.getElementById("resultBox");
-    const outputPanel = document.getElementById("outputPanel");
-    const copyBtn = document.getElementById("copyBtn");
-    const downloadBtn = document.getElementById("downloadBtn");
-    const clearBtn = document.getElementById("clearBtn");
-    const historyList = document.getElementById("historyList");
-    const exportHistoryBtn = document.getElementById("exportHistory");
-    const clearHistoryBtn = document.getElementById("clearHistory");
+    const MAX_FREE_TRIALS = 2;
+    let generatedCode = "";
 
-    const H_SITE = "codexaHistorySite";
-    const H_CHAT = "codexaHistoryChat";
+    function getUsageCount() {
+      return parseInt(localStorage.getItem("generationCount") || "0", 10);
+    }
 
-    function loadHistory(key){ try { return JSON.parse(localStorage.getItem(key) || "[]"); } catch { return []; } }
-    function saveHistory(key, arr){ localStorage.setItem(key, JSON.stringify(arr)); }
-    function nowISO(){ return new Date().toISOString(); }
+    function increaseUsageCount() {
+      let count = getUsageCount() + 1;
+      localStorage.setItem("generationCount", count);
+      return count;
+    }
 
-    function renderHistory(){
-      const mode = modeEl.value;
-      const key = mode === "site" ? H_SITE : H_CHAT;
-      const items = loadHistory(key).slice().reverse();
-
-      historyList.innerHTML = "";
-      if(!items.length){ historyList.innerHTML = `<p class="muted">No history yet.</p>`; return; }
-
-      items.forEach((item, idx) => {
-        const div = document.createElement("div");
-        div.className = "history-item";
-        div.innerHTML = `
-          <div><strong>${item.prompt?.slice(0, 80) || "(no prompt)"}${item.prompt?.length>80?"…":""}</strong></div>
-          <div class="muted">${new Date(item.ts).toLocaleString()}</div>
-          <div class="history-actions">
-            <button class="btn btn-blue" data-action="load">Load</button>
-            <button class="btn btn-purple" data-action="copy">Copy</button>
-            <button class="btn btn-green" data-action="download">Download</button>
-          </div>
-        `;
-        div.addEventListener("click", (e) => {
-          const action = e.target?.dataset?.action;
-          if(!action) return;
-          if(action==="load"){
-            resultBox.textContent = item.output || "";
-            outputPanel.style.display = "block";
-            copyBtn.disabled = !item.output;
-            downloadBtn.disabled = !item.output;
-          } else if(action==="copy"){
-            navigator.clipboard.writeText(item.output || "");
-            alert("Copied from history!");
-          } else if(action==="download"){
-            const blob = new Blob([item.output || ""], { type: mode === "site" ? "text/html" : "text/plain" });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = mode === "site" ? "codexa_project.html" : "codexa_chat.txt";
-            a.click();
-            URL.revokeObjectURL(url);
-          }
-          e.stopPropagation();
-        });
-        historyList.appendChild(div);
+    function copyCode() {
+      navigator.clipboard.writeText(generatedCode).then(() => {
+        alert("Code copied to clipboard!");
       });
     }
 
-    function enableActions(hasOutput){
-      copyBtn.disabled = !hasOutput;
-      downloadBtn.disabled = !hasOutput;
-      outputPanel.style.display = hasOutput ? "block" : "none";
+    function downloadCode() {
+      const blob = new Blob([generatedCode], { type: "text/html" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "index.html";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function saveHistory(prompt, code) {
+      let history = JSON.parse(localStorage.getItem("history") || "[]");
+      history.push({
+        prompt,
+        code,
+        time: new Date().toLocaleString()
+      });
+      localStorage.setItem("history", JSON.stringify(history));
+      renderHistory();
+    }
+
+    function renderHistory() {
+      let history = JSON.parse(localStorage.getItem("history") || "[]");
+      const list = document.getElementById("historyList");
+      list.innerHTML = "";
+      history.forEach((item, index) => {
+        const div = document.createElement("div");
+        div.className = "history-item";
+        div.innerHTML = `
+          <b>${item.prompt || "(no prompt)"}</b> <br>
+          <small>${item.time}</small><br>
+          <button class="btn-blue" onclick="loadHistory(${index})">Load</button>
+          <button class="btn-purple" onclick="navigator.clipboard.writeText(\`${item.code}\`)">Copy</button>
+          <button class="btn-green" onclick="downloadFromHistory(${index})">Download</button>
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    function loadHistory(index) {
+      let history = JSON.parse(localStorage.getItem("history") || "[]");
+      if (history[index]) {
+        document.getElementById("prompt").value = history[index].prompt;
+        document.getElementById("codeOutput").innerText = history[index].code;
+        document.getElementById("result").style.display = "block";
+      }
+    }
+
+    function downloadFromHistory(index) {
+      let history = JSON.parse(localStorage.getItem("history") || "[]");
+      if (history[index]) {
+        const blob = new Blob([history[index].code], { type: "text/html" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "index.html";
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+    }
+
+    function exportHistory() {
+      let history = localStorage.getItem("history");
+      const blob = new Blob([history], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "codexa-history.json";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function clearHistory() {
+      localStorage.removeItem("history");
+      renderHistory();
     }
 
     document.getElementById("generateBtn").addEventListener("click", async () => {
-      const mode = modeEl.value;
-      const prompt = promptEl.value.trim();
-      if(!prompt){ alert("Please write something first."); return; }
+      const prompt = document.getElementById("prompt").value.trim();
+      const count = getUsageCount();
 
-      statusEl.textContent = "⏳ Working...";
-      enableActions(false);
+      if (count >= MAX_FREE_TRIALS) {
+        alert("⚠️ Free trial limit reached. Please upgrade to continue.");
+        window.location.href = "/checkout.html";
+        return;
+      }
 
+      document.getElementById("status").innerText = "⏳ Generating...";
       try {
-        if(mode === "site"){
-          const res = await fetch("/generate", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ prompt })
-          });
-          const data = await res.json();
-          if(data.error) throw new Error(data.error);
-          resultBox.textContent = data.code || "";
-          enableActions(!!data.code);
+        const response = await fetch("/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt })
+        });
 
-          const h = loadHistory(H_SITE); h.push({ ts: nowISO(), prompt, output: data.code }); saveHistory(H_SITE, h);
+        const data = await response.json();
+        if (data.code) {
+          generatedCode = data.code;
+          document.getElementById("codeOutput").innerText = data.code;
+          document.getElementById("result").style.display = "block";
+          document.getElementById("howto").style.display = "block";
+          document.getElementById("status").innerText = "✅ Done!";
+          saveHistory(prompt, data.code);
+          increaseUsageCount();
         } else {
-          // Full GPT chat – we append to running chat thread stored locally
-          const thread = loadHistory(H_CHAT); // store as flat message log [{role,content,ts}]
-          const messages = thread.map(m => ({ role: m.role, content: m.content }));
-          messages.push({ role: "user", content: prompt });
-
-          const res = await fetch("/chat", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ messages })
-          });
-          const data = await res.json();
-          if(data.error) throw new Error(data.error);
-
-          const reply = data.message || "";
-          resultBox.textContent = reply;
-          enableActions(!!reply);
-
-          // save back into thread
-          thread.push({ ts: nowISO(), role:"user", content: prompt });
-          thread.push({ ts: nowISO(), role:"assistant", content: reply });
-          saveHistory(H_CHAT, thread);
+          document.getElementById("status").innerText = "❌ Error: " + (data.error || "Something went wrong");
         }
-
-        statusEl.textContent = "✅ Done!";
-        renderHistory();
       } catch (err) {
-        statusEl.textContent = "❌ " + err.message;
+        document.getElementById("status").innerText = "❌ Server error: " + err.message;
       }
     });
 
-    copyBtn.addEventListener("click", () => {
-      const text = resultBox.textContent || "";
-      navigator.clipboard.writeText(text);
-      alert("Copied!");
-    });
-
-    downloadBtn.addEventListener("click", () => {
-      const mode = modeEl.value;
-      const text = resultBox.textContent || "";
-      const blob = new Blob([text], { type: mode === "site" ? "text/html" : "text/plain" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = mode === "site" ? "codexa_project.html" : "codexa_chat.txt";
-      a.click();
-      URL.revokeObjectURL(url);
-    });
-
-    clearBtn.addEventListener("click", () => {
-      resultBox.textContent = "";
-      enableActions(false);
-      statusEl.textContent = "";
-    });
-
-    exportHistoryBtn.addEventListener("click", () => {
-      const key = modeEl.value === "site" ? H_SITE : H_CHAT;
-      const items = loadHistory(key);
-      const blob = new Blob([JSON.stringify(items, null, 2)], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = key + ".json";
-      a.click();
-      URL.revokeObjectURL(url);
-    });
-
-    clearHistoryBtn.addEventListener("click", () => {
-      const key = modeEl.value === "site" ? H_SITE : H_CHAT;
-      if(confirm("Clear this history?")){
-        localStorage.removeItem(key);
-        renderHistory();
-      }
-    });
-
-    modeEl.addEventListener("change", renderHistory);
-
-    // initial
-    enableActions(false);
     renderHistory();
   </script>
 </body>

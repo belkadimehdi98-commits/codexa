@@ -4,132 +4,89 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Codexa | AI Code Generator</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://js.stripe.com/v3/"></script>
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #0f172a, #1e293b, #334155);
-      color: #f8fafc;
-    }
-    header {
-      background: #111827;
-      padding: 20px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.4);
-    }
-    header h1 {
-      margin: 0;
-      color: #3b82f6;
-    }
-    header nav a {
-      color: #f8fafc;
-      margin-left: 20px;
-      text-decoration: none;
-      font-weight: bold;
-      transition: color 0.3s;
-    }
-    header nav a:hover {
-      color: #3b82f6;
-    }
-    .hero {
-      text-align: center;
-      padding: 80px 20px;
-    }
-    .hero h2 {
-      font-size: 2.5rem;
-      margin-bottom: 20px;
-      color: #f8fafc;
-    }
-    .hero p {
-      font-size: 1.2rem;
-      color: #d1d5db;
-      margin-bottom: 40px;
-    }
-    .hero .btn {
-      display: inline-block;
-      margin: 10px;
-      padding: 14px 30px;
-      border-radius: 8px;
-      font-weight: bold;
-      text-decoration: none;
-      transition: background 0.3s;
-    }
-    .btn-free {
-      background: #22c55e;
-      color: #fff;
-    }
-    .btn-free:hover {
-      background: #16a34a;
-    }
-    .btn-pro {
-      background: #3b82f6;
-      color: #fff;
-    }
-    .btn-pro:hover {
-      background: #2563eb;
-    }
-    .btn-team {
-      background: #9333ea;
-      color: #fff;
-    }
-    .btn-team:hover {
-      background: #7e22ce;
-    }
-    footer {
-      background: #111827;
-      padding: 20px;
-      text-align: center;
-      color: #9ca3af;
-      margin-top: 60px;
-    }
+    body { font-family: Arial, sans-serif; margin:0; padding:0; background:#0f172a; color:#fff; }
+    header { display:flex; justify-content:space-between; align-items:center; padding:20px; background:#1e293b; }
+    header img { height:40px; }
+    nav a { margin:0 15px; text-decoration:none; color:#fff; font-weight:bold; }
+    .hero { text-align:center; padding:80px 20px; }
+    .hero h1 { font-size:3rem; margin-bottom:10px; }
+    .hero p { font-size:1.2rem; margin-bottom:30px; }
+    .btn { padding:12px 25px; border:none; border-radius:8px; cursor:pointer; font-weight:bold; margin:5px; }
+    .btn-green { background:#22c55e; color:white; }
+    .btn-blue { background:#3b82f6; color:white; }
+    .btn-purple { background:#a855f7; color:white; }
+    .features, .contact { padding:50px 20px; text-align:center; }
+    footer { background:#1e293b; text-align:center; padding:20px; margin-top:50px; font-size:0.9rem; }
   </style>
 </head>
 <body>
   <header>
-    <h1>Codexa</h1>
+    <img src="logo.png" alt="Codexa Logo">
     <nav>
       <a href="index.html">Home</a>
-      <a href="free.html">Free</a>
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#contact">Contact</a>
     </nav>
   </header>
 
   <section class="hero">
-    <h2>⚡ AI Code Generator</h2>
+    <h1>⚡ AI Code Generator</h1>
     <p>Generate production-ready code in seconds. Choose your plan below.</p>
-    <a href="free.html" class="btn btn-free">Start Free</a>
-    <a href="#" id="pro-btn" class="btn btn-pro">Upgrade to Pro</a>
-    <a href="#" id="team-btn" class="btn btn-team">Get Team Plan</a>
+    <button class="btn btn-green" onclick="window.location.href='free.html'">Start Free</button>
+    <button class="btn btn-blue" onclick="subscribe('price_1SFFMF50pz2SntAR9RG9WteF')">Upgrade to Pro</button>
+    <button class="btn btn-purple" onclick="subscribe('price_1SFFP950pz2SntARpYHyaZEi')">Get Team Plan</button>
+  </section>
+
+  <section id="features" class="features">
+    <h2>✨ Features</h2>
+    <p>Instant AI code generation, easy integration, and export options.</p>
+    <button class="btn btn-blue" onclick="copyCode()">Copy Code</button>
+    <button class="btn btn-green" onclick="downloadCode()">Download File</button>
+    <button class="btn btn-purple" onclick="alert('Code generated! (AI integration coming soon)')">Get Your Code Now</button>
+  </section>
+
+  <section id="contact" class="contact">
+    <h2>📩 Contact Us</h2>
+    <p>Email: <a href="mailto:support@codexa.codes">support@codexa.codes</a></p>
   </section>
 
   <footer>
-    <p>© 2025 Codexa. All rights reserved.</p>
+    © 2025 Codexa. All rights reserved.
   </footer>
 
   <script>
-    // Stripe checkout handler
-    async function createCheckout(priceId) {
-      const res = await fetch("/create-checkout-session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ priceId }),
-      });
-      const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        alert("Something went wrong: " + data.error);
+    async function subscribe(priceId) {
+      try {
+        const res = await fetch("/create-checkout-session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ priceId })
+        });
+        const data = await res.json();
+        if (data.url) window.location.href = data.url;
+        else alert("Something went wrong: " + data.error);
+      } catch (err) {
+        alert("Error: " + err.message);
       }
     }
 
-    document.getElementById("pro-btn").addEventListener("click", () => {
-      createCheckout("{{PRO_PRICE_ID}}"); // Replace with env or inject
-    });
+    function copyCode() {
+      navigator.clipboard.writeText("// Example code").then(() => {
+        alert("Code copied to clipboard!");
+      });
+    }
 
-    document.getElementById("team-btn").addEventListener("click", () => {
-      createCheckout("{{TEAM_PRICE_ID}}"); // Replace with env or inject
-    });
+    function downloadCode() {
+      const blob = new Blob(["// Example generated code"], { type: "text/plain" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "code.txt";
+      link.click();
+    }
   </script>
 </body>
 </html>

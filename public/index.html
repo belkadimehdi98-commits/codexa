@@ -2,231 +2,196 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Codexa – AI Code Assistant</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Codexa – AI Coding Assistant</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
       color: #fff;
-      line-height: 1.6;
+      text-align: center;
     }
-
-    /* Navbar */
     header {
-      background: rgba(0, 0, 0, 0.4);
-      backdrop-filter: blur(10px);
-      padding: 15px 40px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: 1rem 2rem;
+      background: rgba(0,0,0,0.2);
     }
-    .logo {
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: #ffcc00;
+    header img {
+      height: 40px;
     }
-    .nav-links a {
-      margin-left: 15px;
-      text-decoration: none;
+    header nav button {
+      margin-left: 10px;
       padding: 10px 20px;
-      border-radius: 6px;
-      font-weight: 600;
-      transition: 0.2s ease-in-out;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
     }
-    .btn.blue { background: #007bff; color: #fff; }
-    .btn.green { background: #28a745; color: #fff; }
-    .btn.purple { background: #6f42c1; color: #fff; }
-    .nav-links a:hover { opacity: 0.85; }
-
-    /* Hero */
+    .btn-free { background: #00c3ff; color: #000; }
+    .btn-pro { background: #00ff99; color: #000; }
+    .btn-team { background: #a64dff; color: #fff; }
     .hero {
-      text-align: center;
-      padding: 100px 20px 60px;
+      margin-top: 50px;
     }
     .hero h1 {
-      font-size: 2.8rem;
-      margin-bottom: 15px;
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
     }
-    .hero p {
-      font-size: 1.2rem;
-      opacity: 0.9;
-      margin-bottom: 25px;
-    }
-    .hero .btn-primary {
-      background: #ff6a00;
-      padding: 15px 30px;
-      border-radius: 8px;
-      color: #fff;
-      font-weight: bold;
-      text-decoration: none;
-      transition: 0.2s;
-    }
-    .hero .btn-primary:hover { background: #ff8533; }
-
-    /* Pricing */
-    .pricing {
+    .plans {
       display: flex;
       justify-content: center;
-      flex-wrap: wrap;
-      gap: 20px;
-      padding: 40px 20px;
+      margin: 3rem auto;
+      gap: 1.5rem;
     }
-    .plan {
-      background: #1b1f2a;
+    .plan-card {
+      background: #1e293b;
+      padding: 2rem;
       border-radius: 12px;
-      padding: 30px;
-      width: 280px;
-      text-align: center;
-      transition: transform 0.2s;
+      width: 250px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     }
-    .plan:hover { transform: translateY(-5px); }
-    .plan h3 { font-size: 1.5rem; margin-bottom: 10px; }
-    .plan p { margin-bottom: 20px; font-size: 0.95rem; color: #ccc; }
-    .plan .price {
-      font-size: 1.4rem;
-      font-weight: bold;
-      margin-bottom: 20px;
-      color: #ffcc00;
-    }
-    .plan button {
-      background: #007bff;
-      color: #fff;
+    .plan-card h2 { margin-bottom: 0.5rem; }
+    .plan-card p { margin: 0.5rem 0; }
+    .plan-card button {
+      margin-top: 1rem;
+      width: 100%;
+      padding: 10px;
       border: none;
-      padding: 12px 20px;
-      border-radius: 6px;
-      font-weight: 600;
+      border-radius: 8px;
       cursor: pointer;
-      transition: 0.2s;
+      font-weight: bold;
     }
-    .plan button:hover { opacity: 0.9; }
-
-    /* Generator */
     .generator {
-      max-width: 700px;
-      margin: 50px auto;
-      background: #1b1f2a;
-      padding: 30px;
+      background: #0f172a;
+      margin: 2rem auto;
+      padding: 2rem;
       border-radius: 12px;
-      text-align: center;
+      width: 600px;
+      max-width: 90%;
     }
-    .generator h2 { margin-bottom: 20px; }
-    .generator textarea {
+    textarea {
       width: 100%;
       height: 120px;
       border-radius: 8px;
       border: none;
-      padding: 15px;
+      padding: 1rem;
       font-size: 1rem;
-      margin-bottom: 20px;
-      resize: none;
     }
     .generator button {
-      background: #ff6a00;
+      margin: 10px;
+      padding: 10px 20px;
       border: none;
-      padding: 14px 28px;
       border-radius: 8px;
-      color: #fff;
-      font-weight: 700;
+      font-weight: bold;
       cursor: pointer;
-      transition: 0.2s;
     }
-    .generator button:hover { background: #ff8533; }
+    .btn-generate { background: #00c3ff; color: #000; }
+    .btn-copy { background: #ff9800; color: #fff; }
+    .btn-download { background: #4caf50; color: #fff; }
     #output {
-      margin-top: 20px;
+      background: #111827;
+      margin-top: 1rem;
+      padding: 1rem;
+      border-radius: 8px;
       text-align: left;
       white-space: pre-wrap;
-      background: #111;
-      padding: 15px;
-      border-radius: 6px;
-      max-height: 300px;
-      overflow-y: auto;
-      font-family: monospace;
-      font-size: 0.9rem;
-    }
-
-    footer {
-      text-align: center;
-      padding: 25px;
-      font-size: 0.85rem;
-      color: #bbb;
-      margin-top: 40px;
-      border-top: 1px solid rgba(255,255,255,0.1);
     }
   </style>
 </head>
 <body>
-  <!-- Navbar -->
   <header>
-    <div class="logo">⚡ Codexa</div>
-    <div class="nav-links">
-      <a href="free.html" class="btn blue">Start Free</a>
-      <a href="/create-checkout-session?plan=pro" class="btn green">Upgrade to Pro</a>
-      <a href="/create-checkout-session?plan=team" class="btn purple">Get Team Plan</a>
-    </div>
+    <img src="logo.png" alt="Codexa Logo"/>
+    <nav>
+      <button class="btn-free" onclick="window.location.href='free.html'">Start Free</button>
+      <button class="btn-pro" onclick="checkout('price_1SFFMf50pz2SntAR9RG9WteF')">Upgrade to Pro</button>
+      <button class="btn-team" onclick="checkout('price_1SFFP950pz2SntARpYHyaZEi')">Get Team Plan</button>
+    </nav>
   </header>
 
-  <!-- Hero -->
-  <section class="hero">
+  <div class="hero">
     <h1>Welcome to Codexa</h1>
     <p>Your AI-powered coding assistant</p>
-    <a href="#generator" class="btn-primary">⚡ Generate Code Now</a>
+  </div>
+
+  <section class="plans">
+    <div class="plan-card">
+      <h2>Free Plan</h2>
+      <p>Great for starters</p>
+      <h3>€0</h3>
+      <button class="btn-free" onclick="window.location.href='free.html'">Start Free</button>
+    </div>
+    <div class="plan-card">
+      <h2>Pro Plan</h2>
+      <p>For professionals</p>
+      <h3>€19.99 / month</h3>
+      <button class="btn-pro" onclick="checkout('price_1SFFMf50pz2SntAR9RG9WteF')">Upgrade to Pro</button>
+    </div>
+    <div class="plan-card">
+      <h2>Team Plan</h2>
+      <p>Collaborate better</p>
+      <h3>€49.99 / month</h3>
+      <button class="btn-team" onclick="checkout('price_1SFFP950pz2SntARpYHyaZEi')">Get Team Plan</button>
+    </div>
   </section>
 
-  <!-- Pricing -->
-  <section class="pricing">
-    <div class="plan">
-      <h3>Free Plan</h3>
-      <p>Basic features, great for starters.</p>
-      <div class="price">€0</div>
-      <a href="free.html"><button>Start Free</button></a>
-    </div>
-    <div class="plan">
-      <h3>Pro Plan</h3>
-      <p>Advanced features for professionals.</p>
-      <div class="price">€19.99 / month</div>
-      <a href="/create-checkout-session?plan=pro"><button>Upgrade to Pro</button></a>
-    </div>
-    <div class="plan">
-      <h3>Team Plan</h3>
-      <p>Collaboration tools + Pro features.</p>
-      <div class="price">€49.99 / month</div>
-      <a href="/create-checkout-session?plan=team"><button>Get Team Plan</button></a>
-    </div>
-  </section>
-
-  <!-- AI Generator -->
-  <section id="generator" class="generator">
+  <section class="generator">
     <h2>🚀 AI Code Generator</h2>
     <p>Describe the code you want, and AI will generate it for you:</p>
-    <textarea id="prompt" placeholder="e.g. Create a Python function to reverse a string"></textarea>
-    <button id="generateBtn">Generate Code Now</button>
-    <pre id="output"></pre>
+    <textarea id="prompt" placeholder="Type your request..."></textarea>
+    <br/>
+    <button class="btn-generate" onclick="generateCode()">⚡ Generate Code Now</button>
+    <button class="btn-copy" onclick="copyCode()">📋 Copy Code</button>
+    <button class="btn-download" onclick="downloadCode()">📥 Download File</button>
+    <div id="output">Generated code will appear here...</div>
   </section>
 
-  <footer>
-    © 2025 Codexa. All rights reserved.
-  </footer>
-
   <script>
-    document.getElementById("generateBtn").addEventListener("click", async () => {
-      const prompt = document.getElementById("prompt").value;
-      const output = document.getElementById("output");
-      output.textContent = "⏳ Generating code...";
-      try {
-        const res = await fetch("/generate", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt })
-        });
-        const data = await res.json();
-        output.textContent = data.code || "⚠️ Error generating code.";
-      } catch (err) {
-        output.textContent = "❌ Server error: " + err.message;
+    // Stripe checkout
+    async function checkout(priceId) {
+      const response = await fetch("/create-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ priceId })
+      });
+      const data = await response.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        alert("Error: " + data.error);
       }
-    });
+    }
+
+    // AI Code generation
+    async function generateCode() {
+      const prompt = document.getElementById("prompt").value;
+      const res = await fetch("/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt })
+      });
+      const data = await res.json();
+      document.getElementById("output").innerText = data.code || data.error;
+    }
+
+    // Copy code
+    function copyCode() {
+      const text = document.getElementById("output").innerText;
+      navigator.clipboard.writeText(text);
+      alert("Code copied to clipboard!");
+    }
+
+    // Download code
+    function downloadCode() {
+      const text = document.getElementById("output").innerText;
+      const blob = new Blob([text], { type: "text/plain" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "codexa_code.txt";
+      link.click();
+    }
   </script>
 </body>
 </html>

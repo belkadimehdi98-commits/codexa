@@ -2,7 +2,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const path = require("path");
-const archiver = require("archiver");
 const OpenAI = require("openai");
 
 const app = express();
@@ -13,7 +12,7 @@ const openai = new OpenAI({
 });
 
 app.use(bodyParser.json());
-app.use(express.static("public")); // serve static files
+app.use(express.static("public"));
 
 // ===== STRIPE CHECKOUT =====
 app.post("/create-checkout-session", async (req, res) => {
@@ -51,20 +50,13 @@ app.post("/generate", async (req, res) => {
       messages: [
         {
           role: "user",
-          content: `Generate a simple, production-ready HTML/CSS/JS site for: ${prompt}`,
+          content: `Generate a production-ready HTML/CSS/JS website. Request: ${prompt}`,
         },
       ],
     });
 
     const code = aiResponse.choices[0].message.content;
-
-    // Create ZIP
-    res.attachment("codexa_project.zip");
-    const archive = archiver("zip");
-    archive.pipe(res);
-
-    archive.append(code, { name: "index.html" });
-    archive.finalize();
+    res.json({ code });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

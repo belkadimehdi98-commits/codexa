@@ -11,7 +11,15 @@
   <br>
   <button id="generateBtn" class="btn btn-blue">Get Your Code Now</button>
   <p id="status"></p>
-  <a id="downloadLink" style="display:none;" download="codexa_project.zip">Download Your Site</a>
+
+  <!-- Results -->
+  <pre id="resultBox" style="display:none; text-align:left; background:#161b22; padding:1rem; border-radius:6px; max-width:90%; overflow-x:auto;"></pre>
+
+  <!-- Actions -->
+  <div id="actions" style="display:none; margin-top:1rem;">
+    <button id="copyBtn" class="btn btn-purple">Copy Code</button>
+    <button id="downloadBtn" class="btn btn-green">Download as File</button>
+  </div>
 
   <script>
     document.getElementById("generateBtn").addEventListener("click", async () => {
@@ -25,12 +33,28 @@
       });
 
       if (res.ok) {
-        const blob = await res.blob();
-        const url = window.URL.createObjectURL(blob);
-        const link = document.getElementById("downloadLink");
-        link.href = url;
-        link.style.display = "inline-block";
-        document.getElementById("status").textContent = "✅ Ready!";
+        const data = await res.json();
+        document.getElementById("status").textContent = "✅ Done!";
+        document.getElementById("resultBox").style.display = "block";
+        document.getElementById("resultBox").textContent = data.code;
+        document.getElementById("actions").style.display = "block";
+
+        // Copy button
+        document.getElementById("copyBtn").onclick = () => {
+          navigator.clipboard.writeText(data.code);
+          alert("Code copied to clipboard!");
+        };
+
+        // Download button
+        document.getElementById("downloadBtn").onclick = () => {
+          const blob = new Blob([data.code], { type: "text/html" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "codexa_project.html";
+          a.click();
+          URL.revokeObjectURL(url);
+        };
       } else {
         document.getElementById("status").textContent = "❌ Error generating code.";
       }

@@ -3,105 +3,70 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Codexa – Free Plan</title>
+  <title>Start Free | Codexa</title>
   <style>
     body {
       font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0f172a, #1e293b, #334155);
+      color: #f8fafc;
       margin: 0;
       padding: 0;
-      background: #f9fafb;
-      color: #333;
       display: flex;
-      justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      flex-direction: column;
+      justify-content: center;
+      height: 100vh;
     }
     .container {
-      text-align: center;
-      max-width: 600px;
-      background: #fff;
-      padding: 2rem;
+      background: #111827;
+      padding: 40px;
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-width: 600px;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
     }
     h1 {
-      color: #2c3e50;
+      color: #3b82f6;
+      margin-bottom: 20px;
     }
     p {
-      margin: 1rem 0;
-      font-size: 1.1rem;
+      margin: 15px 0;
+      line-height: 1.6;
+      color: #d1d5db;
     }
-    .btn {
+    .cta {
+      margin-top: 25px;
+    }
+    a {
       display: inline-block;
-      margin-top: 20px;
-      padding: 12px 24px;
-      background: #2d89ef;
+      margin: 10px;
+      background: #22c55e;
+      padding: 12px 28px;
+      border-radius: 8px;
       color: #fff;
-      text-decoration: none;
-      border-radius: 6px;
       font-weight: bold;
+      text-decoration: none;
       transition: background 0.3s;
     }
-    .btn:hover {
-      background: #1b5bbf;
+    a:hover {
+      background: #16a34a;
     }
-    textarea {
-      width: 100%;
-      max-width: 500px;
-      height: 120px;
-      margin-top: 20px;
-      padding: 10px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-size: 1rem;
+    .back {
+      background: #3b82f6;
     }
-    pre {
-      text-align: left;
-      background: #f4f4f4;
-      padding: 1rem;
-      border-radius: 6px;
-      max-width: 500px;
-      margin: 20px auto;
-      overflow-x: auto;
+    .back:hover {
+      background: #2563eb;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Welcome to Codexa Free Plan 🎉</h1>
-    <p>You’re now using the <strong>Free Plan</strong>.  
-       Try out the AI-powered code generator below.</p>
+    <h1>🎉 Welcome to Codexa Free Plan</h1>
+    <p>You now have access to our free features.  
+    Upgrade anytime to unlock Pro and Team benefits 🚀</p>
 
-    <!-- Input for user prompt -->
-    <textarea id="prompt" placeholder="Describe the code you want me to generate..."></textarea><br>
-    <button class="btn" onclick="generateCode()">Generate Code Now ⚡</button>
-
-    <!-- Output -->
-    <pre id="output"></pre>
-
-    <p>Upgrade anytime to unlock more features and unlimited usage!</p>
-    <a href="/" class="btn">Back to Home</a>
+    <div class="cta">
+      <a href="index.html" class="back">⬅ Back to Home</a>
+    </div>
   </div>
-
-  <script>
-    async function generateCode() {
-      const prompt = document.getElementById("prompt").value;
-      const outputEl = document.getElementById("output");
-      outputEl.textContent = "⏳ Generating code...";
-
-      try {
-        const res = await fetch("/generate", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt })
-        });
-        const data = await res.json();
-        outputEl.textContent = data.code || "⚠️ Error: No response from server.";
-      } catch (err) {
-        outputEl.textContent = "❌ Error: " + err.message;
-      }
-    }
-  </script>
 </body>
 </html>

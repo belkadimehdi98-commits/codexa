@@ -1,197 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Codexa – AI Coding Assistant</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Codexa | AI Code Generator</title>
   <style>
     body {
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-      color: #fff;
-      text-align: center;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0f172a, #1e293b, #334155);
+      color: #f8fafc;
     }
     header {
+      background: #111827;
+      padding: 20px 40px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem 2rem;
-      background: rgba(0,0,0,0.2);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.4);
     }
-    header img {
-      height: 40px;
+    header h1 {
+      margin: 0;
+      color: #3b82f6;
     }
-    header nav button {
-      margin-left: 10px;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
+    header nav a {
+      color: #f8fafc;
+      margin-left: 20px;
+      text-decoration: none;
       font-weight: bold;
+      transition: color 0.3s;
     }
-    .btn-free { background: #00c3ff; color: #000; }
-    .btn-pro { background: #00ff99; color: #000; }
-    .btn-team { background: #a64dff; color: #fff; }
+    header nav a:hover {
+      color: #3b82f6;
+    }
     .hero {
-      margin-top: 50px;
+      text-align: center;
+      padding: 80px 20px;
     }
-    .hero h1 {
-      font-size: 3rem;
-      margin-bottom: 0.5rem;
+    .hero h2 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      color: #f8fafc;
     }
-    .plans {
-      display: flex;
-      justify-content: center;
-      margin: 3rem auto;
-      gap: 1.5rem;
+    .hero p {
+      font-size: 1.2rem;
+      color: #d1d5db;
+      margin-bottom: 40px;
     }
-    .plan-card {
-      background: #1e293b;
-      padding: 2rem;
-      border-radius: 12px;
-      width: 250px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    }
-    .plan-card h2 { margin-bottom: 0.5rem; }
-    .plan-card p { margin: 0.5rem 0; }
-    .plan-card button {
-      margin-top: 1rem;
-      width: 100%;
-      padding: 10px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .generator {
-      background: #0f172a;
-      margin: 2rem auto;
-      padding: 2rem;
-      border-radius: 12px;
-      width: 600px;
-      max-width: 90%;
-    }
-    textarea {
-      width: 100%;
-      height: 120px;
-      border-radius: 8px;
-      border: none;
-      padding: 1rem;
-      font-size: 1rem;
-    }
-    .generator button {
+    .hero .btn {
+      display: inline-block;
       margin: 10px;
-      padding: 10px 20px;
-      border: none;
+      padding: 14px 30px;
       border-radius: 8px;
       font-weight: bold;
-      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.3s;
     }
-    .btn-generate { background: #00c3ff; color: #000; }
-    .btn-copy { background: #ff9800; color: #fff; }
-    .btn-download { background: #4caf50; color: #fff; }
-    #output {
+    .btn-free {
+      background: #22c55e;
+      color: #fff;
+    }
+    .btn-free:hover {
+      background: #16a34a;
+    }
+    .btn-pro {
+      background: #3b82f6;
+      color: #fff;
+    }
+    .btn-pro:hover {
+      background: #2563eb;
+    }
+    .btn-team {
+      background: #9333ea;
+      color: #fff;
+    }
+    .btn-team:hover {
+      background: #7e22ce;
+    }
+    footer {
       background: #111827;
-      margin-top: 1rem;
-      padding: 1rem;
-      border-radius: 8px;
-      text-align: left;
-      white-space: pre-wrap;
+      padding: 20px;
+      text-align: center;
+      color: #9ca3af;
+      margin-top: 60px;
     }
   </style>
 </head>
 <body>
   <header>
-    <img src="logo.png" alt="Codexa Logo"/>
+    <h1>Codexa</h1>
     <nav>
-      <button class="btn-free" onclick="window.location.href='free.html'">Start Free</button>
-      <button class="btn-pro" onclick="checkout('price_1SFFMf50pz2SntAR9RG9WteF')">Upgrade to Pro</button>
-      <button class="btn-team" onclick="checkout('price_1SFFP950pz2SntARpYHyaZEi')">Get Team Plan</button>
+      <a href="index.html">Home</a>
+      <a href="free.html">Free</a>
     </nav>
   </header>
 
-  <div class="hero">
-    <h1>Welcome to Codexa</h1>
-    <p>Your AI-powered coding assistant</p>
-  </div>
-
-  <section class="plans">
-    <div class="plan-card">
-      <h2>Free Plan</h2>
-      <p>Great for starters</p>
-      <h3>€0</h3>
-      <button class="btn-free" onclick="window.location.href='free.html'">Start Free</button>
-    </div>
-    <div class="plan-card">
-      <h2>Pro Plan</h2>
-      <p>For professionals</p>
-      <h3>€19.99 / month</h3>
-      <button class="btn-pro" onclick="checkout('price_1SFFMf50pz2SntAR9RG9WteF')">Upgrade to Pro</button>
-    </div>
-    <div class="plan-card">
-      <h2>Team Plan</h2>
-      <p>Collaborate better</p>
-      <h3>€49.99 / month</h3>
-      <button class="btn-team" onclick="checkout('price_1SFFP950pz2SntARpYHyaZEi')">Get Team Plan</button>
-    </div>
+  <section class="hero">
+    <h2>⚡ AI Code Generator</h2>
+    <p>Generate production-ready code in seconds. Choose your plan below.</p>
+    <a href="free.html" class="btn btn-free">Start Free</a>
+    <a href="#" id="pro-btn" class="btn btn-pro">Upgrade to Pro</a>
+    <a href="#" id="team-btn" class="btn btn-team">Get Team Plan</a>
   </section>
 
-  <section class="generator">
-    <h2>🚀 AI Code Generator</h2>
-    <p>Describe the code you want, and AI will generate it for you:</p>
-    <textarea id="prompt" placeholder="Type your request..."></textarea>
-    <br/>
-    <button class="btn-generate" onclick="generateCode()">⚡ Generate Code Now</button>
-    <button class="btn-copy" onclick="copyCode()">📋 Copy Code</button>
-    <button class="btn-download" onclick="downloadCode()">📥 Download File</button>
-    <div id="output">Generated code will appear here...</div>
-  </section>
+  <footer>
+    <p>© 2025 Codexa. All rights reserved.</p>
+  </footer>
 
   <script>
-    // Stripe checkout
-    async function checkout(priceId) {
-      const response = await fetch("/create-checkout-session", {
+    // Stripe checkout handler
+    async function createCheckout(priceId) {
+      const res = await fetch("/create-checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ priceId })
+        body: JSON.stringify({ priceId }),
       });
-      const data = await response.json();
+      const data = await res.json();
       if (data.url) {
         window.location.href = data.url;
       } else {
-        alert("Error: " + data.error);
+        alert("Something went wrong: " + data.error);
       }
     }
 
-    // AI Code generation
-    async function generateCode() {
-      const prompt = document.getElementById("prompt").value;
-      const res = await fetch("/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt })
-      });
-      const data = await res.json();
-      document.getElementById("output").innerText = data.code || data.error;
-    }
+    document.getElementById("pro-btn").addEventListener("click", () => {
+      createCheckout("{{PRO_PRICE_ID}}"); // Replace with env or inject
+    });
 
-    // Copy code
-    function copyCode() {
-      const text = document.getElementById("output").innerText;
-      navigator.clipboard.writeText(text);
-      alert("Code copied to clipboard!");
-    }
-
-    // Download code
-    function downloadCode() {
-      const text = document.getElementById("output").innerText;
-      const blob = new Blob([text], { type: "text/plain" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = "codexa_code.txt";
-      link.click();
-    }
+    document.getElementById("team-btn").addEventListener("click", () => {
+      createCheckout("{{TEAM_PRICE_ID}}"); // Replace with env or inject
+    });
   </script>
 </body>
 </html>

@@ -7,25 +7,22 @@ dotenv.config();
 
 const app = express();
 app.use(cors());
-app.use(express.static("public")); // serve frontend files
+app.use(express.static("public"));
 app.use(express.json());
 
-// Stripe config
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-
-// Map plans with your Stripe price IDs
-const PLANS = {
-  free: "price_1SFFMF50pz2SntAR9RG9WteF",   // Free Plan
-  pro: "price_1SFFP950pz2SntARpYHyaZEi",   // Pro Plan
-  team: "price_1SFFP950pz2SntARpYHyaZEi",  // Team Plan (use diff if exists)
-};
 
 // Create Checkout Session
 app.post("/create-checkout-session", async (req, res) => {
   try {
     const { plan } = req.body;
 
-    if (!PLANS[plan]) {
+    let priceId;
+    if (plan === "pro") {
+      priceId = process.env.PRO_PRICE_ID;
+    } else if (plan === "team") {
+      priceId = process.env.TEAM_PRICE_ID;
+    } else {
       return res.status(400).json({ error: "Invalid plan selected" });
     }
 
@@ -33,7 +30,7 @@ app.post("/create-checkout-session", async (req, res) => {
       payment_method_types: ["card"],
       line_items: [
         {
-          price: PLANS[plan],
+          price: priceId,
           quantity: 1,
         },
       ],
@@ -49,6 +46,5 @@ app.post("/create-checkout-session", async (req, res) => {
   }
 });
 
-// Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));

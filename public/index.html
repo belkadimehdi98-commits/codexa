@@ -1,92 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Codexa | AI Code Generator</title>
-  <link rel="stylesheet" href="styles.css">
-  <script src="https://js.stripe.com/v3/"></script>
-  <style>
-    body { font-family: Arial, sans-serif; margin:0; padding:0; background:#0f172a; color:#fff; }
-    header { display:flex; justify-content:space-between; align-items:center; padding:20px; background:#1e293b; }
-    header img { height:40px; }
-    nav a { margin:0 15px; text-decoration:none; color:#fff; font-weight:bold; }
-    .hero { text-align:center; padding:80px 20px; }
-    .hero h1 { font-size:3rem; margin-bottom:10px; }
-    .hero p { font-size:1.2rem; margin-bottom:30px; }
-    .btn { padding:12px 25px; border:none; border-radius:8px; cursor:pointer; font-weight:bold; margin:5px; }
-    .btn-green { background:#22c55e; color:white; }
-    .btn-blue { background:#3b82f6; color:white; }
-    .btn-purple { background:#a855f7; color:white; }
-    .features, .contact { padding:50px 20px; text-align:center; }
-    footer { background:#1e293b; text-align:center; padding:20px; margin-top:50px; font-size:0.9rem; }
-  </style>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <!-- Header -->
   <header>
-    <img src="logo.png" alt="Codexa Logo">
+    <img src="logo.png" alt="Codexa Logo"/>
     <nav>
-      <a href="index.html">Home</a>
       <a href="#features">Features</a>
       <a href="#pricing">Pricing</a>
       <a href="#contact">Contact</a>
     </nav>
   </header>
 
-  <section class="hero">
+  <!-- Hero -->
+  <div class="hero">
     <h1>⚡ AI Code Generator</h1>
-    <p>Generate production-ready code in seconds. Choose your plan below.</p>
-    <button class="btn btn-green" onclick="window.location.href='free.html'">Start Free</button>
-    <button class="btn btn-blue" onclick="subscribe('price_1SFFMF50pz2SntAR9RG9WteF')">Upgrade to Pro</button>
-    <button class="btn btn-purple" onclick="subscribe('price_1SFFP950pz2SntARpYHyaZEi')">Get Team Plan</button>
-  </section>
+    <p>Generate production-ready websites in seconds. Choose your plan below.</p>
+    <button id="freePlan" class="btn btn-green">Start Free</button>
+    <button id="proPlan" class="btn btn-blue">Upgrade to Pro</button>
+    <button id="teamPlan" class="btn btn-purple">Get Team Plan</button>
+  </div>
 
-  <section id="features" class="features">
+  <!-- Features -->
+  <section id="features">
     <h2>✨ Features</h2>
-    <p>Instant AI code generation, easy integration, and export options.</p>
-    <button class="btn btn-blue" onclick="copyCode()">Copy Code</button>
-    <button class="btn btn-green" onclick="downloadCode()">Download File</button>
-    <button class="btn btn-purple" onclick="alert('Code generated! (AI integration coming soon)')">Get Your Code Now</button>
+    <p>
+      Instant AI-powered code generation, clean templates, and easy exports.
+      Perfect for developers, startups, and teams who want to move fast.
+    </p>
   </section>
 
-  <section id="contact" class="contact">
-    <h2>📩 Contact Us</h2>
-    <p>Email: <a href="mailto:support@codexa.codes">support@codexa.codes</a></p>
+  <!-- Pricing -->
+  <section id="pricing">
+    <h2>💳 Pricing</h2>
+    <p>Free plan available. Upgrade for unlimited generations and team access.</p>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <h2>📩 Contact</h2>
+    <p>Email us at <a href="mailto:support@codexa.codes">support@codexa.codes</a></p>
   </section>
 
   <footer>
-    © 2025 Codexa. All rights reserved.
+    <p>© 2025 Codexa. All rights reserved.</p>
   </footer>
 
+  <!-- Stripe Checkout Script -->
   <script>
-    async function subscribe(priceId) {
-      try {
-        const res = await fetch("/create-checkout-session", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ priceId })
-        });
-        const data = await res.json();
-        if (data.url) window.location.href = data.url;
-        else alert("Something went wrong: " + data.error);
-      } catch (err) {
-        alert("Error: " + err.message);
-      }
-    }
+    document.getElementById("freePlan").addEventListener("click", () => {
+      window.location.href = "/free.html";
+    });
 
-    function copyCode() {
-      navigator.clipboard.writeText("// Example code").then(() => {
-        alert("Code copied to clipboard!");
-      });
-    }
+    document.getElementById("proPlan").addEventListener("click", () => {
+      fetch("/create-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ priceId: process.env.PRICE_PRO || "PRICE_PRO_ENV" })
+      })
+      .then(res => res.json())
+      .then(data => window.location.href = data.url);
+    });
 
-    function downloadCode() {
-      const blob = new Blob(["// Example generated code"], { type: "text/plain" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = "code.txt";
-      link.click();
-    }
+    document.getElementById("teamPlan").addEventListener("click", () => {
+      fetch("/create-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ priceId: process.env.PRICE_TEAM || "PRICE_TEAM_ENV" })
+      })
+      .then(res => res.json())
+      .then(data => window.location.href = data.url);
+    });
   </script>
 </body>
 </html>

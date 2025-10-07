@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Codexa Generator</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="center">
+  <h1>⚡ Codexa AI Generator</h1>
+  <textarea id="prompt" placeholder="Describe your site idea..."></textarea>
+  <br>
+  <button id="generateBtn" class="btn">Get Your Code Now</button>
+  <p id="status"></p>
+  <a id="downloadLink" style="display:none;" download="codexa_project.zip">Download Your Site</a>
+
+  <script>
+    document.getElementById("generateBtn").addEventListener("click", async () => {
+      const prompt = document.getElementById("prompt").value;
+      document.getElementById("status").textContent = "⏳ Generating...";
+
+      const res = await fetch("/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt })
+      });
+
+      if (res.ok) {
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+        const link = document.getElementById("downloadLink");
+        link.href = url;
+        link.style.display = "inline-block";
+        document.getElementById("status").textContent = "✅ Ready!";
+      } else {
+        document.getElementById("status").textContent = "❌ Error generating code.";
+      }
+    });
+  </script>
+</body>
+</html>

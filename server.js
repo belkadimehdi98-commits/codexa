@@ -1,3 +1,4 @@
+// server.js
 import express from "express";
 import dotenv from "dotenv";
 import Stripe from "stripe";
@@ -16,11 +17,12 @@ const __dirname = path.dirname(__filename);
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
+
 app.get("/", (_req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-// Stripe Checkout
+// ---------- STRIPE CHECKOUT ----------
 app.post("/create-checkout-session", async (req, res) => {
   try {
     const incoming = (req.body?.priceId || "").toString();
@@ -28,8 +30,14 @@ app.post("/create-checkout-session", async (req, res) => {
       PRICE_PRO: process.env.PRICE_PRO,
       PRICE_TEAM: process.env.PRICE_TEAM,
     };
-    const stripePriceId = incoming.startsWith("price_") ? incoming : map[incoming];
-    if (!stripePriceId) return res.status(400).json({ error: "Invalid plan/priceId" });
+
+    const stripePriceId = incoming.startsWith("price_")
+      ? incoming
+      : map[incoming];
+
+    if (!stripePriceId) {
+      return res.status(400).json({ error: "Invalid plan/priceId" });
+    }
 
     const domain = process.env.DOMAIN || `https://${req.headers.host}`;
     const session = await stripe.checkout.sessions.create({
@@ -39,18 +47,29 @@ app.post("/create-checkout-session", async (req, res) => {
       success_url: `${domain}/success.html`,
       cancel_url: `${domain}/cancel.html`,
     });
+
     return res.json({ url: session.url });
   } catch (err) {
-    console.error("Stripe error:", err);
-    return res.status(500).json({ error: "Stripe checkout failed" });
+    console.error("Stripe checkout error:", err);
+    return res.status(500).json({
+      error:
+        err?.raw?.message ||
+        err?.message ||
+        "Failed to create checkout session",
+    });
   }
 });
 
-// AI Generation (flexible)
+// ---------- AI GENERATION (dual mode: code + chat) ----------
 app.post("/generate", async (req, res) => {
   try {
-    const { prompt } = req.body || {};
+    const { prompt, mode } = req.body || {};
     if (!prompt) return res.status(400).json({ error: "Prompt is required" });
+
+    const systemMessage =
+      mode === "code"
+        ? "You are an assistant that generates production-ready HTML/CSS/JS code in a single file. Keep responses clean and code-focused."
+        : "You are a helpful assistant like ChatGPT. Answer flexibly, explain concepts, and provide code when useful.";
 
     const r = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
@@ -61,11 +80,7 @@ app.post("/generate", async (req, res) => {
       body: JSON.stringify({
         model: "gpt-4o-mini",
         messages: [
-          {
-            role: "system",
-            content:
-              "You are a helpful AI assistant for Codexa. You generate websites, code, or explanations. Be natural, helpful, and flexible like ChatGPT.",
-          },
+          { role: "system", content: systemMessage },
           { role: "user", content: prompt },
         ],
         max_tokens: 2000,
@@ -73,12 +88,14 @@ app.post("/generate", async (req, res) => {
     });
 
     const data = await r.json();
-    if (data?.error) return res.status(500).json({ error: data.error.message });
+    if (data?.error) {
+      return res.status(500).json({ error: data.error.message });
+    }
     const code = data?.choices?.[0]?.message?.content || "";
     return res.json({ code });
   } catch (err) {
     console.error("AI generation error:", err);
-    return res.status(500).json({ error: "Failed to generate code" });
+    return res.status(500).json({ error: "Failed to generate response" });
   }
 });
 

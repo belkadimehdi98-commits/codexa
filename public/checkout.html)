@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upgrade Required</title>
+</head>
+<body style="background:#0d1117; color:white; text-align:center; padding:50px;">
+  <h1>🚀 Upgrade Required</h1>
+  <p>Your free trial has ended. To continue using Codexa, please subscribe below:</p>
+  <button id="upgrade" style="padding:1rem 2rem; background:#3b82f6; border:none; border-radius:6px; color:white; cursor:pointer;">
+    Upgrade to Pro
+  </button>
+
+  <script>
+    document.getElementById("upgrade").addEventListener("click", () => {
+      fetch("/create-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ priceId: "PRICE_PRO" })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.url) {
+          window.location.href = data.url;
+        } else {
+          alert("Stripe error.");
+        }
+      });
+    });
+  </script>
+</body>
+</html>

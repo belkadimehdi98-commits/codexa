@@ -4,61 +4,234 @@
   <meta charset="UTF-8">
   <title>Codexa Generator</title>
   <link rel="stylesheet" href="styles.css">
+  <style>
+    .container { max-width: 900px; margin: 0 auto; }
+    .row { margin-top: 1rem; }
+    .select { background:#161b22; color:#fff; border:none; padding:.7rem; border-radius:6px; }
+    .panel { background:#161b22; padding:1rem; border-radius:8px; }
+    #resultBox { white-space: pre-wrap; overflow-x: auto; }
+    .history-item { text-align:left; background:#0f1620; padding:.7rem 1rem; border-radius:8px; margin-bottom:.6rem; cursor:pointer; }
+    .history-actions { display:flex; gap:.5rem; margin-top:.5rem; }
+    .muted { color:#a9a9a9; font-size:.9rem; }
+  </style>
 </head>
-<body class="center">
-  <h1>⚡ Codexa AI Generator</h1>
-  <textarea id="prompt" placeholder="Describe your site idea..."></textarea>
-  <br>
-  <button id="generateBtn" class="btn btn-blue">Get Your Code Now</button>
-  <p id="status"></p>
+<body>
+  <div class="container center" style="align-items:stretch">
+    <h1>⚡ Codexa AI Generator</h1>
 
-  <!-- Results -->
-  <pre id="resultBox" style="display:none; text-align:left; background:#161b22; padding:1rem; border-radius:6px; max-width:90%; overflow-x:auto;"></pre>
+    <!-- Mode -->
+    <div class="row">
+      <select id="mode" class="select">
+        <option value="chat">Chat (Full GPT)</option>
+        <option value="site">Site Builder (HTML/CSS/JS)</option>
+      </select>
+    </div>
 
-  <!-- Actions -->
-  <div id="actions" style="display:none; margin-top:1rem;">
-    <button id="copyBtn" class="btn btn-purple">Copy Code</button>
-    <button id="downloadBtn" class="btn btn-green">Download as File</button>
+    <!-- Prompt -->
+    <div class="row">
+      <textarea id="prompt" placeholder="Describe your site idea or ask anything..."></textarea>
+    </div>
+
+    <!-- Actions -->
+    <div class="row" style="display:flex; gap:.6rem; justify-content:center;">
+      <button id="generateBtn" class="btn btn-blue">Get Your Code / Answer</button>
+      <button id="copyBtn" class="btn btn-purple" disabled>Copy</button>
+      <button id="downloadBtn" class="btn btn-green" disabled>Download</button>
+      <button id="clearBtn" class="btn" style="background:#444" title="Clear output only">Clear</button>
+    </div>
+
+    <p id="status" class="row"></p>
+
+    <!-- Output -->
+    <div id="outputPanel" class="row panel" style="display:none;">
+      <pre id="resultBox"></pre>
+    </div>
+
+    <!-- History -->
+    <div class="row">
+      <h2>🗂️ History</h2>
+      <p class="muted">Saved locally on your device. Click an item to load it.</p>
+      <div id="historyList"></div>
+      <div class="row" style="display:flex; gap:.6rem; justify-content:center;">
+        <button id="exportHistory" class="btn">Export History</button>
+        <button id="clearHistory" class="btn" style="background:#444">Clear History</button>
+      </div>
+    </div>
   </div>
 
   <script>
-    document.getElementById("generateBtn").addEventListener("click", async () => {
-      const prompt = document.getElementById("prompt").value;
-      document.getElementById("status").textContent = "⏳ Generating...";
+    const modeEl = document.getElementById("mode");
+    const promptEl = document.getElementById("prompt");
+    const statusEl = document.getElementById("status");
+    const resultBox = document.getElementById("resultBox");
+    const outputPanel = document.getElementById("outputPanel");
+    const copyBtn = document.getElementById("copyBtn");
+    const downloadBtn = document.getElementById("downloadBtn");
+    const clearBtn = document.getElementById("clearBtn");
+    const historyList = document.getElementById("historyList");
+    const exportHistoryBtn = document.getElementById("exportHistory");
+    const clearHistoryBtn = document.getElementById("clearHistory");
 
-      const res = await fetch("/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt })
+    const H_SITE = "codexaHistorySite";
+    const H_CHAT = "codexaHistoryChat";
+
+    function loadHistory(key){ try { return JSON.parse(localStorage.getItem(key) || "[]"); } catch { return []; } }
+    function saveHistory(key, arr){ localStorage.setItem(key, JSON.stringify(arr)); }
+    function nowISO(){ return new Date().toISOString(); }
+
+    function renderHistory(){
+      const mode = modeEl.value;
+      const key = mode === "site" ? H_SITE : H_CHAT;
+      const items = loadHistory(key).slice().reverse();
+
+      historyList.innerHTML = "";
+      if(!items.length){ historyList.innerHTML = `<p class="muted">No history yet.</p>`; return; }
+
+      items.forEach((item, idx) => {
+        const div = document.createElement("div");
+        div.className = "history-item";
+        div.innerHTML = `
+          <div><strong>${item.prompt?.slice(0, 80) || "(no prompt)"}${item.prompt?.length>80?"…":""}</strong></div>
+          <div class="muted">${new Date(item.ts).toLocaleString()}</div>
+          <div class="history-actions">
+            <button class="btn btn-blue" data-action="load">Load</button>
+            <button class="btn btn-purple" data-action="copy">Copy</button>
+            <button class="btn btn-green" data-action="download">Download</button>
+          </div>
+        `;
+        div.addEventListener("click", (e) => {
+          const action = e.target?.dataset?.action;
+          if(!action) return;
+          if(action==="load"){
+            resultBox.textContent = item.output || "";
+            outputPanel.style.display = "block";
+            copyBtn.disabled = !item.output;
+            downloadBtn.disabled = !item.output;
+          } else if(action==="copy"){
+            navigator.clipboard.writeText(item.output || "");
+            alert("Copied from history!");
+          } else if(action==="download"){
+            const blob = new Blob([item.output || ""], { type: mode === "site" ? "text/html" : "text/plain" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = mode === "site" ? "codexa_project.html" : "codexa_chat.txt";
+            a.click();
+            URL.revokeObjectURL(url);
+          }
+          e.stopPropagation();
+        });
+        historyList.appendChild(div);
       });
+    }
 
-      if (res.ok) {
-        const data = await res.json();
-        document.getElementById("status").textContent = "✅ Done!";
-        document.getElementById("resultBox").style.display = "block";
-        document.getElementById("resultBox").textContent = data.code;
-        document.getElementById("actions").style.display = "block";
+    function enableActions(hasOutput){
+      copyBtn.disabled = !hasOutput;
+      downloadBtn.disabled = !hasOutput;
+      outputPanel.style.display = hasOutput ? "block" : "none";
+    }
 
-        // Copy button
-        document.getElementById("copyBtn").onclick = () => {
-          navigator.clipboard.writeText(data.code);
-          alert("Code copied to clipboard!");
-        };
+    document.getElementById("generateBtn").addEventListener("click", async () => {
+      const mode = modeEl.value;
+      const prompt = promptEl.value.trim();
+      if(!prompt){ alert("Please write something first."); return; }
 
-        // Download button
-        document.getElementById("downloadBtn").onclick = () => {
-          const blob = new Blob([data.code], { type: "text/html" });
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = "codexa_project.html";
-          a.click();
-          URL.revokeObjectURL(url);
-        };
-      } else {
-        document.getElementById("status").textContent = "❌ Error generating code.";
+      statusEl.textContent = "⏳ Working...";
+      enableActions(false);
+
+      try {
+        if(mode === "site"){
+          const res = await fetch("/generate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ prompt })
+          });
+          const data = await res.json();
+          if(data.error) throw new Error(data.error);
+          resultBox.textContent = data.code || "";
+          enableActions(!!data.code);
+
+          const h = loadHistory(H_SITE); h.push({ ts: nowISO(), prompt, output: data.code }); saveHistory(H_SITE, h);
+        } else {
+          // Full GPT chat – we append to running chat thread stored locally
+          const thread = loadHistory(H_CHAT); // store as flat message log [{role,content,ts}]
+          const messages = thread.map(m => ({ role: m.role, content: m.content }));
+          messages.push({ role: "user", content: prompt });
+
+          const res = await fetch("/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ messages })
+          });
+          const data = await res.json();
+          if(data.error) throw new Error(data.error);
+
+          const reply = data.message || "";
+          resultBox.textContent = reply;
+          enableActions(!!reply);
+
+          // save back into thread
+          thread.push({ ts: nowISO(), role:"user", content: prompt });
+          thread.push({ ts: nowISO(), role:"assistant", content: reply });
+          saveHistory(H_CHAT, thread);
+        }
+
+        statusEl.textContent = "✅ Done!";
+        renderHistory();
+      } catch (err) {
+        statusEl.textContent = "❌ " + err.message;
       }
     });
+
+    copyBtn.addEventListener("click", () => {
+      const text = resultBox.textContent || "";
+      navigator.clipboard.writeText(text);
+      alert("Copied!");
+    });
+
+    downloadBtn.addEventListener("click", () => {
+      const mode = modeEl.value;
+      const text = resultBox.textContent || "";
+      const blob = new Blob([text], { type: mode === "site" ? "text/html" : "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = mode === "site" ? "codexa_project.html" : "codexa_chat.txt";
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    clearBtn.addEventListener("click", () => {
+      resultBox.textContent = "";
+      enableActions(false);
+      statusEl.textContent = "";
+    });
+
+    exportHistoryBtn.addEventListener("click", () => {
+      const key = modeEl.value === "site" ? H_SITE : H_CHAT;
+      const items = loadHistory(key);
+      const blob = new Blob([JSON.stringify(items, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = key + ".json";
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    clearHistoryBtn.addEventListener("click", () => {
+      const key = modeEl.value === "site" ? H_SITE : H_CHAT;
+      if(confirm("Clear this history?")){
+        localStorage.removeItem(key);
+        renderHistory();
+      }
+    });
+
+    modeEl.addEventListener("change", renderHistory);
+
+    // initial
+    enableActions(false);
+    renderHistory();
   </script>
 </body>
 </html>

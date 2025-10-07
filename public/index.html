@@ -4,7 +4,76 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Codexa | AI Code Generator</title>
-  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #0d1117;
+      color: #fff;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: #161b22;
+    }
+    header img {
+      height: 40px;
+    }
+    nav a {
+      color: #fff;
+      margin-left: 1.5rem;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .hero {
+      text-align: center;
+      padding: 6rem 2rem;
+      background: #0d1117;
+    }
+    .hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+    .btn {
+      padding: 0.8rem 1.6rem;
+      margin: 0.3rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+    .btn:hover { opacity: 0.9; }
+    .btn-green { background: #22c55e; color: #fff; }
+    .btn-blue { background: #3b82f6; color: #fff; }
+    .btn-purple { background: #a855f7; color: #fff; }
+    section {
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+    section h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    section p {
+      max-width: 700px;
+      margin: auto;
+      line-height: 1.6;
+    }
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background: #161b22;
+      color: #aaa;
+      margin-top: 3rem;
+    }
+  </style>
 </head>
 <body>
   <!-- Header -->
@@ -20,26 +89,17 @@
   <!-- Hero -->
   <div class="hero">
     <h1>⚡ AI Code Generator</h1>
-    <p>Generate production-ready websites in seconds. Choose your plan or try it now.</p>
-
-    <!-- Main AI Button -->
-    <button onclick="window.location.href='/app.html'" class="btn btn-green">
-      🚀 Try AI Generator
-    </button>
-
-    <!-- Plan Buttons -->
-    <div style="margin-top: 1.5rem;">
-      <button id="freePlan" class="btn btn-green">Start Free</button>
-      <button id="proPlan" class="btn btn-blue">Upgrade to Pro</button>
-      <button id="teamPlan" class="btn btn-purple">Get Team Plan</button>
-    </div>
+    <p>Generate production-ready websites or chat with GPT instantly.</p>
+    <button onclick="window.location.href='/app.html'" class="btn btn-green">🚀 Try AI Generator</button>
+    <button id="proPlan" class="btn btn-blue">Upgrade to Pro</button>
+    <button id="teamPlan" class="btn btn-purple">Get Team Plan</button>
   </div>
 
   <!-- Features -->
   <section id="features">
     <h2>✨ Features</h2>
     <p>
-      Instant AI-powered code generation, clean templates, and easy exports.
+      Instant AI-powered code generation, full GPT chat, copy/download, and history.
       Perfect for developers, startups, and teams who want to move fast.
     </p>
   </section>
@@ -62,20 +122,19 @@
 
   <!-- Stripe Checkout Script -->
   <script>
-    document.getElementById("freePlan").addEventListener("click", () => {
-      window.location.href = "/free.html";
-    });
-
     document.getElementById("proPlan").addEventListener("click", () => {
       fetch("/create-checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ plan: "pro" })
+        body: JSON.stringify({ priceId: "PRICE_PRO" })
       })
       .then(res => res.json())
       .then(data => {
-        if (data.url) window.location.href = data.url;
-        else alert("Something went wrong: " + (data.error || "Unknown error"));
+        if (data.url) {
+          window.location.href = data.url;
+        } else {
+          alert("Something went wrong.");
+        }
       });
     });
 
@@ -83,12 +142,15 @@
       fetch("/create-checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ plan: "team" })
+        body: JSON.stringify({ priceId: "PRICE_TEAM" })
       })
       .then(res => res.json())
       .then(data => {
-        if (data.url) window.location.href = data.url;
-        else alert("Something went wrong: " + (data.error || "Unknown error"));
+        if (data.url) {
+          window.location.href = data.url;
+        } else {
+          alert("Something went wrong.");
+        }
       });
     });
   </script>

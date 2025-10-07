@@ -19,7 +19,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
-
 app.get("/", (_req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
@@ -29,7 +28,6 @@ app.post("/create-checkout-session", async (req, res) => {
   try {
     const incoming = (req.body?.priceId || req.body?.plan || "").toString();
 
-    // Map simple labels to env vars
     const map = {
       PRICE_PRO: process.env.PRICE_PRO,
       PRICE_TEAM: process.env.PRICE_TEAM,
@@ -67,7 +65,44 @@ app.post("/create-checkout-session", async (req, res) => {
   }
 });
 
-// ---------- AI CODE GENERATION ----------
+// ---------- AI CHAT & GENERATION ----------
+app.post("/chat", async (req, res) => {
+  try {
+    const { prompt } = req.body || {};
+    if (!prompt) return res.status(400).json({ error: "Prompt is required" });
+
+    const r = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "gpt-4o-mini",
+        messages: [
+          {
+            role: "system",
+            content:
+              "You are a friendly AI assistant. You can chat naturally, and if the user asks for a website, guide them.",
+          },
+          { role: "user", content: prompt },
+        ],
+        max_tokens: 500,
+      }),
+    });
+
+    const data = await r.json();
+    if (data?.error) {
+      return res.status(500).json({ error: data.error.message });
+    }
+    const reply = data?.choices?.[0]?.message?.content || "🤖 Sorry, no reply.";
+    return res.json({ reply });
+  } catch (err) {
+    console.error("Chat error:", err);
+    return res.status(500).json({ error: "Failed to chat" });
+  }
+});
+
 app.post("/generate", async (req, res) => {
   try {
     const { prompt } = req.body || {};
@@ -85,7 +120,7 @@ app.post("/generate", async (req, res) => {
           {
             role: "system",
             content:
-              "You are Codexa AI. Generate clean, production-ready HTML/CSS/JS websites. Do not include markdown fences (```html). Return only the raw code.",
+              "You generate clean, production-ready website code (HTML/CSS/JS). Reply with code only in a single file.",
           },
           { role: "user", content: prompt },
         ],
@@ -97,12 +132,7 @@ app.post("/generate", async (req, res) => {
     if (data?.error) {
       return res.status(500).json({ error: data.error.message });
     }
-
-    let code = data?.choices?.[0]?.message?.content || "";
-
-    // Remove markdown fences if present
-    code = code.replace(/```html|```/g, "").trim();
-
+    const code = data?.choices?.[0]?.message?.content || "";
     return res.json({ code });
   } catch (err) {
     console.error("Generate error:", err);

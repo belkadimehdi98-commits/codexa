@@ -1,94 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Codexa | AI Generator</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Codexa AI</title>
   <style>
-    body { margin:0; font-family:Arial,sans-serif; background:#0d1117; color:#fff; text-align:center; }
-    header { background:#161b22; padding:1rem; font-size:1.5rem; font-weight:bold; }
-    section { display:none; padding:2rem; max-width:800px; margin:auto; }
-    section.active { display:block; }
-    textarea { width:80%; height:100px; padding:1rem; border-radius:6px; border:none; outline:none; background:#161b22; color:#fff; }
-    button { padding:0.8rem 1.6rem; margin:1rem; border:none; border-radius:6px; font-weight:bold; cursor:pointer; }
-    .btn-blue { background:#3b82f6; color:#fff; }
-    .btn-green { background:#22c55e; color:#fff; }
-    .btn-purple { background:#a855f7; color:#fff; }
-    pre { background:#161b22; padding:1rem; border-radius:6px; text-align:left; white-space:pre-wrap; word-wrap:break-word; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0d1117;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    header {
+      background: #161b22;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header img {
+      height: 40px;
+    }
+    .chat-container {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+    }
+    .message {
+      margin: 0.8rem 0;
+      padding: 0.8rem 1rem;
+      border-radius: 8px;
+      max-width: 70%;
+      line-height: 1.4;
+    }
+    .user {
+      background: #3b82f6;
+      margin-left: auto;
+    }
+    .bot {
+      background: #1e2633;
+      margin-right: auto;
+    }
+    .input-bar {
+      display: flex;
+      padding: 1rem;
+      background: #161b22;
+    }
+    .input-bar input {
+      flex: 1;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 6px;
+      outline: none;
+      background: #0d1117;
+      color: #fff;
+    }
+    .input-bar button {
+      margin-left: 0.8rem;
+      padding: 0.8rem 1.2rem;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .btn-blue { background: #3b82f6; color: #fff; }
+    .btn-green { background: #22c55e; color: #fff; }
+    .btn-purple { background: #a855f7; color: #fff; }
+    pre {
+      background: #000;
+      padding: 1rem;
+      border-radius: 6px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      margin-top: 1rem;
+    }
+    footer {
+      background: #161b22;
+      text-align: center;
+      padding: 1rem;
+      color: #aaa;
+    }
   </style>
 </head>
 <body>
-  <header>⚡ Codexa AI Generator</header>
+  <header>
+    <img src="logo.png" alt="Codexa Logo">
+    <strong>⚡ Build Smarter with Codexa</strong>
+  </header>
 
-  <!-- Step 1 -->
-  <section id="step1" class="active">
-    <h2>Step 1: Describe Your Website Idea</h2>
-    <textarea id="prompt" placeholder="e.g. A portfolio site with dark theme and contact form"></textarea><br>
-    <button class="btn-blue" onclick="nextStep(2)">Next → Generate Code</button>
-  </section>
+  <div class="chat-container" id="chat"></div>
 
-  <!-- Step 2 -->
-  <section id="step2">
-    <h2>Step 2: Your Generated Code</h2>
-    <div id="status">⏳ Waiting for generation...</div>
-    <div id="result" style="display:none;">
-      <pre id="codeOutput"></pre>
-      <button class="btn-purple" onclick="copyCode()">Copy</button>
-      <button class="btn-green" onclick="downloadCode()">Download</button>
-    </div>
-    <button class="btn-blue" onclick="nextStep(3)">Next → Learn How to Use</button>
-  </section>
+  <div id="codeSection" style="display:none; padding:1rem; background:#0d1117;">
+    <h3>💻 Generated Code</h3>
+    <pre id="codeOutput"></pre>
+    <button class="btn-green" onclick="copyCode()">Copy</button>
+    <button class="btn-purple" onclick="downloadCode()">Download</button>
+  </div>
 
-  <!-- Step 3 -->
-  <section id="step3">
-    <h2>Step 3: How to Use Your Code</h2>
-    <ol style="text-align:left; max-width:600px; margin:auto; line-height:1.6;">
-      <li>Copy or Download your code above.</li>
-      <li>Open VS Code or any text editor.</li>
-      <li>Paste the code and save it as <b>index.html</b>.</li>
-      <li>Double click index.html → your site opens in the browser.</li>
-      <li>Optional: Host online with Netlify, Vercel, or GitHub Pages.</li>
-    </ol>
-    <p><a href="/tutorial.html" style="color:#3b82f6;">See Full Tutorial</a></p>
-  </section>
+  <div class="input-bar">
+    <input type="text" id="userInput" placeholder="Type your message..."/>
+    <button class="btn-blue" onclick="sendMessage()">Send</button>
+    <button id="genBtn" class="btn-green" style="display:none;" onclick="generateCode()">Generate Code</button>
+  </div>
 
-  <footer style="margin-top:2rem; color:#aaa;">© 2025 Codexa</footer>
+  <footer>© 2025 Codexa. All rights reserved.</footer>
 
   <script>
+    const chatBox = document.getElementById("chat");
+    const userInput = document.getElementById("userInput");
+    const genBtn = document.getElementById("genBtn");
+    const codeSection = document.getElementById("codeSection");
+    const codeOutput = document.getElementById("codeOutput");
+    let lastPrompt = "";
     let generatedCode = "";
 
-    function nextStep(step) {
-      document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
-      document.getElementById("step" + step).classList.add("active");
+    function addMessage(content, sender="bot") {
+      const div = document.createElement("div");
+      div.className = "message " + sender;
+      div.innerText = content;
+      chatBox.appendChild(div);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
 
-      if (step === 2) generateCode();
+    async function sendMessage() {
+      const text = userInput.value.trim();
+      if (!text) return;
+      addMessage(text, "user");
+      lastPrompt = text;
+      userInput.value = "";
+
+      addMessage("⏳ Thinking...", "bot");
+      try {
+        const res = await fetch("/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt: text })
+        });
+        const data = await res.json();
+        chatBox.lastChild.innerText = data.reply || "❌ Error.";
+        // If AI detects it's about building a site, show Generate button
+        if (/site|website|page|code|html|css|javascript/i.test(text)) {
+          genBtn.style.display = "inline-block";
+        }
+      } catch (err) {
+        chatBox.lastChild.innerText = "❌ Server error: " + err.message;
+      }
     }
 
     async function generateCode() {
-      const prompt = document.getElementById("prompt").value.trim();
-      if (!prompt) { alert("Please enter a description"); return; }
-
-      document.getElementById("status").innerText = "⏳ Generating...";
-
+      if (!lastPrompt) {
+        alert("Please describe what you want first!");
+        return;
+      }
+      addMessage("⏳ Generating code for: " + lastPrompt, "bot");
       try {
-        const response = await fetch("/generate", {
+        const res = await fetch("/generate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt })
+          body: JSON.stringify({ prompt: lastPrompt })
         });
-        const data = await response.json();
-
+        const data = await res.json();
         if (data.code) {
-          // clean output (remove ``` wrappers if present)
-          generatedCode = data.code.replace(/```[a-z]*\n?/gi, "").replace(/```/g, "");
-          document.getElementById("codeOutput").innerText = generatedCode;
-          document.getElementById("result").style.display = "block";
-          document.getElementById("status").innerText = "✅ Done!";
+          generatedCode = data.code;
+          codeOutput.innerText = data.code;
+          codeSection.style.display = "block";
+          addMessage("✅ Code ready! Scroll down to see it.", "bot");
         } else {
-          document.getElementById("status").innerText = "❌ Error: " + (data.error || "Something went wrong");
+          addMessage("❌ Error generating code.", "bot");
         }
       } catch (err) {
-        document.getElementById("status").innerText = "❌ Server error: " + err.message;
+        addMessage("❌ Server error: " + err.message, "bot");
       }
     }
 
@@ -97,6 +181,7 @@
         alert("Code copied!");
       });
     }
+
     function downloadCode() {
       const blob = new Blob([generatedCode], { type: "text/html" });
       const url = URL.createObjectURL(blob);
@@ -106,6 +191,10 @@
       a.click();
       URL.revokeObjectURL(url);
     }
+
+    userInput.addEventListener("keydown", e => {
+      if (e.key === "Enter") sendMessage();
+    });
   </script>
 </body>
 </html>

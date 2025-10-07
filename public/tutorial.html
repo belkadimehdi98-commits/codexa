@@ -1,31 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Codexa Tutorial</title>
   <style>
-    body { margin:0; font-family:Arial,sans-serif; background:#0d1117; color:#fff; text-align:center; }
-    header { background:#161b22; padding:1rem; font-size:1.5rem; font-weight:bold; }
-    main { max-width:800px; margin:auto; padding:2rem; line-height:1.6; text-align:left; }
-    h2 { color:#3b82f6; }
-    footer { margin-top:2rem; padding:1rem; color:#aaa; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #0d1117;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+    header {
+      background: #161b22;
+      padding: 1rem 2rem;
+      font-size: 1.5rem;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header a {
+      color: #3b82f6;
+      text-decoration: none;
+    }
+    main {
+      padding: 2rem;
+      max-width: 800px;
+      margin: auto;
+    }
+    h1, h2 {
+      color: #3b82f6;
+    }
+    .step {
+      background: #1e2633;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+    }
+    code {
+      background: #000;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      color: #22c55e;
+    }
+    a {
+      color: #3b82f6;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    footer {
+      margin-top: 3rem;
+      background: #161b22;
+      padding: 1rem;
+      text-align: center;
+      color: #aaa;
+    }
   </style>
 </head>
 <body>
-  <header>📖 Codexa Tutorial</header>
+  <header>
+    ⚡ Codexa Tutorial
+    <a href="/app.html">← Back to Generator</a>
+  </header>
+
   <main>
-    <h2>How to Use Your AI-Generated Code</h2>
-    <ol>
-      <li>Copy or download the code from the generator page.</li>
-      <li>Open your text editor (VS Code recommended).</li>
-      <li>Create a new file and name it <b>index.html</b>.</li>
-      <li>Paste your code into that file and save.</li>
-      <li>Double-click the file to open it in your browser.</li>
-      <li>Optional: host it for free on Netlify, Vercel, or GitHub Pages.</li>
-    </ol>
-    <p>🚀 That’s it! You just built your first website with Codexa.</p>
+    <h1>🚀 Welcome to Codexa!</h1>
+    <p>
+      This step-by-step guide will help you go from <b>AI-generated code</b> 
+      to a working <b>website</b> in just a few minutes.
+    </p>
+
+    <div class="step">
+      <h2>Step 1: Generate Your Code</h2>
+      <p>In the <a href="/app.html">AI Generator</a>, type your idea (e.g., “A landing page for my startup”).  
+      Once ready, click <b>Generate Code</b>.</p>
+    </div>
+
+    <div class="step">
+      <h2>Step 2: Copy or Download</h2>
+      <p>You’ll see your generated code appear.  
+      - Click <b>Copy</b> to copy it to your clipboard.  
+      - Or click <b>Download</b> to save it as <code>index.html</code>.</p>
+    </div>
+
+    <div class="step">
+      <h2>Step 3: Run Your Website Locally</h2>
+      <ol>
+        <li>Open a code editor like <a href="https://code.visualstudio.com/" target="_blank">VS Code</a>.</li>
+        <li>Paste your code into a new file and save it as <code>index.html</code>.</li>
+        <li>Double-click <code>index.html</code> → it opens in your browser!</li>
+      </ol>
+    </div>
+
+    <div class="step">
+      <h2>Step 4: Host Online 🌍</h2>
+      <p>You can easily publish your site online for free:</p>
+      <ul>
+        <li><a href="https://www.netlify.com/" target="_blank">Netlify</a> → drag & drop your <code>index.html</code></li>
+        <li><a href="https://vercel.com/" target="_blank">Vercel</a> → connect GitHub & deploy</li>
+        <li><a href="https://pages.github.com/" target="_blank">GitHub Pages</a></li>
+      </ul>
+    </div>
+
+    <div class="step">
+      <h2>Step 5: Customize ✨</h2>
+      <p>Open <code>index.html</code> in your editor and start editing text, colors, or styles.  
+      You can add images, links, or even your own JavaScript.</p>
+    </div>
+
+    <div class="step">
+      <h2>Extra Resources 📚</h2>
+      <ul>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Learn/HTML" target="_blank">Learn HTML</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Learn/CSS" target="_blank">Learn CSS</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Learn/JavaScript" target="_blank">Learn JavaScript</a></li>
+      </ul>
+    </div>
   </main>
-  <footer>© 2025 Codexa</footer>
+
+  <footer>© 2025 Codexa. Built with ❤️ to help you create.</footer>
 </body>
 </html>

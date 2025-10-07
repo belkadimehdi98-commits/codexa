@@ -5,78 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Codexa | AI Code Generator</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #0d1117;
-      color: #fff;
-    }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 2rem;
-      background: #161b22;
-    }
-    header img {
-      height: 40px;
-    }
-    nav a {
-      color: #fff;
-      margin-left: 1.5rem;
-      text-decoration: none;
-      font-weight: 500;
-    }
-    .hero {
-      text-align: center;
-      padding: 6rem 2rem;
-      background: #0d1117;
-    }
-    .hero h1 {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-    }
-    .hero p {
-      font-size: 1.2rem;
-      margin-bottom: 2rem;
-    }
-    .btn {
-      padding: 0.8rem 1.6rem;
-      margin: 0.3rem;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: 0.2s;
-    }
-    .btn:hover { opacity: 0.9; }
-    .btn-green { background: #22c55e; color: #fff; }
-    .btn-blue { background: #3b82f6; color: #fff; }
-    .btn-purple { background: #a855f7; color: #fff; }
-    section {
-      padding: 4rem 2rem;
-      text-align: center;
-    }
-    section h2 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-    }
-    section p {
-      max-width: 700px;
-      margin: auto;
-      line-height: 1.6;
-    }
-    footer {
-      text-align: center;
-      padding: 2rem;
-      background: #161b22;
-      color: #aaa;
-      margin-top: 3rem;
-    }
+    body { font-family: Arial, sans-serif; margin:0; background:#0d1117; color:#fff; }
+    header { display:flex; justify-content:space-between; align-items:center; padding:1rem 2rem; background:#161b22; }
+    header img { height:40px; }
+    nav a { color:#fff; margin-left:1.5rem; text-decoration:none; font-weight:500; }
+    .hero { text-align:center; padding:6rem 2rem; }
+    .hero h1 { font-size:2.5rem; margin-bottom:1rem; }
+    .hero p { font-size:1.2rem; margin-bottom:2rem; }
+    .btn { padding:0.8rem 1.6rem; margin:0.3rem; border:none; border-radius:6px; cursor:pointer; font-weight:bold; transition:0.2s; }
+    .btn:hover { opacity:0.9; }
+    .btn-green { background:#22c55e; color:#fff; }
+    .btn-blue { background:#3b82f6; color:#fff; }
+    .btn-purple { background:#a855f7; color:#fff; }
+    section { padding:4rem 2rem; text-align:center; }
+    section h2 { font-size:2rem; margin-bottom:1rem; }
+    section p { max-width:700px; margin:auto; line-height:1.6; }
+    footer { text-align:center; padding:2rem; background:#161b22; color:#aaa; margin-top:3rem; }
   </style>
 </head>
 <body>
-  <!-- Header -->
   <header>
     <img src="logo.png" alt="Codexa Logo"/>
     <nav>
@@ -86,7 +33,6 @@
     </nav>
   </header>
 
-  <!-- Hero -->
   <div class="hero">
     <h1>⚡ AI Code Generator</h1>
     <p>Generate production-ready websites instantly.</p>
@@ -95,68 +41,46 @@
     <button id="teamPlan" class="btn btn-purple">Get Team Plan</button>
   </div>
 
-  <!-- Features -->
   <section id="features">
     <h2>✨ Features</h2>
-    <p>
-      Instant AI-powered code generation, copy/download, and history.
-      Perfect for developers, startups, and teams who want to move fast.
-    </p>
+    <p>Instant AI-powered code generation, copy/download, and history for teams and creators.</p>
   </section>
 
-  <!-- Pricing -->
   <section id="pricing">
     <h2>💳 Pricing</h2>
-    <p>Free plan available. Upgrade for unlimited generations and team access.</p>
+    <p>Free trial included. Upgrade for unlimited generations and team access.</p>
   </section>
 
-  <!-- Contact -->
   <section id="contact">
     <h2>📩 Contact</h2>
     <p>Email us at <a href="mailto:support@codexa.codes">support@codexa.codes</a></p>
   </section>
 
-  <footer>
-    <p>© 2025 Codexa. All rights reserved.</p>
-  </footer>
+  <footer><p>© 2025 Codexa. All rights reserved.</p></footer>
 
-  <!-- Stripe Checkout Script -->
   <script>
-    // Replace with your actual Stripe price IDs from Render
-    const PRICE_PRO = "price_1SFFM50pz2SntAR9RG9WteF";
-    const PRICE_TEAM = "price_1SFFP950pz2SntARpYHyaZEi";
-
-    document.getElementById("proPlan").addEventListener("click", () => {
-      fetch("/create-checkout-session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ priceId: PRICE_PRO })
-      })
-      .then(res => res.json())
-      .then(data => {
+    async function checkout(priceKey) {
+      try {
+        const res = await fetch("/create-checkout-session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          // IMPORTANT: send "PRICE_PRO" / "PRICE_TEAM" keys (server maps to real IDs)
+          body: JSON.stringify({ priceId: priceKey })
+        });
+        const data = await res.json();
         if (data.url) {
           window.location.href = data.url;
         } else {
-          alert("Something went wrong.");
+          alert("Something went wrong: " + (data.error || "No URL"));
+          console.log("Checkout debug:", data);
         }
-      });
-    });
+      } catch (e) {
+        alert("Network error: " + e.message);
+      }
+    }
 
-    document.getElementById("teamPlan").addEventListener("click", () => {
-      fetch("/create-checkout-session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ priceId: PRICE_TEAM })
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.url) {
-          window.location.href = data.url;
-        } else {
-          alert("Something went wrong.");
-        }
-      });
-    });
+    document.getElementById("proPlan").addEventListener("click", () => checkout("PRICE_PRO"));
+    document.getElementById("teamPlan").addEventListener("click", () => checkout("PRICE_TEAM"));
   </script>
 </body>
 </html>

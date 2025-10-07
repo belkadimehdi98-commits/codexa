@@ -54,15 +54,20 @@
     .btn-purple { background: #a855f7; color: #fff; }
     pre {
       text-align: left;
-      background: #161b22;
+      background: #0d1117;
       padding: 1rem;
-      border-radius: 6px;
+      border-radius: 8px;
       margin: 1rem auto;
-      width: 80%;
+      width: 90%;
       overflow-x: auto;
+      max-height: 400px;
       white-space: pre-wrap;
       word-wrap: break-word;
-      color: #9cdcfe;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      color: #e5e7eb;
+      border: 1px solid #2d333b;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
     }
     .history {
       margin-top: 2rem;
@@ -72,16 +77,12 @@
       margin-right: auto;
     }
     .history-item {
-      background: #1e2633;
-      padding: 1rem;
-      border-radius: 6px;
+      background: #161b22;
+      padding: 1.2rem;
+      border-radius: 12px;
       margin-bottom: 1rem;
-    }
-    .history-item pre {
-      background: #0d1117;
-      padding: 0.5rem;
-      border-radius: 4px;
-      overflow-x: auto;
+      border: 1px solid #2d333b;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
     }
     footer {
       margin-top: 3rem;
@@ -92,7 +93,7 @@
   </style>
 </head>
 <body>
-  <!-- Header with Tutorial link -->
+  <!-- Header -->
   <header>
     ⚡ Codexa AI Generator
     <nav>
@@ -112,12 +113,12 @@
       <button class="btn-purple" onclick="downloadCode()">Download</button>
     </div>
 
-    <!-- History Section -->
+    <!-- History -->
     <section class="history">
       <h2>📂 History</h2>
       <div id="historyList"></div>
-      <button onclick="exportHistory()">Export History</button>
-      <button onclick="clearHistory()">Clear History</button>
+      <button onclick="exportHistory()" class="btn-blue">Export History</button>
+      <button onclick="clearHistory()" class="btn-purple">Clear History</button>
     </section>
   </main>
 
@@ -130,7 +131,6 @@
     function getUsageCount() {
       return parseInt(localStorage.getItem("generationCount") || "0", 10);
     }
-
     function increaseUsageCount() {
       let count = getUsageCount() + 1;
       localStorage.setItem("generationCount", count);
@@ -139,10 +139,9 @@
 
     function copyCode() {
       navigator.clipboard.writeText(generatedCode).then(() => {
-        alert("✅ Code copied!");
+        alert("Code copied to clipboard!");
       });
     }
-
     function downloadCode() {
       const blob = new Blob([generatedCode], { type: "text/html" });
       const url = URL.createObjectURL(blob);
@@ -168,12 +167,14 @@
         const div = document.createElement("div");
         div.className = "history-item";
         div.innerHTML = `
-          <b>${item.prompt || "(no prompt)"}</b><br>
-          <small>${item.time}</small>
-          <pre>${item.code.replace(/</g,"&lt;").replace(/>/g,"&gt;")}</pre>
-          <button class="btn-blue" onclick="loadHistory(${index})">Load</button>
-          <button class="btn-purple" onclick="navigator.clipboard.writeText(\`${item.code}\`)">Copy</button>
-          <button class="btn-green" onclick="downloadFromHistory(${index})">Download</button>
+          <b style="color:#3b82f6;">${item.prompt || "(no prompt)"}</b><br>
+          <small style="color:#aaa;">${item.time}</small>
+          <pre>${item.code}</pre>
+          <div style="margin-top:0.8rem;">
+            <button class="btn-blue" onclick="loadHistory(${index})">Load</button>
+            <button class="btn-purple" onclick="navigator.clipboard.writeText(\`${item.code}\`)">Copy</button>
+            <button class="btn-green" onclick="downloadFromHistory(${index})">Download</button>
+          </div>
         `;
         list.appendChild(div);
       });
@@ -187,7 +188,6 @@
         document.getElementById("result").style.display = "block";
       }
     }
-
     function downloadFromHistory(index) {
       let history = JSON.parse(localStorage.getItem("history") || "[]");
       if (history[index]) {
@@ -200,7 +200,6 @@
         URL.revokeObjectURL(url);
       }
     }
-
     function exportHistory() {
       let history = localStorage.getItem("history");
       const blob = new Blob([history], { type: "application/json" });
@@ -211,7 +210,6 @@
       a.click();
       URL.revokeObjectURL(url);
     }
-
     function clearHistory() {
       localStorage.removeItem("history");
       renderHistory();

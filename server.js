@@ -60,9 +60,11 @@ app.get("/chat-stream", async (req, res) => {
   const prompt = req.query.prompt || "";
   if (!prompt) return res.status(400).send("Prompt required");
 
-  res.setHeader("Content-Type", "text/event-stream");
-  res.setHeader("Cache-Control", "no-cache");
-  res.setHeader("Connection", "keep-alive");
+  res.writeHead(200, {
+    "Content-Type": "text/event-stream",
+    "Cache-Control": "no-cache",
+    Connection: "keep-alive",
+  });
 
   try {
     const r = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -86,17 +88,12 @@ app.get("/chat-stream", async (req, res) => {
       return;
     }
 
-    const reader = r.body.getReader();
-    const decoder = new TextDecoder();
-
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      const chunk = decoder.decode(value);
-      const lines = chunk.split("\n").filter(line => line.trim() !== "");
+    // Stream data directly
+    r.body.on("data", (chunk) => {
+      const lines = chunk.toString().split("\n").filter(line => line.trim() !== "");
       for (const line of lines) {
         if (line.includes("[DONE]")) {
-          res.write("event: done\ndata: [DONE]\n\n");
+          res.write("event: done\ndata: {}\n\n");
           res.end();
           return;
         }
@@ -108,10 +105,18 @@ app.get("/chat-stream", async (req, res) => {
             if (token) {
               res.write(`data: ${JSON.stringify({ token })}\n\n`);
             }
-          } catch {}
+          } catch (err) {
+            console.error("Parse error:", err);
+          }
         }
       }
-    }
+    });
+
+    r.body.on("end", () => {
+      res.write("event: done\ndata: {}\n\n");
+      res.end();
+    });
+
   } catch (err) {
     console.error("Streaming error:", err);
     res.write(`data: ${JSON.stringify({ error: err.message })}\n\n`);

@@ -1,129 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Codexa | AI Generator</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Codexa AI</title>
   <style>
-    :root{--bg:#0d1117;--panel:#161b22;--muted:#9aa3ad;--text:#fff;--ai:#1e2633;--user:#2563eb;--blue:#3b82f6;--green:#22c55e}
-    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;display:flex;flex-direction:column;height:100vh}
-    header{background:var(--panel);padding:12px 20px;display:flex;align-items:center;justify-content:space-between}
-    .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;font-weight:800}
-    .brand img{height:34px}
-    nav a{color:#fff;text-decoration:none;margin-left:16px}
-    main{flex:1;display:flex;flex-direction:column;max-width:980px;margin:0 auto;width:100%}
-    #messages{flex:1;overflow:auto;padding:18px}
-    .row{display:flex;flex-direction:column;margin-bottom:10px}
-    .label{font-size:.8rem;color:var(--muted);margin:2px 4px 6px}
-    .bubble{max-width:80%;padding:12px 14px;border-radius:12px;line-height:1.5;white-space:pre-wrap;word-wrap:break-word}
-    .ai .bubble{background:var(--ai);align-self:flex-start}
-    .user .bubble{background:var(--user);align-self:flex-end}
-    .typing{color:var(--muted);font-style:italic}
-    .bubble pre{background:#0b0f14;border:1px solid #222;border-radius:8px;padding:10px;overflow:auto}
-    .code-actions{margin-top:6px;display:flex;gap:8px}
-    .code-actions button{padding:6px 10px;border:none;border-radius:6px;cursor:pointer;font-weight:700}
-    footer{background:var(--panel);display:flex;gap:10px;align-items:center;padding:12px 16px}
-    #prompt{flex:1;min-height:44px;max-height:160px;resize:vertical;border:none;border-radius:8px;background:#1e2633;color:#fff;padding:10px 12px;font-size:1rem;outline:none}
-    .btn{padding:10px 14px;border:none;border-radius:8px;font-weight:800;cursor:pointer}
-    .btn-blue{background:var(--blue);color:#fff}
-    .btn-green{background:var(--green);color:#fff}
-    .floating{position:fixed;right:20px;bottom:90px;display:none;box-shadow:0 6px 24px rgba(0,0,0,.35)}
+    body {
+      font-family: Arial, sans-serif;
+      background: #0d1117;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #161b22;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 {
+      margin: 0;
+      color: #fff;
+    }
+    .chat-container {
+      height: 80vh;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+    .msg {
+      padding: 10px;
+      border-radius: 8px;
+      margin: 5px 0;
+      max-width: 75%;
+      line-height: 1.4em;
+    }
+    .user {
+      background: #2563eb;
+      color: #fff;
+      align-self: flex-end;
+    }
+    .ai {
+      background: #1f2937;
+      color: #fff;
+      align-self: flex-start;
+      position: relative;
+    }
+    .typing {
+      font-style: italic;
+      opacity: 0.7;
+    }
+    footer {
+      background: #161b22;
+      padding: 10px;
+      display: flex;
+      gap: 10px;
+    }
+    input {
+      flex: 1;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+    }
+    button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .chat-btn {
+      background: #22c55e;
+      color: white;
+    }
   </style>
 </head>
 <body>
   <header>
-    <a class="brand" href="/"><img src="/logo.png" alt="Codexa Logo"><span>Codexa</span></a>
+    <h1>⚡ Codexa AI</h1>
     <nav>
-      <a href="/tutorial.html">Tutorial</a>
+      <a href="index.html" style="color:white; margin-right:15px;">Home</a>
+      <a href="tutorial.html" style="color:white;">Tutorial</a>
     </nav>
   </header>
 
-  <main>
-    <div id="messages"></div>
-  </main>
+  <main class="chat-container" id="chat"></main>
 
   <footer>
-    <textarea id="prompt" placeholder="Type your message… (Enter = send, Shift+Enter = new line)"></textarea>
-    <button id="sendBtn" class="btn btn-blue">💬 Chat</button>
+    <input id="userInput" type="text" placeholder="Type your message..." />
+    <button class="chat-btn" onclick="sendMessage()">Chat</button>
   </footer>
 
-  <button id="generateBtn" class="btn btn-green floating">💻 Generate Code</button>
-
   <script>
-    const messagesEl = document.getElementById('messages');
-    const promptEl = document.getElementById('prompt');
-    const sendBtn  = document.getElementById('sendBtn');
-    const genBtn   = document.getElementById('generateBtn');
+    const chat = document.getElementById("chat");
+    const input = document.getElementById("userInput");
 
-    let lastAIMessage = "";
-
-    function row(kind){ const r=document.createElement('div'); r.className=`row ${kind}`; return r; }
-    function label(t){ const l=document.createElement('div'); l.className='label'; l.textContent=t; return l; }
-    function bubble(){ const b=document.createElement('div'); b.className='bubble'; return b; }
-
-    function addUser(text){
-      const r=row('user'); r.appendChild(label('You'));
-      const b=bubble(); b.textContent=text; r.appendChild(b);
-      messagesEl.appendChild(r); messagesEl.scrollTop=messagesEl.scrollHeight;
-    }
-    function addAIContainer(){
-      const r=row('ai'); r.appendChild(label('💡 Codexa AI'));
-      const b=bubble(); b.innerHTML='<span class="typing">typing…</span>'; r.appendChild(b);
-      messagesEl.appendChild(r); messagesEl.scrollTop=messagesEl.scrollHeight;
-      return b;
-    }
-    function looksLikeCode(s){
-      return /<!DOCTYPE|<html|<head|<body|<script|<style|<\/?div|function\s+\w+\s*\(|const\s+\w+\s*=|class\s+\w+/.test(s);
-    }
-    function toCodeBlock(text){
-      const safe=text.replace(/<\/script>/gi,'</scr'+'ipt>');
-      return `<pre>${safe}</pre>
-      <div class="code-actions">
-        <button onclick="navigator.clipboard.writeText(\`${safe}\`)">📋 Copy</button>
-        <button onclick="(function(){const blob=new Blob([\`${safe}\`],{type:'text/html'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='index.html';a.click();URL.revokeObjectURL(url);})()">⬇️ Download</button>
-      </div>`;
+    function addMessage(text, cls) {
+      const div = document.createElement("div");
+      div.className = "msg " + cls;
+      div.textContent = text;
+      chat.appendChild(div);
+      chat.scrollTop = chat.scrollHeight;
+      return div;
     }
 
-    function sendMessage(){
-      const text = promptEl.value.trim();
-      if(!text) return;
-      promptEl.value=''; addUser(text);
-      const b = addAIContainer();
-      let msg = ""; lastAIMessage="";
+    function sendMessage() {
+      const text = input.value.trim();
+      if (!text) return;
+      addMessage(text, "user");
+      input.value = "";
 
-      const src = new EventSource(`/chat-stream?prompt=${encodeURIComponent(text)}`);
-      src.onmessage = (e)=>{
-        const d = JSON.parse(e.data||'{}');
-        if(d.token){ msg += d.token; b.textContent = msg; lastAIMessage = msg; }
-        messagesEl.scrollTop=messagesEl.scrollHeight;
-      };
-      src.addEventListener('done', ()=>{
-        src.close();
-        if(looksLikeCode(msg)){
-          genBtn.style.display='inline-block';
-          const hint=row('ai'); hint.appendChild(label('💡 Codexa AI'));
-          const hb=bubble(); hb.textContent="Tip: Click “💻 Generate Code” to save this code (copy/download).";
-          hint.appendChild(hb); messagesEl.appendChild(hint);
+      // Add AI placeholder
+      const aiMsg = addMessage("typing...", "ai typing");
+
+      // Open SSE stream
+      const evtSource = new EventSource(`/chat-stream?prompt=${encodeURIComponent(text)}`);
+      aiMsg.textContent = ""; // clear "typing..."
+
+      evtSource.onmessage = function (event) {
+        if (event.data === "[DONE]") {
+          evtSource.close();
+          return;
         }
-      });
-      src.onerror = ()=> src.close();
+        try {
+          const parsed = JSON.parse(event.data);
+          if (parsed.token) {
+            aiMsg.textContent += parsed.token;
+            chat.scrollTop = chat.scrollHeight;
+          }
+        } catch (err) {
+          console.error("Stream parse error:", err);
+        }
+      };
+
+      evtSource.onerror = function () {
+        evtSource.close();
+        aiMsg.textContent += "\n[Error receiving response]";
+      };
     }
 
-    // Enter to send
-    promptEl.addEventListener('keydown', (e)=>{
-      if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendMessage(); }
+    // Allow pressing Enter to send
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") sendMessage();
     });
-    sendBtn.onclick = sendMessage;
-
-    // Convert last AI answer to code block with copy/download
-    genBtn.onclick = ()=>{
-      if(!lastAIMessage) return;
-      const r=row('ai'); r.appendChild(label('💡 Codexa AI'));
-      const b=bubble(); b.innerHTML = toCodeBlock(lastAIMessage);
-      r.appendChild(b); messagesEl.appendChild(r);
-      genBtn.style.display='none';
-      messagesEl.scrollTop=messagesEl.scrollHeight;
-    };
   </script>
 </body>
 </html>

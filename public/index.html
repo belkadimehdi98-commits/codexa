@@ -2,68 +2,113 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Codexa | AI Code Generator</title>
-  <link rel="stylesheet" href="styles.css" />
+  <style>
+    :root{--bg:#0d1117;--panel:#161b22;--muted:#9aa3ad;--text:#fff;--blue:#3b82f6;--green:#22c55e;--purple:#a855f7;--card:#1b2430}
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}
+    header{background:var(--panel);padding:14px 22px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+    .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;font-weight:800}
+    .brand img{height:34px}
+    nav a{color:#fff;text-decoration:none;margin-left:18px}
+    .hero{max-width:1100px;margin:0 auto;padding:70px 22px;text-align:center}
+    .hero h1{font-size:2.6rem;margin:0 0 12px}
+    .hero p{color:var(--muted);font-size:1.15rem;margin:0 0 24px}
+    .btn{padding:12px 18px;border:none;border-radius:10px;font-weight:800;cursor:pointer;margin:6px}
+    .btn.primary{background:var(--green);color:#fff}
+    .btn.blue{background:var(--blue);color:#fff}
+    .btn.purple{background:var(--purple);color:#fff}
+    section{padding:56px 22px}
+    .wrap{max-width:1100px;margin:0 auto}
+    /* features */
+    .features{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+    .feature{background:var(--card);padding:18px;border-radius:12px;border:1px solid #222}
+    .feature h3{margin:0 0 8px}
+    .feature p{margin:0;color:var(--muted)}
+    @media(max-width:900px){.features{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:600px){.features{grid-template-columns:1fr}}
+    /* pricing */
+    .pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .plan{background:var(--card);border:1px solid #222;border-radius:14px;padding:22px;text-align:center}
+    .plan h3{margin:0 0 6px}
+    .price{font-size:1.6rem;margin:4px 0 14px}
+    .badge{display:inline-block;padding:4px 8px;border-radius:999px;background:#233146;color:#bcd; font-size:.8rem;margin-bottom:8px}
+    footer{background:var(--panel);color:var(--muted);text-align:center;padding:22px;margin-top:40px}
+  </style>
 </head>
 <body>
-  <!-- Header -->
-  <header class="navbar">
-    <div class="logo">
-      ⚡ Codexa
-    </div>
+  <header>
+    <a class="brand" href="/"><img src="/logo.png" alt="Codexa Logo"><span>Codexa</span></a>
     <nav>
       <a href="#features">Features</a>
       <a href="#pricing">Pricing</a>
-      <a href="app.html">AI Generator</a>
-      <a href="tutorial.html">Tutorial</a>
+      <a href="/tutorial.html">Tutorial</a>
+      <a href="/app.html">AI Generator</a>
     </nav>
   </header>
 
-  <!-- Hero -->
   <section class="hero">
-    <h1>Build Your First Website in Minutes</h1>
-    <p>No coding skills needed. Codexa AI will generate everything for you.</p>
-    <a href="app.html" class="cta-button">🚀 Start AI Generator</a>
+    <h1>Build websites at the speed of thought</h1>
+    <p>Chat with Codexa AI, generate clean code, copy or download, and deploy in minutes.</p>
+    <button class="btn primary" onclick="location.href='/app.html'">🚀 Try AI Generator</button>
+    <button class="btn blue" id="btnPro">Upgrade to Pro</button>
+    <button class="btn purple" id="btnTeam">Team Plan</button>
   </section>
 
-  <!-- Features -->
-  <section id="features" class="features">
-    <h2>✨ Features</h2>
-    <ul>
-      <li>💬 Real-time AI chat with Codexa</li>
-      <li>💻 One-click code generation with copy & download</li>
-      <li>📂 Save your history & revisit old projects</li>
-      <li>📖 Beginner-friendly tutorial included</li>
-    </ul>
-  </section>
-
-  <!-- Pricing -->
-  <section id="pricing" class="pricing">
-    <h2>💰 Pricing</h2>
-    <p>Free trial available. Upgrade for unlimited code generations & team features.</p>
-    <div class="plans">
-      <div class="plan">
-        <h3>Free</h3>
-        <p>10 generations</p>
-        <p>$0/month</p>
-      </div>
-      <div class="plan">
-        <h3>Pro</h3>
-        <p>Unlimited generations</p>
-        <p>$15/month</p>
-      </div>
-      <div class="plan">
-        <h3>Team</h3>
-        <p>Collaboration & support</p>
-        <p>$49/month</p>
+  <section id="features">
+    <div class="wrap">
+      <h2 style="text-align:center;margin:0 0 18px">✨ Features</h2>
+      <div class="features">
+        <div class="feature"><h3>💬 Real-time chat</h3><p>Streamed replies from Codexa AI for a smooth experience.</p></div>
+        <div class="feature"><h3>💻 One-click code</h3><p>Generate full HTML/CSS/JS and save instantly.</p></div>
+        <div class="feature"><h3>📂 History</h3><p>Revisit previous generations on your device.</p></div>
+        <div class="feature"><h3>📖 Tutorials</h3><p>Simple guides for local preview and free hosting.</p></div>
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer>
-    <p>© 2025 Codexa. All rights reserved.</p>
-  </footer>
+  <section id="pricing">
+    <div class="wrap">
+      <h2 style="text-align:center;margin:0 0 22px">💳 Pricing</h2>
+      <div class="pricing">
+        <div class="plan">
+          <div class="badge">Get started</div>
+          <h3>Free</h3>
+          <div class="price">$0</div>
+          <p>2 generations • Basic chat</p>
+          <button class="btn" onclick="location.href='/free.html'">Get Free</button>
+        </div>
+        <div class="plan" style="border-color:#2d4;box-shadow:0 0 0 1px #2d4 inset">
+          <div class="badge">Most popular</div>
+          <h3>Pro</h3>
+          <div class="price">$15 / mo</div>
+          <p>Unlimited generations • Priority</p>
+          <button class="btn primary" onclick="checkout('PRICE_PRO')">Upgrade to Pro</button>
+        </div>
+        <div class="plan">
+          <div class="badge">Teams</div>
+          <h3>Team</h3>
+          <div class="price">$49 / mo</div>
+          <p>Collaboration • Support</p>
+          <button class="btn blue" onclick="checkout('PRICE_TEAM')">Choose Team</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>© 2025 Codexa. All rights reserved.</footer>
+
+  <script>
+    // Stripe checkout helpers
+    async function checkout(priceId){
+      try{
+        const r = await fetch('/create-checkout-session',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({priceId})});
+        const d = await r.json();
+        if(d.url) location.href=d.url; else alert(d.error||'Something went wrong.');
+      }catch(e){ alert(e.message); }
+    }
+    document.getElementById('btnPro').onclick = ()=>checkout('PRICE_PRO');
+    document.getElementById('btnTeam').onclick = ()=>checkout('PRICE_TEAM');
+  </script>
 </body>
 </html>

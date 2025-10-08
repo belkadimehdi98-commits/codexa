@@ -1,129 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Codexa | AI Generator</title>
-  <link rel="stylesheet" href="styles.css">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #0d1117;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-    }
-    header.navbar {
-      background: #161b22;
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    header .logo {
-      font-weight: bold;
-      font-size: 1.3rem;
-    }
-    header nav a {
-      color: #fff;
-      margin-left: 1rem;
-      text-decoration: none;
-      font-size: 1rem;
-    }
-    .chat-container {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      padding: 1rem;
-      overflow: hidden;
-    }
-    .chat-box {
-      flex: 1;
-      background: #161b22;
-      border-radius: 8px;
-      padding: 1rem;
-      overflow-y: auto;
-      margin-bottom: 1rem;
-    }
-    .message {
-      margin: 0.5rem 0;
-      padding: 0.6rem 1rem;
-      border-radius: 6px;
-      line-height: 1.5;
-      white-space: pre-wrap;
-    }
-    .user-message {
-      background: #3b82f6;
-      color: #fff;
-      text-align: right;
-    }
-    .ai-message {
-      background: #1e2633;
-      color: #fff;
-      text-align: left;
-    }
-    .chat-input {
-      display: flex;
-      gap: 0.5rem;
-    }
-    textarea {
-      flex: 1;
-      resize: none;
-      padding: 0.6rem;
-      border-radius: 6px;
-      border: none;
-      outline: none;
-      background: #161b22;
-      color: #fff;
-      font-size: 1rem;
-    }
-    button {
-      padding: 0.6rem 1rem;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: 0.2s;
-    }
-    #send-btn { background: #22c55e; color: #fff; }
-    #generate-btn { background: #a855f7; color: #fff; }
-    footer {
-      background: #161b22;
-      padding: 1rem;
-      text-align: center;
-      color: #aaa;
-      font-size: 0.9rem;
-    }
+    :root{--bg:#0d1117;--panel:#161b22;--muted:#9aa3ad;--text:#fff;--ai:#1e2633;--user:#2563eb;--blue:#3b82f6;--green:#22c55e}
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;display:flex;flex-direction:column;height:100vh}
+    header{background:var(--panel);padding:12px 20px;display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;font-weight:800}
+    .brand img{height:34px}
+    nav a{color:#fff;text-decoration:none;margin-left:16px}
+    main{flex:1;display:flex;flex-direction:column;max-width:980px;margin:0 auto;width:100%}
+    #messages{flex:1;overflow:auto;padding:18px}
+    .row{display:flex;flex-direction:column;margin-bottom:10px}
+    .label{font-size:.8rem;color:var(--muted);margin:2px 4px 6px}
+    .bubble{max-width:80%;padding:12px 14px;border-radius:12px;line-height:1.5;white-space:pre-wrap;word-wrap:break-word}
+    .ai .bubble{background:var(--ai);align-self:flex-start}
+    .user .bubble{background:var(--user);align-self:flex-end}
+    .typing{color:var(--muted);font-style:italic}
+    .bubble pre{background:#0b0f14;border:1px solid #222;border-radius:8px;padding:10px;overflow:auto}
+    .code-actions{margin-top:6px;display:flex;gap:8px}
+    .code-actions button{padding:6px 10px;border:none;border-radius:6px;cursor:pointer;font-weight:700}
+    footer{background:var(--panel);display:flex;gap:10px;align-items:center;padding:12px 16px}
+    #prompt{flex:1;min-height:44px;max-height:160px;resize:vertical;border:none;border-radius:8px;background:#1e2633;color:#fff;padding:10px 12px;font-size:1rem;outline:none}
+    .btn{padding:10px 14px;border:none;border-radius:8px;font-weight:800;cursor:pointer}
+    .btn-blue{background:var(--blue);color:#fff}
+    .btn-green{background:var(--green);color:#fff}
+    .floating{position:fixed;right:20px;bottom:90px;display:none;box-shadow:0 6px 24px rgba(0,0,0,.35)}
   </style>
 </head>
 <body>
-  <!-- Header -->
-  <header class="navbar">
-    <div class="logo">⚡ Codexa AI</div>
+  <header>
+    <a class="brand" href="/"><img src="/logo.png" alt="Codexa Logo"><span>Codexa</span></a>
     <nav>
-      <a href="index.html">Home</a>
-      <a href="tutorial.html">Tutorial</a>
+      <a href="/tutorial.html">Tutorial</a>
     </nav>
   </header>
 
-  <!-- Chat Section -->
-  <main class="chat-container">
-    <div id="chat-box" class="chat-box"></div>
-    <div class="chat-input">
-      <textarea id="user-input" placeholder="Type your message... (Enter = send, Shift+Enter = new line)"></textarea>
-      <button id="send-btn">💬 Chat</button>
-      <button id="generate-btn">💻 Generate Code</button>
-    </div>
+  <main>
+    <div id="messages"></div>
   </main>
 
-  <!-- Footer -->
   <footer>
-    © 2025 Codexa. All rights reserved.
+    <textarea id="prompt" placeholder="Type your message… (Enter = send, Shift+Enter = new line)"></textarea>
+    <button id="sendBtn" class="btn btn-blue">💬 Chat</button>
   </footer>
 
-  <!-- Script -->
-  <script src="script.js"></script>
+  <button id="generateBtn" class="btn btn-green floating">💻 Generate Code</button>
+
+  <script>
+    const messagesEl = document.getElementById('messages');
+    const promptEl = document.getElementById('prompt');
+    const sendBtn  = document.getElementById('sendBtn');
+    const genBtn   = document.getElementById('generateBtn');
+
+    let lastAIMessage = "";
+
+    function row(kind){ const r=document.createElement('div'); r.className=`row ${kind}`; return r; }
+    function label(t){ const l=document.createElement('div'); l.className='label'; l.textContent=t; return l; }
+    function bubble(){ const b=document.createElement('div'); b.className='bubble'; return b; }
+
+    function addUser(text){
+      const r=row('user'); r.appendChild(label('You'));
+      const b=bubble(); b.textContent=text; r.appendChild(b);
+      messagesEl.appendChild(r); messagesEl.scrollTop=messagesEl.scrollHeight;
+    }
+    function addAIContainer(){
+      const r=row('ai'); r.appendChild(label('💡 Codexa AI'));
+      const b=bubble(); b.innerHTML='<span class="typing">typing…</span>'; r.appendChild(b);
+      messagesEl.appendChild(r); messagesEl.scrollTop=messagesEl.scrollHeight;
+      return b;
+    }
+    function looksLikeCode(s){
+      return /<!DOCTYPE|<html|<head|<body|<script|<style|<\/?div|function\s+\w+\s*\(|const\s+\w+\s*=|class\s+\w+/.test(s);
+    }
+    function toCodeBlock(text){
+      const safe=text.replace(/<\/script>/gi,'</scr'+'ipt>');
+      return `<pre>${safe}</pre>
+      <div class="code-actions">
+        <button onclick="navigator.clipboard.writeText(\`${safe}\`)">📋 Copy</button>
+        <button onclick="(function(){const blob=new Blob([\`${safe}\`],{type:'text/html'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='index.html';a.click();URL.revokeObjectURL(url);})()">⬇️ Download</button>
+      </div>`;
+    }
+
+    function sendMessage(){
+      const text = promptEl.value.trim();
+      if(!text) return;
+      promptEl.value=''; addUser(text);
+      const b = addAIContainer();
+      let msg = ""; lastAIMessage="";
+
+      const src = new EventSource(`/chat-stream?prompt=${encodeURIComponent(text)}`);
+      src.onmessage = (e)=>{
+        const d = JSON.parse(e.data||'{}');
+        if(d.token){ msg += d.token; b.textContent = msg; lastAIMessage = msg; }
+        messagesEl.scrollTop=messagesEl.scrollHeight;
+      };
+      src.addEventListener('done', ()=>{
+        src.close();
+        if(looksLikeCode(msg)){
+          genBtn.style.display='inline-block';
+          const hint=row('ai'); hint.appendChild(label('💡 Codexa AI'));
+          const hb=bubble(); hb.textContent="Tip: Click “💻 Generate Code” to save this code (copy/download).";
+          hint.appendChild(hb); messagesEl.appendChild(hint);
+        }
+      });
+      src.onerror = ()=> src.close();
+    }
+
+    // Enter to send
+    promptEl.addEventListener('keydown', (e)=>{
+      if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendMessage(); }
+    });
+    sendBtn.onclick = sendMessage;
+
+    // Convert last AI answer to code block with copy/download
+    genBtn.onclick = ()=>{
+      if(!lastAIMessage) return;
+      const r=row('ai'); r.appendChild(label('💡 Codexa AI'));
+      const b=bubble(); b.innerHTML = toCodeBlock(lastAIMessage);
+      r.appendChild(b); messagesEl.appendChild(r);
+      genBtn.style.display='none';
+      messagesEl.scrollTop=messagesEl.scrollHeight;
+    };
+  </script>
 </body>
 </html>

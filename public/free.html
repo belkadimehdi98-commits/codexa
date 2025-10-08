@@ -1,14 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Codexa Free</title>
-  <link rel="stylesheet" href="styles.css">
-  <meta http-equiv="refresh" content="2;url=/app.html">
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Codexa | Free Plan</title>
+<style>
+  :root{--bg:#0d1117;--panel:#161b22;--text:#fff;--muted:#aab1ba}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}
+  header,footer{background:var(--panel);padding:14px 22px}
+  .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;font-weight:800}
+  .brand img{height:34px}
+  main{max-width:800px;margin:0 auto;padding:60px 22px;text-align:center}
+  p{color:var(--muted)}
+  .btn{padding:12px 18px;border:none;border-radius:10px;font-weight:800;cursor:pointer;margin:6px}
+  .btn.primary{background:#22c55e;color:#fff}
+  .btn.alt{background:#3b82f6;color:#fff}
+</style>
 </head>
-<body class="center">
-  <h1>🚀 Welcome to Codexa Free</h1>
-  <p>You’re on the free plan. Redirecting you to the generator...</p>
-  <a href="/app.html" class="btn btn-purple">Go to Generator Now</a>
+<body>
+<header><a class="brand" href="/"><img src="/logo.png" alt="Codexa Logo"><span>Codexa</span></a></header>
+<main>
+  <h1>Free Plan Activated</h1>
+  <p>You can generate up to <b>2</b> code files to try Codexa.</p>
+  <button class="btn primary" onclick="location.href='/app.html'">Open AI Generator</button>
+  <button class="btn alt" onclick="location.href='/'">Back to Home</button>
+</main>
+<footer><div style="text-align:center;color:#aab1ba">© 2025 Codexa</div></footer>
 </body>
 </html>

@@ -1,67 +1,69 @@
-const chatBox = document.getElementById("chat-box");
+const chatContainer = document.getElementById("chat-container");
 const userInput = document.getElementById("user-input");
-const sendBtn = document.getElementById("send-btn");
-const generateBtn = document.getElementById("generate-btn");
+const chatBtn = document.getElementById("chat-btn");
 
-async function sendMessage(generate = false) {
-  const message = userInput.value.trim();
-  if (!message) return;
+// Add message to chat
+function addMessage(content, sender = "ai") {
+  const msg = document.createElement("div");
+  msg.className = "message " + sender;
+  msg.innerHTML = content;
+  chatContainer.appendChild(msg);
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+  return msg;
+}
 
-  // user message
-  const userMsg = document.createElement("div");
-  userMsg.className = "message user-message";
-  userMsg.textContent = message;
-  chatBox.appendChild(userMsg);
+// Handle user input
+async function sendMessage() {
+  const prompt = userInput.value.trim();
+  if (!prompt) return;
+
+  addMessage(prompt, "user");
   userInput.value = "";
 
-  // ai container
-  const aiMsg = document.createElement("div");
-  aiMsg.className = "message ai-message";
-  aiMsg.innerHTML = `<strong>💡 Codexa AI</strong><br><span class="typing">typing...</span>`;
-  chatBox.appendChild(aiMsg);
-  chatBox.scrollTop = chatBox.scrollHeight;
+  const aiMsg = addMessage("<i>Typing...</i>", "ai");
 
-  // streaming fetch
   try {
-    const response = await fetch("/api/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ prompt: message, generate })
-    });
+    const res = await fetch(`/chat-stream?prompt=${encodeURIComponent(prompt)}`);
+    if (!res.ok) throw new Error("Network error");
 
-    if (!response.body) {
-      aiMsg.innerHTML = "<strong>💡 Codexa AI</strong><br>Error: no response body";
-      return;
-    }
-
-    const reader = response.body.getReader();
+    const reader = res.body.getReader();
     const decoder = new TextDecoder();
     let text = "";
 
-    aiMsg.innerHTML = `<strong>💡 Codexa AI</strong><br><span class="streaming"></span>`;
-    const streamSpan = aiMsg.querySelector(".streaming");
-
     while (true) {
-      const { value, done } = await reader.read();
+      const { done, value } = await reader.read();
       if (done) break;
-      text += decoder.decode(value, { stream: true });
-      streamSpan.textContent = text; // update progressively
-      chatBox.scrollTop = chatBox.scrollHeight;
+      const chunk = decoder.decode(value, { stream: true });
+      const lines = chunk.split("\n").filter(l => l.trim());
+      for (const line of lines) {
+        if (line.includes("[DONE]")) break;
+        if (line.startsWith("data:")) {
+          try {
+            const data = JSON.parse(line.replace("data:", "").trim());
+            if (data.token) {
+              text += data.token;
+              aiMsg.innerHTML = text;
+              chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+            if (data.error) {
+              aiMsg.innerHTML = `⚠️ Oops! ${data.error}`;
+            }
+          } catch {}
+        }
+      }
     }
-
   } catch (err) {
-    aiMsg.innerHTML = `<strong>💡 Codexa AI</strong><br>Error: ${err.message}`;
+    aiMsg.innerHTML = "⚠️ Something went wrong. Please try again.";
   }
 }
 
-// send button
-sendBtn.addEventListener("click", () => sendMessage(false));
-generateBtn.addEventListener("click", () => sendMessage(true));
+// Send on button click
+chatBtn.addEventListener("click", sendMessage);
 
-// enter key
-userInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter" && !e.shiftKey) {
+// Send on Enter
+userInput.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") {
     e.preventDefault();
-    sendMessage(false);
+    sendMessage();
   }
 });

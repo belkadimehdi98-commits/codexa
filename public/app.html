@@ -3,33 +3,35 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Codexa AI App</title>
-  <link rel="stylesheet" href="/styles.css" />
+  <title>Codexa AI - Generator</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="script.js" defer></script>
 </head>
 <body>
-  <!-- Navbar -->
-  <header class="navbar">
-    <div class="logo-container">
-      <img src="/logo.png" alt="Codexa Logo" class="logo" />
-      <span class="brand">Codexa AI</span>
-    </div>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="features.html">Features</a>
-      <a href="pricing.html">Pricing</a>
+  <header>
+    <nav class="navbar">
+      <div class="logo">
+        <img src="logo.png" alt="Codexa AI Logo" />
+        <h1>Codexa AI</h1>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="features.html">Features</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+      </ul>
     </nav>
   </header>
 
-  <!-- Chat App -->
   <main class="chat-container">
     <div id="chat-box" class="chat-box"></div>
-    <div class="chat-input-container">
-      <input type="text" id="user-input" placeholder="Type your message..." />
-      <button id="send-btn" class="btn-primary">Chat</button>
-      <button id="generate-btn" class="btn-secondary">Generate Code</button>
+    <div class="chat-input">
+      <textarea id="user-input" placeholder="Type your request..." rows="2"></textarea>
+      <button id="send-btn" class="btn">Send</button>
     </div>
   </main>
 
-  <script src="/app.js" defer></script>
+  <footer>
+    <p>© 2025 Codexa AI. All rights reserved.</p>
+  </footer>
 </body>
 </html>

@@ -1,33 +1,37 @@
-// Stripe setup
-const stripe = Stripe("pk_live_51SEW0g50pz2SntAR9AD7gJop6Ld4LgZVVve4enxE7GkyD8mV4RaAm6tOaovxtWBMMQXfOrPopueiXya0R5nMTSVJ00PJ7m7y3v");
+const chatBox = document.getElementById("chat-box");
+const userInput = document.getElementById("user-input");
+const sendBtn = document.getElementById("send-btn");
 
-// Helper function to create checkout session
-async function createCheckout(priceId) {
-  try {
-    const response = await fetch("/create-checkout-session", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ priceId })
-    });
+async function sendMessage() {
+  const message = userInput.value.trim();
+  if (!message) return;
 
-    const session = await response.json();
+  appendMessage("user", message);
+  userInput.value = "";
 
-    if (session.id) {
-      stripe.redirectToCheckout({ sessionId: session.id });
-    } else {
-      alert("Error creating checkout session.");
-    }
-  } catch (error) {
-    console.error("Checkout error:", error);
-    alert("Something went wrong. Try again.");
-  }
+  const res = await fetch("/api/chat", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message })
+  });
+
+  const data = await res.json();
+  appendMessage("bot", data.reply);
 }
 
-// Attach event listeners
-document.addEventListener("DOMContentLoaded", () => {
-  const proBtn = document.getElementById("checkout-pro");
-  const teamBtn = document.getElementById("checkout-team");
+function appendMessage(sender, text) {
+  const msg = document.createElement("div");
+  msg.className = `msg ${sender}`;
+  msg.innerText = text;
+  chatBox.appendChild(msg);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
 
-  if (proBtn) proBtn.addEventListener("click", () => createCheckout("price_1SFFMf50pz2SntAR9RG9WteF"));
-  if (teamBtn) teamBtn.addEventListener("click", () => createCheckout("price_1SFFP950pz2SntARpYHyaZEi"));
+sendBtn.addEventListener("click", sendMessage);
+
+userInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
 });

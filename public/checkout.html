@@ -1,71 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Checkout - Codexa AI</title>
-  <link rel="stylesheet" href="/styles.css">
-  <script src="https://js.stripe.com/v3/"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Codexa AI - Checkout</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="script.js" defer></script>
 </head>
 <body>
   <header>
     <nav class="navbar">
       <div class="logo">
-        <img src="/logo.png" alt="Codexa Logo">
-        <span>Codexa AI</span>
+        <img src="logo.png" alt="Codexa AI Logo" />
+        <h1>Codexa AI</h1>
       </div>
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
+        <li><a href="features.html">Features</a></li>
         <li><a href="pricing.html">Pricing</a></li>
       </ul>
     </nav>
   </header>
 
-  <section class="checkout">
-    <h1>Upgrade Your Plan</h1>
-    <p>Select a plan and complete payment securely.</p>
-    <div class="checkout-cards">
-      <div class="card">
-        <h3>Pro Plan</h3>
-        <p>Unlimited generations</p>
-        <button id="checkout-pro" class="btn-primary">Subscribe Pro</button>
-      </div>
-      <div class="card">
-        <h3>Team Plan</h3>
-        <p>Collaboration & support</p>
-        <button id="checkout-team" class="btn-primary">Subscribe Team</button>
-      </div>
-    </div>
-  </section>
+  <main class="checkout">
+    <h2>Complete Your Plan</h2>
+    <p>Click below to proceed with a secure payment.</p>
+    <button id="payButton" class="btn">Pay Now</button>
+  </main>
 
   <footer>
     <p>© 2025 Codexa AI. All rights reserved.</p>
   </footer>
 
   <script>
-    const stripe = Stripe("pk_live_51SEW0g50pz2SntAR9AD7gJop6Ld4LgZVVve4enxE7GkyD8mV4RaAm6tOaovxtWBMMQXfOrPopueiXya0R5nMTSVJ00PJ7m7y3v");
+    document.getElementById("payButton").addEventListener("click", async () => {
+      const params = new URLSearchParams(window.location.search);
+      const plan = params.get("plan");
+      let priceId = "";
 
-    async function createCheckout(priceId) {
-      const response = await fetch("/create-checkout-session", {
+      if (plan === "pro") priceId = "price_pro"; // replace with your Stripe price ID
+      if (plan === "team") priceId = "price_team"; // replace with your Stripe price ID
+
+      const res = await fetch("/create-checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ priceId })
       });
 
-      const session = await response.json();
-      if (session.id) {
-        stripe.redirectToCheckout({ sessionId: session.id });
-      } else {
-        alert("Error creating checkout session.");
-      }
-    }
-
-    document.getElementById("checkout-pro").addEventListener("click", () => {
-      createCheckout("price_1SFFMf50pz2SntAR9RG9WteF");
-    });
-
-    document.getElementById("checkout-team").addEventListener("click", () => {
-      createCheckout("price_1SFFP950pz2SntARpYHyaZEi");
+      const data = await res.json();
+      if (data.url) window.location = data.url;
+      else alert("Error creating checkout session.");
     });
   </script>
 </body>

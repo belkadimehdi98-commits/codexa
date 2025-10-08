@@ -1,68 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Codexa AI</title>
-  <!-- Correct CSS path -->
-  <link rel="stylesheet" href="css/styles.css">
+  <!-- ✅ Make sure CSS loads from /public -->
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <!-- Navbar -->
-  <header class="navbar">
-    <div class="logo">
-      <img src="logo.png" alt="Codexa AI Logo">
-      <span>Codexa AI</span>
-    </div>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="#features">Features</a>
-      <a href="#pricing">Pricing</a>
+  <header>
+    <nav class="navbar">
+      <div class="logo">
+        <img src="logo.png" alt="Codexa AI Logo" />
+        <h1>Codexa AI</h1>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="features.html">Features</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+      </ul>
     </nav>
   </header>
 
-  <!-- Hero -->
-  <section class="hero">
-    <h1>Generate Code in Seconds</h1>
-    <p>Your AI coding assistant — fast, reliable, professional.</p>
-    <a href="checkout.html" class="btn-primary">Try it Free</a>
-  </section>
+  <main>
+    <section class="hero">
+      <h2>Generate Code in Seconds</h2>
+      <p>Your AI coding assistant — fast, reliable, professional.</p>
+      <a href="free.html" class="btn">Try it Free</a>
+    </section>
 
-  <!-- Features -->
-  <section id="features" class="features">
-    <h2>✨ Features</h2>
-    <ul>
-      <li>⚡ Real-time Codexa AI chat (streaming)</li>
-      <li>📦 One-click code generation with Copy & Download</li>
-      <li>📁 Export chat history & reset sessions</li>
-      <li>📱 Mobile & tablet optimized</li>
-    </ul>
-  </section>
+    <section class="features">
+      <h2>✨ Features</h2>
+      <ul>
+        <li>⚡ Real-time Codexa AI chat (streaming)</li>
+        <li>📦 One-click code generation with Copy & Download</li>
+        <li>📂 Export chat history & reset sessions</li>
+        <li>📱 Mobile & tablet optimized</li>
+      </ul>
+    </section>
 
-  <!-- Pricing -->
-  <section id="pricing" class="pricing">
-    <h2>💰 Pricing</h2>
-    <div class="plan-container">
-      <div class="plan">
-        <h3>Free</h3>
-        <p>Limited generations</p>
-        <a href="checkout.html" class="btn-secondary">Try Free</a>
+    <section class="pricing">
+      <h2>💰 Pricing</h2>
+      <div class="plans">
+        <div class="plan">
+          <h3>Free</h3>
+          <p>Limited generations</p>
+          <a href="free.html" class="btn">Try Free</a>
+        </div>
+        <div class="plan">
+          <h3>Pro</h3>
+          <p>Unlimited generations</p>
+          <a href="checkout.html?plan=pro" class="btn">Upgrade to Pro</a>
+        </div>
+        <div class="plan">
+          <h3>Team</h3>
+          <p>Collaboration & support</p>
+          <a href="checkout.html?plan=team" class="btn">Upgrade to Team</a>
+        </div>
       </div>
-      <div class="plan">
-        <h3>Pro</h3>
-        <p>Unlimited generations</p>
-        <a href="checkout.html" class="btn-primary">Upgrade to Pro</a>
-      </div>
-      <div class="plan">
-        <h3>Team</h3>
-        <p>Collaboration & support</p>
-        <a href="checkout.html" class="btn-primary">Get Team Plan</a>
-      </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
-  <!-- Footer -->
-  <footer class="footer">
+  <footer>
     <p>© 2025 Codexa AI. All rights reserved.</p>
   </footer>
 </body>

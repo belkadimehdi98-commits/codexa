@@ -1,13 +1,25 @@
 import express from "express";
 import Stripe from "stripe";
 import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
 
 dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-app.use(express.static("public"));
+// ✅ Log all static requests for debugging
+app.use((req, res, next) => {
+  console.log(`➡️ Request: ${req.method} ${req.url}`);
+  next();
+});
+
+// ✅ Serve static files from /public
+app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 
 // ✅ Stripe checkout session
@@ -20,12 +32,12 @@ app.post("/create-checkout-session", async (req, res) => {
       mode: "subscription",
       line_items: [{ price: priceId, quantity: 1 }],
       success_url: `${process.env.DOMAIN}/success.html`,
-      cancel_url: `${process.env.DOMAIN}/cancel.html`
+      cancel_url: `${process.env.DOMAIN}/cancel.html`,
     });
 
     res.json({ url: session.url });
   } catch (error) {
-    console.error("Stripe error:", error);
+    console.error("❌ Stripe error:", error);
     res.status(500).json({ error: error.message });
   }
 });

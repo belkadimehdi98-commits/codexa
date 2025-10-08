@@ -1,13 +1,14 @@
 /* Reset */
-body, h1, h2, h3, p, ul {
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 body {
   font-family: Arial, sans-serif;
-  background-color: #0d1117;
-  color: #e6edf3;
+  background: #0d1117;
+  color: #f0f6fc;
   line-height: 1.6;
 }
 
@@ -16,118 +17,100 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 40px;
   background: #161b22;
+  padding: 1rem 2rem;
 }
 
-.navbar a {
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo img {
+  height: 40px;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links a {
   color: #58a6ff;
   text-decoration: none;
-  margin: 0 10px;
-  font-weight: 500;
+  font-weight: bold;
 }
 
-.navbar a:hover {
-  text-decoration: underline;
+.nav-links a:hover {
+  color: #1f6feb;
 }
 
 /* Hero */
 .hero {
   text-align: center;
-  padding: 80px 20px;
+  padding: 4rem 2rem;
   background: #0d1117;
 }
 
-.hero h1 {
+.hero h2 {
   font-size: 2.5rem;
-  margin-bottom: 15px;
+  margin-bottom: 1rem;
 }
 
 .hero p {
+  margin-bottom: 1.5rem;
   font-size: 1.2rem;
-  margin-bottom: 20px;
 }
 
-.btn-primary, .btn-secondary {
-  display: inline-block;
-  padding: 10px 20px;
-  border-radius: 6px;
-  font-weight: bold;
-  text-decoration: none;
-}
-
-.btn-primary {
+.btn {
   background: #238636;
   color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: bold;
 }
 
-.btn-primary:hover {
+.btn:hover {
   background: #2ea043;
-}
-
-.btn-secondary {
-  background: #30363d;
-  color: #e6edf3;
-}
-
-.btn-secondary:hover {
-  background: #484f58;
 }
 
 /* Features */
 .features {
-  padding: 60px 20px;
-  background: #161b22;
+  padding: 2rem;
 }
 
 .features h2 {
-  margin-bottom: 20px;
-}
-
-.features ul {
-  list-style: none;
-}
-
-.features li {
-  margin: 10px 0;
-  font-size: 1.1rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
 }
 
 /* Pricing */
 .pricing {
-  padding: 60px 20px;
+  padding: 2rem;
   text-align: center;
 }
 
-.plan-container {
+.plans {
   display: flex;
   justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
+  gap: 2rem;
+  margin-top: 2rem;
 }
 
 .plan {
   background: #161b22;
-  padding: 20px;
+  padding: 1.5rem;
   border-radius: 10px;
   width: 250px;
 }
 
 .plan h3 {
-  margin-bottom: 10px;
-  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .plan p {
-  margin-bottom: 20px;
-  color: #8b949e;
-}
-
-/* Footer */
-.footer {
-  text-align: center;
-  padding: 20px;
-  background: #161b22;
-  color: #8b949e;
-  margin-top: 40px;
+  margin-bottom: 1rem;
 }

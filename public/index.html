@@ -1,31 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Codexa AI — Build Smarter</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="navbar">
-    <div class="logo">
-      <img src="codexa-logo.png" alt="Codexa Logo" class="logo-img" />
-      <span>Codexa AI</span>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-left">
+      <img src="assets/logo.png" alt="Codexa Logo" class="logo">
+      <span class="brand">Codexa AI</span>
     </div>
-    <nav>
+    <div class="nav-right">
+      <a href="index.html">Home</a>
       <a href="#features">Features</a>
       <a href="#pricing">Pricing</a>
       <a href="app.html">Open App</a>
-    </nav>
-  </header>
+    </div>
+  </nav>
 
-  <main class="hero">
+  <!-- Hero Section -->
+  <header class="hero">
     <h1>Generate Code in Seconds</h1>
     <p>Your AI coding assistant — fast, reliable, professional.</p>
     <a href="app.html" class="btn-primary">Try it Free</a>
-  </main>
+  </header>
 
-  <section id="features" class="section">
+  <!-- Features -->
+  <section id="features" class="features">
     <h2>✨ Features</h2>
     <ul>
       <li>⚡ Real-time Codexa AI chat (streaming)</li>
@@ -35,27 +39,29 @@
     </ul>
   </section>
 
-  <section id="pricing" class="section">
+  <!-- Pricing -->
+  <section id="pricing" class="pricing">
     <h2>💰 Pricing</h2>
-    <div class="pricing-cards">
-      <div class="card">
+    <div class="pricing-container">
+      <div class="pricing-card">
         <h3>Free</h3>
         <p>Limited generations</p>
-        <a href="app.html" class="btn-secondary">Try Free</a>
+        <button>Try Free</button>
       </div>
-      <div class="card">
+      <div class="pricing-card">
         <h3>Pro</h3>
         <p>Unlimited generations</p>
-        <a href="checkout.html" class="btn-secondary">Upgrade to Pro</a>
+        <button>Upgrade to Pro</button>
       </div>
-      <div class="card">
+      <div class="pricing-card">
         <h3>Team</h3>
         <p>Collaboration & support</p>
-        <a href="checkout.html" class="btn-secondary">Get Team Plan</a>
+        <button>Get Team Plan</button>
       </div>
     </div>
   </section>
 
+  <!-- Footer -->
   <footer>
     <p>© 2025 Codexa AI. All rights reserved.</p>
   </footer>

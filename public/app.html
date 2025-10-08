@@ -1,45 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Codexa AI App</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="navbar">
-    <div class="logo">
-      <img src="codexa-logo.png" alt="Codexa Logo" class="logo-img" />
-      <span>Codexa AI</span>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-left">
+      <img src="assets/logo.png" alt="Codexa Logo" class="logo">
+      <span class="brand">Codexa AI</span>
     </div>
-    <nav>
+    <div class="nav-right">
       <a href="index.html">Home</a>
       <a href="index.html#features">Features</a>
       <a href="index.html#pricing">Pricing</a>
-    </nav>
-  </header>
-
-  <main class="chat-container">
-    <div id="chat-box" class="chat-box"></div>
-
-    <div class="chat-controls">
-      <textarea id="user-input" placeholder="Type your message..." rows="1"></textarea>
-      <button id="send-btn" class="btn-primary">Chat</button>
-      <button id="gen-btn" class="btn-secondary">Generate Code</button>
     </div>
+  </nav>
 
-    <div class="utility-buttons">
-      <button onclick="copyChat()">Copy</button>
-      <button onclick="downloadChat()">Download</button>
-      <button onclick="exportChat()">Export Chat</button>
-      <button onclick="resetChat()">Reset</button>
+  <!-- Chat Section -->
+  <section class="chat-section">
+    <div class="chat-box" id="chat-box">
+      <div class="chat-message bot">Hello! How can I assist you today?</div>
     </div>
-  </main>
+    <div class="chat-input">
+      <input type="text" id="user-input" placeholder="Type your message...">
+      <button class="btn chat-btn">Chat</button>
+      <button class="btn generate-btn">Generate Code</button>
+    </div>
+    <div class="chat-buttons">
+      <button class="copy-btn">📋 Copy</button>
+      <button class="download-btn">⬇️ Download</button>
+      <button class="export-btn">📂 Export Chat</button>
+      <button class="reset-btn">🔄 Reset</button>
+    </div>
+  </section>
 
+  <!-- Footer -->
   <footer>
     <p>© 2025 Codexa AI. All rights reserved.</p>
   </footer>
-
-  <script src="app.js"></script>
 </body>
 </html>

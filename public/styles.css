@@ -1,94 +1,123 @@
 /* General */
 body {
+  margin: 0;
   font-family: Arial, sans-serif;
   background-color: #0d1117;
-  color: #f5f5f5;
-  margin: 0;
-  padding: 0;
+  color: #e6edf3;
+  line-height: 1.6;
 }
 
-/* Header */
-header {
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #161b22;
+  padding: 15px 40px;
+}
+.logo-container {
   display: flex;
   align-items: center;
-  padding: 15px 30px;
-  background: #161b22;
-  border-bottom: 1px solid #222;
 }
-
 .logo {
-  height: 50px;
-  margin-right: 15px;
+  height: 40px;
+  margin-right: 10px;
+}
+.nav-links a {
+  color: #58a6ff;
+  margin-left: 20px;
+  text-decoration: none;
+  font-weight: 500;
+}
+.nav-links a:hover {
+  color: #1f6feb;
 }
 
-/* Pricing Section */
-.pricing-container {
-  display: flex;
-  justify-content: center;
-  gap: 25px;
-  margin: 40px auto;
-  max-width: 900px;
-}
-
-.pricing-card {
-  background: #1e252f;
-  border-radius: 12px;
-  padding: 25px;
+/* Hero */
+.hero {
   text-align: center;
-  width: 250px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  padding: 60px 20px;
 }
-
-.pricing-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0px 8px 20px rgba(0,0,0,0.4);
+.hero h2 {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
 }
-
-.pricing-card h3 {
-  margin-bottom: 10px;
-  color: #fff;
-}
-
-.pricing-card p {
-  margin: 10px 0;
-  font-size: 14px;
-  color: #bbb;
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
 }
 
 /* Buttons */
 .btn {
   display: inline-block;
-  padding: 12px 18px;
-  margin-top: 15px;
+  padding: 12px 25px;
   border-radius: 8px;
-  text-decoration: none;
+  font-size: 16px;
   font-weight: bold;
-  transition: background 0.3s ease;
+  cursor: pointer;
+  transition: 0.3s;
+  text-decoration: none;
 }
-
-.btn-pro {
+.btn-primary {
   background: #007bff;
-  color: #fff;
+  color: white;
 }
-
-.btn-pro:hover {
+.btn-primary:hover {
   background: #0056b3;
 }
-
-.btn-team {
-  background: #28a745;
-  color: #fff;
-}
-
-.btn-team:hover {
-  background: #1e7e34;
-}
-
-.btn-free {
+.btn-secondary {
   background: #6c757d;
-  color: #fff;
+  color: white;
+}
+.btn-secondary:hover {
+  background: #565e64;
 }
 
-.btn-free:hover {
-  background: #5a6268;
+/* Features */
+.features {
+  padding: 40px 20px;
+  max-width: 800px;
+  margin: auto;
+}
+.features h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.features ul {
+  list-style: none;
+  padding: 0;
+}
+.features li {
+  margin: 10px 0;
+  font-size: 18px;
+}
+
+/* Pricing */
+.pricing {
+  padding: 40px 20px;
+  text-align: center;
+}
+.pricing-cards {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.card {
+  background: #161b22;
+  border-radius: 12px;
+  padding: 20px;
+  width: 250px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+.card h3 {
+  margin-bottom: 10px;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 20px;
+  background: #161b22;
+  margin-top: 40px;
 }

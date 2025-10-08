@@ -1,8 +1,7 @@
-/* General Reset */
-* {
+/* Reset */
+body, h1, h2, h3, p, ul {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 body {
@@ -12,52 +11,23 @@ body {
   line-height: 1.6;
 }
 
-/* Container */
-.container {
-  width: 90%;
-  max-width: 1200px;
-  margin: auto;
-}
-
-/* Header */
-header {
-  background: #161b22;
-  padding: 15px 0;
-  border-bottom: 1px solid #30363d;
-}
-
-.nav-bar {
+/* Navbar */
+.navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 15px 40px;
+  background: #161b22;
 }
 
-.logo {
-  display: flex;
-  align-items: center;
-}
-
-.logo img {
-  height: 40px;
-  margin-right: 10px;
-}
-
-nav ul {
-  display: flex;
-  list-style: none;
-}
-
-nav ul li {
-  margin-left: 20px;
-}
-
-nav ul li a {
+.navbar a {
   color: #58a6ff;
   text-decoration: none;
-  font-weight: bold;
+  margin: 0 10px;
+  font-weight: 500;
 }
 
-nav ul li a:hover {
+.navbar a:hover {
   text-decoration: underline;
 }
 
@@ -65,27 +35,25 @@ nav ul li a:hover {
 .hero {
   text-align: center;
   padding: 80px 20px;
-  background: linear-gradient(to right, #0d1117, #161b22);
+  background: #0d1117;
 }
 
-.hero h2 {
+.hero h1 {
   font-size: 2.5rem;
   margin-bottom: 15px;
 }
 
 .hero p {
   font-size: 1.2rem;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 }
 
-/* Buttons */
-.btn {
+.btn-primary, .btn-secondary {
   display: inline-block;
   padding: 10px 20px;
   border-radius: 6px;
   font-weight: bold;
   text-decoration: none;
-  transition: 0.3s;
 }
 
 .btn-primary {
@@ -99,7 +67,7 @@ nav ul li a:hover {
 
 .btn-secondary {
   background: #30363d;
-  color: white;
+  color: #e6edf3;
 }
 
 .btn-secondary:hover {
@@ -109,37 +77,29 @@ nav ul li a:hover {
 /* Features */
 .features {
   padding: 60px 20px;
-  background: #0d1117;
+  background: #161b22;
 }
 
 .features h2 {
-  text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .features ul {
   list-style: none;
-  max-width: 600px;
-  margin: auto;
-  font-size: 1.1rem;
 }
 
-.features ul li {
+.features li {
   margin: 10px 0;
+  font-size: 1.1rem;
 }
 
 /* Pricing */
 .pricing {
   padding: 60px 20px;
-  background: #161b22;
   text-align: center;
 }
 
-.pricing h2 {
-  margin-bottom: 40px;
-}
-
-.plans {
+.plan-container {
   display: flex;
   justify-content: center;
   gap: 20px;
@@ -147,27 +107,27 @@ nav ul li a:hover {
 }
 
 .plan {
-  background: #0d1117;
-  padding: 30px;
+  background: #161b22;
+  padding: 20px;
   border-radius: 10px;
-  width: 280px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  width: 250px;
 }
 
 .plan h3 {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   font-size: 1.5rem;
 }
 
 .plan p {
   margin-bottom: 20px;
+  color: #8b949e;
 }
 
 /* Footer */
-footer {
-  background: #161b22;
-  padding: 15px 0;
+.footer {
   text-align: center;
-  border-top: 1px solid #30363d;
+  padding: 20px;
+  background: #161b22;
+  color: #8b949e;
   margin-top: 40px;
 }

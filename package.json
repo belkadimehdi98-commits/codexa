@@ -22,5 +22,14 @@
     "node": ">=18.x"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/belkadimehdi98-commits/codexa.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/belkadimehdi98-commits/codexa/issues"
+  },
+  "homepage": "https://github.com/belkadimehdi98-commits/codexa#readme"
 }

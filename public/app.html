@@ -1,77 +1,416 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="auto">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <title>Codexa AI — Build websites at the speed of thought</title>
-  <meta name="description" content="Chat with Codexa AI, generate clean code, copy or download, and deploy in minutes." />
-  <meta name="theme-color" content="#0d1117" media="(prefers-color-scheme: dark)">
-  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Codexa AI</title>
+  <meta name="theme-color" content="#0d1117" />
   <link rel="icon" href="/logo.png" />
 
-  <!-- PWA-ready hooks (optional to add later): -->
-  <!-- <link rel="manifest" href="/manifest.json"> -->
+  <style>
+    :root{
+      --bg:#0d1117;
+      --panel:#111827;
+      --panel-2:#0f172a;
+      --text:#e5e7eb;
+      --muted:#9ca3af;
+      --brand:#7c3aed;      /* purple */
+      --brand-2:#22c55e;    /* green */
+      --btn:#1f2937;
+      --btn-hover:#374151;
+      --bubble-blue:#2563eb;
+      --bubble-blue-2:#1d4ed8;
+      --bubble:#0b1220;
+      --danger:#ef4444;
+      --ok:#22c55e;
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+      --radius:14px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,Apple Color Emoji,Segoe UI Emoji;
+      background:linear-gradient(180deg,#0b1220 0%, #0b1220 55%, #0a0f1a 100%);
+      color:var(--text);
+    }
 
-  <link rel="stylesheet" href="/style.css" />
+    /* Header */
+    .nav{
+      position:sticky; top:0; z-index:30;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:16px; padding:14px 18px;
+      background:rgba(10,15,26,.8);
+      backdrop-filter: blur(10px);
+      border-bottom:1px solid rgba(255,255,255,.04);
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:.2px;
+    }
+    .brand .bolt{
+      display:inline-grid; place-items:center;
+      width:28px; height:28px; border-radius:8px;
+      background: radial-gradient(100% 100% at 0% 0%, #9a6bff 0%, #6d28d9 100%);
+      box-shadow: 0 6px 20px rgba(124,58,237,.45), inset 0 0 12px rgba(255,255,255,.2);
+      color:#fff; font-size:15px;
+    }
+    .nav a{
+      color:var(--text); text-decoration:none; font-weight:600; opacity:.85;
+    }
+    .nav a:hover{opacity:1}
+
+    /* Page */
+    .wrap{
+      max-width:1100px; margin:22px auto 28px; padding:0 16px;
+    }
+
+    /* Chat panel */
+    .panel{
+      background:linear-gradient(180deg,#0e1423 0%, #0b1220 100%);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .header-row{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 16px; border-bottom:1px solid rgba(255,255,255,.06);
+      background:rgba(15,23,42,.6);
+    }
+    .toolbar{
+      display:flex; gap:8px; flex-wrap:wrap;
+    }
+
+    /* Buttons */
+    .btn{
+      padding:10px 14px; border-radius:10px; border:1px solid rgba(255,255,255,.08);
+      background:var(--btn); color:var(--text); font-weight:600; cursor:pointer;
+      transition: all .15s ease;
+    }
+    .btn:hover{background:var(--btn-hover)}
+    .btn.primary{background:linear-gradient(180deg,#8b5cf6 0%, #6d28d9 100%); border:0}
+    .btn.primary:hover{filter:brightness(1.06)}
+    .btn.success{background:linear-gradient(180deg,#22c55e 0%, #16a34a 100%); border:0}
+    .btn.ghost{background:transparent}
+    .btn.small{padding:8px 12px; font-size:.92rem}
+
+    /* Messages */
+    .chat{
+      height: calc(100dvh - 260px);
+      min-height:380px;
+      overflow:auto;
+      padding:14px;
+      scroll-behavior:smooth;
+    }
+    .msg{
+      max-width:min(680px, 88%);
+      margin:12px 0;
+      padding:14px 16px;
+      line-height:1.45;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.06);
+      background:var(--bubble);
+      white-space:pre-wrap;
+      word-break:break-word;
+    }
+    .msg.user{
+      margin-left:auto;
+      background:linear-gradient(180deg,var(--bubble-blue) 0%, var(--bubble-blue-2) 100%);
+      border:0; color:#fff;
+      box-shadow: 0 10px 24px rgba(37,99,235,.25);
+    }
+    .msg.assistant{margin-right:auto}
+    .meta{font-size:.78rem; color:var(--muted); margin:0 0 6px 2px}
+
+    /* Composer */
+    .composer{
+      position:sticky; bottom:0; z-index:20;
+      padding:12px; background:linear-gradient(180deg, transparent, rgba(10,15,26,.9) 22%, rgba(10,15,26,.95) 100%);
+      border-top:1px solid rgba(255,255,255,.06);
+      display:grid; grid-template-columns:1fr auto auto; gap:10px;
+    }
+    textarea{
+      width:100%; min-height:56px; max-height:180px; resize:vertical;
+      border-radius:12px; padding:14px; outline:none; border:1px solid rgba(255,255,255,.08);
+      background:linear-gradient(180deg, #0c1322, #0c1320);
+      color:var(--text);
+      box-shadow: inset 0 2px 18px rgba(0,0,0,.18);
+    }
+
+    /* badges */
+    .badge {
+      display:inline-block; padding:6px 10px;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:999px; font-size:.82rem; color:var(--muted)
+    }
+    .typing{animation: pulse 1.2s ease-in-out infinite}
+    @keyframes pulse {
+      0%{opacity:.30} 50%{opacity:1} 100%{opacity:.30}
+    }
+
+    /* Toast */
+    .toast{
+      position:fixed; left:50%; bottom:20px; transform:translateX(-50%);
+      background:#111827; color:var(--text); border:1px solid rgba(255,255,255,.08);
+      padding:10px 14px; border-radius:10px; box-shadow:var(--shadow); z-index:50;
+      display:none;
+    }
+    .toast.show{display:block}
+
+    /* Footer */
+    footer{
+      margin:22px auto 40px; padding:10px 14px; text-align:center;
+      color:var(--muted);
+    }
+
+    /* Utilities */
+    .hidden{display:none!important}
+    @media (max-width:720px){
+      .chat{height: calc(100dvh - 240px); min-height:340px}
+      .composer{grid-template-columns:1fr auto}
+      .brand-name{display:none}
+      .toolbar{gap:6px}
+      .msg{max-width:94%}
+    }
+  </style>
 </head>
 <body>
-  <!-- Header -->
-  <header class="nav">
-    <a class="brand" href="/">
-      <img src="/logo.png" alt="Codexa Logo" />
-      <span>Codexa AI</span>
-    </a>
-
-    <div class="nav-actions">
-      <button id="themeToggle" class="btn ghost" aria-label="Toggle theme">🌙</button>
-      <a href="/" class="link">Home</a>
-      <a href="/tutorial.html" class="link">Tutorial</a>
+  <!-- NAV -->
+  <div class="nav">
+    <div class="brand">
+      <span class="bolt">⚡</span>
+      <a href="/" class="brand-name">Codexa AI</a>
     </div>
-  </header>
-
-  <!-- Onboarding Modal -->
-  <div id="onboarding" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="ob-title">
-    <div class="modal-card">
-      <h2 id="ob-title">Welcome to Codexa</h2>
-      <ol class="checklist">
-        <li><b>Chat</b> naturally: describe your idea, ask questions, refine.</li>
-        <li>When Codexa returns code (with <b>Copy</b>/<b>Download</b>), save it and test.</li>
-      </ol>
-      <div class="modal-actions">
-        <label class="switch">
-          <input type="checkbox" id="dontShowAgain" />
-          <span>Don’t show again</span>
-        </label>
-        <button id="obClose" class="btn primary">Got it</button>
-      </div>
+    <div class="toolbar">
+      <a href="/">Home</a>
+      <a href="/tutorial.html">Tutorial</a>
     </div>
   </div>
 
-  <!-- Main -->
-  <main id="chat" class="chat">
-    <div class="msg ai">
-      <div class="meta">💡 Codexa AI</div>
-      <div class="bubble">Hello! I’m Codexa AI. Tell me what you want to build and I’ll guide you — and generate clean code when you’re ready.</div>
-    </div>
+  <main class="wrap">
+    <section class="panel" aria-label="Chat">
+      <div class="header-row">
+        <div class="badge">Hello! How can I assist you today?</div>
+        <div class="toolbar">
+          <button id="btnCopy" class="btn small">Copy</button>
+          <button id="btnDownload" class="btn small">Download</button>
+          <button id="btnExport" class="btn small">Export chat</button>
+          <button id="btnReset" class="btn small ghost">Reset</button>
+        </div>
+      </div>
+
+      <div id="chat" class="chat" aria-live="polite" aria-busy="false"></div>
+
+      <div class="composer">
+        <textarea id="input" placeholder="Type your message... (Enter = send, Shift+Enter = new line)"></textarea>
+        <button id="btnSend" class="btn success" aria-label="Send">Chat</button>
+        <button id="btnGen" class="btn primary" aria-label="Generate Code">Generate Code</button>
+      </div>
+    </section>
   </main>
 
-  <!-- Sticky composer -->
-  <div class="composer">
-    <div class="composer-row">
-      <textarea id="input" rows="1" placeholder="Type your message… (Enter = send, Shift+Enter = new line)"></textarea>
-      <button id="sendBtn" class="btn primary">💬 Chat</button>
-    </div>
-    <div class="composer-tools">
-      <button id="exportBtn" class="btn ghost">Export chat</button>
-      <button id="resetBtn" class="btn ghost">Reset</button>
-    </div>
-  </div>
+  <footer>© 2025 Codexa. All rights reserved.</footer>
 
-  <footer class="foot">
-    <div>© 2025 Codexa • <a href="/terms.html" class="link">Terms</a> • <a href="/privacy.html" class="link">Privacy</a></div>
-  </footer>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-  <script src="/app.js"></script>
+  <script>
+    // ===== Utilities =====
+    const $ = s => document.querySelector(s);
+    const chatEl = $('#chat');
+    const inputEl = $('#input');
+    const btnSend = $('#btnSend');
+    const btnGen = $('#btnGen');
+    const btnCopy = $('#btnCopy');
+    const btnDownload = $('#btnDownload');
+    const btnExport = $('#btnExport');
+    const btnReset = $('#btnReset');
+    const toastEl = $('#toast');
+
+    const state = {
+      messages: [],               // {role:'user'|'assistant', content:string}
+      streaming: false,
+      aborter: null,
+    };
+
+    function showToast(msg, ms=1800){
+      toastEl.textContent = msg;
+      toastEl.classList.add('show');
+      setTimeout(()=>toastEl.classList.remove('show'), ms);
+    }
+
+    function addMessage(role, content){
+      state.messages.push({role, content});
+      render();
+    }
+
+    function lastAssistantText(){
+      const m = [...state.messages].reverse().find(x => x.role==='assistant');
+      return m ? m.content : '';
+    }
+
+    function render(){
+      chatEl.innerHTML = '';
+      state.messages.forEach(m => {
+        const wrap = document.createElement('div');
+        wrap.className = 'msg ' + (m.role === 'user' ? 'user' : 'assistant');
+
+        if(m.role==='assistant'){
+          // simple markdown-ish: strip ``` fences if model sends them
+          let txt = m.content || '';
+          txt = txt.replace(/^```(html|js|css)?/gmi,'').replace(/```$/gm,'');
+          wrap.textContent = txt;
+        }else{
+          wrap.textContent = m.content;
+        }
+        chatEl.appendChild(wrap);
+      });
+
+      // Typing badge if streaming
+      if(state.streaming){
+        const meta = document.createElement('div');
+        meta.className = 'meta typing';
+        meta.textContent = 'Codexa AI is typing...';
+        chatEl.appendChild(meta);
+      }
+      chatEl.scrollTop = chatEl.scrollHeight + 80;
+    }
+
+    function copyAll(){
+      const all = state.messages.map(m => (m.role==='user'?'You: ':'Codexa AI: ') + (m.content || '')).join('\n\n');
+      navigator.clipboard.writeText(all).then(()=>showToast('Copied chat to clipboard'));
+    }
+
+    function downloadLatestHTML(){
+      const html = extractHTMLFromAssistant(lastAssistantText());
+      if(!html){
+        showToast('No code to download yet');
+        return;
+      }
+      const blob = new Blob([html], {type:'text/html'});
+      const a = Object.assign(document.createElement('a'), {href: URL.createObjectURL(blob), download: 'index.html'});
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
+      showToast('Downloaded index.html');
+    }
+
+    function exportChat(){
+      const blob = new Blob([JSON.stringify(state.messages, null, 2)], {type:'application/json'});
+      const a = Object.assign(document.createElement('a'), {href: URL.createObjectURL(blob), download: 'codexa-chat.json'});
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
+      showToast('Exported chat');
+    }
+
+    function resetChat(){
+      if(state.streaming && state.aborter){ state.aborter.abort(); }
+      state.messages = [];
+      render();
+    }
+
+    function extractHTMLFromAssistant(text=''){
+      // if model wrapped code with ```html fences, grab inside; else return as-is
+      const fence = text.match(/```(?:html)?\s*([\s\S]*?)```/i);
+      if(fence) return fence[1].trim();
+      // fallback: if looks like html page
+      if(/<!doctype html>/i.test(text) || /<html[\s>]/i.test(text)) return text.trim();
+      return '';
+    }
+
+    function sendUserMessage(text){
+      if(!text.trim()) return;
+      addMessage('user', text.trim());
+      inputEl.value = '';
+      startStream(text.trim());
+    }
+
+    function generateCodeFromContext(){
+      // Use conversation context: last user request + summary to ask for single-file HTML
+      const prompt = `Create a single, production-ready HTML file (with inline CSS/JS) based on our conversation. Reply ONLY with the final code in one block.`;
+      addMessage('user', prompt);
+      startStream(prompt);
+    }
+
+    // ===== Streaming (SSE-style via fetch + NDJSON) =====
+    async function startStream(prompt){
+      if(state.streaming){ return; }
+      state.streaming = true;
+      state.aborter = new AbortController();
+
+      // Start an empty assistant message we’ll append tokens to
+      addMessage('assistant', '');
+      const idx = state.messages.length - 1;
+
+      render();
+
+      try{
+        const res = await fetch(`/chat-stream?prompt=${encodeURIComponent(prompt)}`, {
+          method:'GET',
+          signal: state.aborter.signal,
+          headers: { 'Accept': 'text/event-stream' }
+        });
+
+        if(!res.ok || !res.body){
+          throw new Error(`HTTP ${res.status}`);
+        }
+
+        const decoder = new TextDecoder();
+        const reader = res.body.getReader();
+
+        while(true){
+          const {done, value} = await reader.read();
+          if(done) break;
+          const chunk = decoder.decode(value, {stream:true});
+          const lines = chunk.split('\n').filter(Boolean);
+
+          for(const line of lines){
+            if(line.startsWith('event: done')){
+              // server sends "event: done" when finished
+              continue;
+            }
+            if(!line.startsWith('data:')) continue;
+
+            const jsonStr = line.slice(5).trim();
+            try{
+              const payload = JSON.parse(jsonStr);
+              if(payload.token){
+                state.messages[idx].content += payload.token;
+                render();
+              }else if(payload.error){
+                state.messages[idx].content += `\n\n[${payload.error}]`;
+                render();
+              }
+            }catch(_){}
+          }
+        }
+      }catch(err){
+        state.messages[idx].content += `\n\n[Connection issue. Please try again.]`;
+        render();
+      }finally{
+        state.streaming = false;
+        state.aborter = null;
+        render();
+      }
+    }
+
+    // ===== Events =====
+    btnSend.addEventListener('click', ()=> sendUserMessage(inputEl.value));
+    btnGen.addEventListener('click', generateCodeFromContext);
+
+    inputEl.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter' && !e.shiftKey){
+        e.preventDefault();
+        btnSend.click();
+      }
+    });
+
+    btnCopy.addEventListener('click', copyAll);
+    btnDownload.addEventListener('click', downloadLatestHTML);
+    btnExport.addEventListener('click', exportChat);
+    btnReset.addEventListener('click', resetChat);
+
+    // Hydrate with a welcome message
+    addMessage('assistant', 'Hello! How can I assist you today?');
+  </script>
 </body>
 </html>

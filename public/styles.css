@@ -1,101 +1,138 @@
-:root{
-  /* Dark theme (default) */
-  --bg:#0d1117; --panel:#0b1322; --text:#e5e7eb; --muted:#9aa4b2;
-  --border:#1f2937; --bubble:#111827; --bubbleMe:#2563eb;
-  --codeBg:#0f172a; --codeBorder:#1e293b;
-  --brand:#60a5fa; --brandText:#0b1220; --good:#22c55e; --warn:#f59e0b;
-}
-:root[data-theme="light"]{
-  --bg:#ffffff; --panel:#f8fafc; --text:#0b1220; --muted:#536174;
-  --border:#e5e7eb; --bubble:#f3f4f6; --bubbleMe:#2563eb;
-  --codeBg:#f5f7fb; --codeBorder:#e5e7eb;
-  --brand:#2563eb; --brandText:#ffffff; --good:#16a34a; --warn:#d97706;
-}
-*{box-sizing:border-box}
-html,body{height:100%}
-body{
-  margin:0; background:var(--bg); color:var(--text);
-  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  display:flex; flex-direction:column;
+/* Global */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0d1117;
+  color: #f0f6fc;
 }
 
-/* Header */
-.nav{
-  position:sticky; top:0; z-index:5;
-  display:flex; align-items:center; justify-content:space-between;
-  gap:12px; padding:12px 16px; background:var(--panel);
-  border-bottom:1px solid var(--border);
-}
-.brand{display:flex; align-items:center; gap:10px; color:var(--text); text-decoration:none; font-weight:800}
-.brand img{height:28px; width:auto}
-.nav-actions{display:flex; align-items:center; gap:12px}
-.link{color:var(--text); opacity:.85; text-decoration:none}
-.link:hover{opacity:1}
+a { color: #58a6ff; text-decoration: none; }
+a:hover { text-decoration: underline; }
 
-/* Buttons */
-.btn{border:1px solid var(--border); border-radius:10px; padding:10px 14px; cursor:pointer; font-weight:700}
-.btn.primary{background:var(--brand); color:var(--brandText); border-color:transparent}
-.btn.primary:hover{filter:brightness(1.05)}
-.btn.ghost{background:transparent; color:var(--text)}
-.btn.ghost:hover{background:rgba(127,127,127,.08)}
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #161b22;
+  padding: 10px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+.navbar .logo {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+.navbar .logo img {
+  width: 30px;
+  margin-right: 8px;
+}
+.navbar nav { display: flex; gap: 15px; }
+.hamburger { display: none; cursor: pointer; font-size: 20px; }
 
-/* Chat */
-.chat{flex:1; overflow:auto; padding:18px 18px 120px}
-.msg{max-width:960px; margin:12px auto}
-.meta{font-size:12px; color:var(--muted); margin-bottom:6px}
-.bubble{
-  background:var(--bubble); border:1px solid var(--border); border-radius:12px;
-  padding:12px 14px; line-height:1.55; word-wrap:break-word; white-space:pre-wrap;
+/* Hero */
+.hero {
+  text-align: center;
+  padding: 80px 20px;
 }
-.msg.me .bubble{
-  background:var(--bubbleMe); color:#fff; border-color:transparent;
+.cta-btn {
+  background: #238636;
+  color: #fff;
+  padding: 12px 25px;
+  border-radius: 5px;
+  font-size: 1.1em;
 }
-.msg.me{display:flex; flex-direction:column; align-items:flex-end}
+.cta-btn:hover { background: #2ea043; }
 
-/* Code blocks */
-.codewrap{
-  position:relative; margin:10px 0; background:var(--codeBg);
-  border:1px solid var(--codeBorder); border-radius:12px;
+/* Chat/Code App */
+.chat-container {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #161b22;
+  border-radius: 10px;
 }
-.code-toolbar{
-  position:absolute; top:8px; right:8px; display:flex; gap:8px;
+#chat-box {
+  height: 400px;
+  overflow-y: auto;
+  border: 1px solid #30363d;
+  padding: 10px;
+  background: #0d1117;
+  border-radius: 8px;
 }
-.codebtn{
-  border:1px solid var(--codeBorder); border-radius:8px;
-  background:transparent; color:var(--text); padding:6px 10px; cursor:pointer; font-weight:700; font-size:12px;
-}
-.codebtn:hover{background:rgba(127,127,127,.08)}
-pre{margin:0; padding:14px; overflow:auto; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; color:inherit}
-code{color:inherit}
+.bot-message { background: #21262d; padding: 10px; border-radius: 8px; margin-bottom: 10px; }
 
-/* Composer */
-.composer{
-  position:sticky; bottom:0; left:0; right:0;
-  background:var(--panel); border-top:1px solid var(--border);
-  padding:10px 12px;
-}
-.composer-row{display:flex; gap:10px; max-width:1000px; margin:0 auto}
-#input{
-  flex:1; min-height:46px; max-height:140px; resize:vertical;
-  border:1px solid var(--border); border-radius:12px; padding:10px 12px;
-  background: var(--codeBg); color: var(--text);
-}
-.composer-tools{
-  max-width:1000px; margin:6px auto 0; display:flex; gap:8px; justify-content:flex-end;
+.chat-input { margin-top: 10px; }
+.chat-input textarea {
+  width: 100%;
+  height: 60px;
+  border-radius: 5px;
+  padding: 10px;
+  border: 1px solid #30363d;
+  background: #0d1117;
+  color: #fff;
 }
 
-/* Modal */
-.modal{position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,.45)}
-.modal.hidden{display:none}
-.modal-card{width:min(560px,94vw); background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:18px}
-.checklist{color:var(--muted); line-height:1.6}
-.modal-actions{display:flex; justify-content:space-between; align-items:center; margin-top:12px}
-.switch{display:flex; align-items:center; gap:8px; color:var(--muted)}
+/* Sticky Buttons */
+.sticky-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  position: sticky;
+  bottom: 10px;
+  margin-top: 10px;
+}
+.btn {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.chat-btn { background: #2ea043; color: #fff; }
+.chat-btn:hover { background: #238636; }
+.code-btn { background: #8957e5; color: #fff; }
+.code-btn:hover { background: #6f42c1; }
 
-/* Typing badge */
-.typing{display:inline-block; opacity:.8; font-size:12px; padding:4px 10px; border:1px dashed var(--border); border-radius:999px; background:var(--codeBg);}
+.extra-actions { margin-top: 10px; display: flex; gap: 10px; }
 
-/* Mobile tweaks */
-@media (max-width:760px){
-  .composer-tools{justify-content:space-between}
+/* Pricing */
+.pricing { text-align: center; padding: 50px 20px; }
+.plans { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+.plan {
+  background: #161b22;
+  padding: 20px;
+  border-radius: 10px;
+  width: 250px;
+}
+.plan h3 { margin: 0; }
+.plan button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  border: none;
+  background: #238636;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.plan button:hover { background: #2ea043; }
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 15px;
+  background: #161b22;
+  margin-top: 40px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar nav { display: none; flex-direction: column; gap: 10px; background: #161b22; padding: 10px; }
+  .navbar nav.active { display: flex; }
+  .hamburger { display: block; }
+  .sticky-buttons { flex-direction: column; align-items: stretch; }
 }

@@ -1,43 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Codexa AI App</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
+  <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
   <!-- Navbar -->
   <header class="navbar">
-    <img src="logo.png" alt="Codexa Logo" class="logo">
-    <h1>Codexa AI</h1>
+    <div class="logo-container">
+      <img src="/logo.png" alt="Codexa Logo" class="logo" />
+      <span class="brand">Codexa AI</span>
+    </div>
     <nav>
       <a href="index.html">Home</a>
-      <a href="index.html#features">Features</a>
-      <a href="index.html#pricing">Pricing</a>
+      <a href="features.html">Features</a>
+      <a href="pricing.html">Pricing</a>
     </nav>
   </header>
 
-  <!-- Chat Box -->
+  <!-- Chat App -->
   <main class="chat-container">
-    <div class="chat-box" id="chat-box"></div>
-    <div class="chat-input">
-      <input type="text" id="user-input" placeholder="Type your message...">
-      <button onclick="sendMessage()">Chat</button>
-      <button onclick="generateCode()">Generate Code</button>
-    </div>
-    <div class="chat-actions">
-      <button onclick="copyChat()">Copy</button>
-      <button onclick="downloadChat()">Download</button>
-      <button onclick="exportChat()">Export Chat</button>
-      <button onclick="resetChat()">Reset</button>
+    <div id="chat-box" class="chat-box"></div>
+    <div class="chat-input-container">
+      <input type="text" id="user-input" placeholder="Type your message..." />
+      <button id="send-btn" class="btn-primary">Chat</button>
+      <button id="generate-btn" class="btn-secondary">Generate Code</button>
     </div>
   </main>
 
-  <!-- Footer -->
-  <footer>
-    <p>© 2025 Codexa AI. All rights reserved.</p>
-  </footer>
+  <script src="/app.js" defer></script>
 </body>
 </html>

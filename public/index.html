@@ -1,43 +1,81 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Codexa AI</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <!-- Navbar -->
-  <header class="navbar">
-    <div class="logo">
-      <img src="logo.png" alt="Codexa Logo">
-      <span>Codexa AI</span>
-    </div>
-    <nav id="menu">
-      <a href="index.html">Home</a>
-      <a href="features.html">Features</a>
-      <a href="pricing.html">Pricing</a>
-      <a href="app.html">Open App</a>
-    </nav>
-    <div class="hamburger" onclick="toggleMenu()">☰</div>
-  </header>
-
-  <!-- Hero -->
-  <section class="hero">
-    <h1>Generate Code in Seconds</h1>
-    <p>Your AI coding assistant — fast, reliable, professional.</p>
-    <a href="app.html" class="cta-btn">Try it Free</a>
-  </section>
-
-  <!-- Footer -->
-  <footer>
-    <p>Powered by Codexa AI</p>
-  </footer>
-
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Codexa AI — Build Smarter. Ship Faster.</title>
+  <link rel="icon" href="/logo.png"/>
+  <link rel="stylesheet" href="/style.css"/>
   <script>
-    function toggleMenu() {
-      document.getElementById("menu").classList.toggle("active");
+    function toggleTheme(){
+      const r=document.documentElement; const cur=r.getAttribute('data-theme')||'dark';
+      const next = cur==='dark'?'light':'dark'; r.setAttribute('data-theme',next); localStorage.setItem('theme',next);
+    }
+    document.addEventListener('DOMContentLoaded',()=>{const s=localStorage.getItem('theme'); if(s) document.documentElement.setAttribute('data-theme',s);});
+    async function checkout(key){
+      try{
+        const r=await fetch('/create-checkout-session',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({priceId:key})});
+        const d=await r.json(); if(d?.url) location.href=d.url; else alert(d?.error||'Something went wrong.');
+      }catch{alert('Network error');}
     }
   </script>
+</head>
+<body>
+  <header class="nav">
+    <div class="nav-left">
+      <img src="/logo.png" class="logo" alt="Codexa"/>
+      <span class="brand">Codexa AI</span>
+    </div>
+    <nav class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a class="btn-soft" href="/app.html">Open App</a>
+      <button class="btn-ghost" onclick="toggleTheme()" aria-label="Toggle theme">🌓</button>
+    </nav>
+  </header>
+
+  <main class="hero">
+    <h1>Generate Code in Seconds</h1>
+    <p class="muted">Describe it. See it. Ship it.</p>
+    <div class="cta-row">
+      <a class="btn-primary" href="/app.html">Start AI Generator</a>
+      <a class="btn-soft" href="#pricing">See Pricing</a>
+    </div>
+  </main>
+
+  <section id="features" class="section">
+    <h2>Features</h2>
+    <ul class="features">
+      <li>⚡ Real-time Codexa AI chat (streaming)</li>
+      <li>💻 One-click code generation with Copy & Download</li>
+      <li>🗂️ Export chat (JSON) & reset sessions</li>
+      <li>📱 Mobile & tablet optimized</li>
+    </ul>
+  </section>
+
+  <section id="pricing" class="section">
+    <h2>Pricing</h2>
+    <div class="pricing-grid">
+      <div class="card">
+        <h3>Free</h3>
+        <p class="muted">Try Codexa with limited generations</p>
+        <a class="btn-soft" href="/app.html">Try Free</a>
+      </div>
+      <div class="card">
+        <h3>Pro</h3>
+        <p class="muted">Unlimited generations for makers</p>
+        <button class="btn-primary" onclick="checkout('PRICE_PRO')">Upgrade to Pro</button>
+      </div>
+      <div class="card">
+        <h3>Team</h3>
+        <p class="muted">Collaboration & priority support</p>
+        <button class="btn-primary" onclick="checkout('PRICE_TEAM')">Get Team Plan</button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div>© 2025 Codexa — Crafted with Precision. • <a href="/privacy.html">Privacy</a> • <a href="/terms.html">Terms</a> • <a href="/about.html">About</a> • <a href="mailto:support@codexa.codes">Contact</a></div>
+  </footer>
 </body>
 </html>

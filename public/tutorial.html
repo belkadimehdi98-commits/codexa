@@ -1,52 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Codexa Tutorial</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin:0; background:#0d1117; color:#fff; line-height:1.6; }
-    header { background:#161b22; padding:1rem 2rem; }
-    main { max-width:800px; margin:2rem auto; padding:1rem; }
-    h1 { text-align:center; margin-bottom:1.5rem; }
-    a { color:#3b82f6; }
-    section { margin-bottom:2rem; }
-    footer { text-align:center; padding:1rem; background:#161b22; color:#aaa; }
-  </style>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Tutorial — Codexa AI</title>
+  <link rel="icon" href="/logo.png"/>
+  <link rel="stylesheet" href="/style.css"/>
+  <script>
+    document.addEventListener('DOMContentLoaded',()=>{const s=localStorage.getItem('theme'); if(s) document.documentElement.setAttribute('data-theme',s);});
+    function toggleTheme(){const r=document.documentElement;const cur=r.getAttribute('data-theme')||'dark';const n=cur==='dark'?'light':'dark';r.setAttribute('data-theme',n);localStorage.setItem('theme',n);}
+  </script>
 </head>
 <body>
-  <header>⚡ Codexa Tutorial</header>
-  <main>
-    <h1>How to Use Codexa</h1>
+  <header class="nav">
+    <div class="nav-left">
+      <img src="/logo.png" class="logo" alt="Codexa"/>
+      <a href="/" class="brand">Codexa AI</a>
+    </div>
+    <nav class="nav-links">
+      <a href="/">Home</a>
+      <a href="/app.html">Open App</a>
+      <button class="btn-ghost" onclick="toggleTheme()" aria-label="Toggle theme">🌓</button>
+    </nav>
+  </header>
 
-    <section>
-      <h2>Step 1 – Generate Code</h2>
-      <p>Start a chat with AI. When you’re ready, click <b>💻 Generate Code</b>. Your code will appear inside the chat with copy/download options.</p>
-    </section>
-
-    <section>
-      <h2>Step 2 – Open Locally</h2>
-      <p>1. Copy/download your code.<br>
-      2. Open <a href="https://code.visualstudio.com/" target="_blank">VS Code</a>.<br>
-      3. Paste the code into a new file and save as <code>index.html</code>.<br>
-      4. Double-click <code>index.html</code> → your site opens in browser.</p>
-    </section>
-
-    <section>
-      <h2>Step 3 – Host Online</h2>
-      <p>Upload your <code>index.html</code> to a free host:</p>
+  <main class="tutorial">
+    <h1>Quick Start</h1>
+    <div class="step">
+      <b>1) Chat with Codexa</b><br/>Describe your idea. Ask questions. Iterate until it’s right.
+    </div>
+    <div class="step">
+      <b>2) Generate Code</b><br/>Click <i>Generate Code</i>. Use the Copy/Download buttons to save the file as <code>index.html</code>.
+    </div>
+    <div class="step">
+      <b>3) Preview Locally</b><br/>Double-click <code>index.html</code> to open in your browser.
+    </div>
+    <div class="step">
+      <b>4) Deploy Online</b><br/>
+      Free hosting options:
       <ul>
-        <li><a href="https://www.netlify.com/" target="_blank">Netlify</a></li>
-        <li><a href="https://vercel.com/" target="_blank">Vercel</a></li>
-        <li><a href="https://pages.github.com/" target="_blank">GitHub Pages</a></li>
+        <li><a href="https://www.netlify.com/" target="_blank" rel="noopener">Netlify</a></li>
+        <li><a href="https://vercel.com/" target="_blank" rel="noopener">Vercel</a></li>
+        <li><a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a></li>
       </ul>
-    </section>
-
-    <section>
-      <h2>Need Help?</h2>
-      <p>Email us at <a href="mailto:support@codexa.codes">support@codexa.codes</a></p>
-    </section>
+    </div>
+    <div class="step">
+      <b>Need help?</b> Contact <a href="mailto:support@codexa.codes">support@codexa.codes</a>.
+    </div>
   </main>
-  <footer>© 2025 Codexa. All rights reserved.</footer>
+
+  <footer class="footer">© 2025 Codexa — Crafted with Precision. • <a href="/privacy.html">Privacy</a> • <a href="/terms.html">Terms</a> • <a href="/about.html">About</a></footer>
 </body>
 </html>

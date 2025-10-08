@@ -6,12 +6,11 @@
   <title>Checkout - Codexa AI</title>
   <link rel="stylesheet" href="styles.css">
   <script src="https://js.stripe.com/v3/"></script>
-  <script src="script.js" defer></script>
+  <script defer src="script.js"></script>
 </head>
 <body>
   <header>
     <img src="logo.png" alt="Codexa Logo" class="logo">
-    <span class="brand">Codexa AI</span>
     <nav>
       <a href="index.html">Home</a>
       <a href="pricing.html">Pricing</a>
@@ -19,28 +18,24 @@
     </nav>
   </header>
 
-  <main>
-    <section class="pricing">
-      <h2>Upgrade Your Plan</h2>
-      <p>Select a plan and complete payment securely.</p>
-      <div class="pricing-cards">
-        <div class="card">
-          <h3>Pro Plan</h3>
-          <p>Unlimited generations</p>
-          <button onclick="redirectToCheckout('pro')" class="btn btn-primary">Subscribe Pro</button>
-        </div>
+  <main class="checkout-page">
+    <h1>Upgrade Your Plan</h1>
+    <p>Select a plan and complete payment securely.</p>
 
-        <div class="card">
-          <h3>Team Plan</h3>
-          <p>Collaboration & support</p>
-          <button onclick="redirectToCheckout('team')" class="btn btn-primary">Subscribe Team</button>
-        </div>
+    <div class="pricing-cards">
+      <div class="card">
+        <h3>Pro Plan</h3>
+        <p>Unlimited generations</p>
+        <button id="checkout-pro" class="btn">Subscribe Pro</button>
       </div>
-    </section>
+      <div class="card">
+        <h3>Team Plan</h3>
+        <p>Collaboration & support</p>
+        <button id="checkout-team" class="btn secondary">Subscribe Team</button>
+      </div>
+    </div>
   </main>
 
-  <footer>
-    <p>© 2025 Codexa AI. All rights reserved.</p>
-  </footer>
+  <footer>© 2025 Codexa AI. All rights reserved.</footer>
 </body>
 </html>

@@ -1,38 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Checkout - Codexa AI</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css" />
   <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
   <header class="navbar">
-    <div class="logo-container">
-      <img src="logo.png" alt="Codexa Logo" class="logo">
-      <h1>Codexa AI</h1>
+    <div class="logo">
+      <img src="logo.png" alt="Codexa Logo" />
+      <span>Codexa AI</span>
     </div>
-    <nav class="nav-links">
+    <nav>
       <a href="index.html">Home</a>
-      <a href="pricing.html">Pricing</a>
+      <a href="index.html#pricing">Pricing</a>
       <a href="app.html">Open App</a>
     </nav>
   </header>
 
-  <section class="pricing">
+  <section class="checkout">
     <h2>Upgrade Your Plan</h2>
     <p>Select a plan and complete payment securely.</p>
-    <div class="pricing-cards">
-      <div class="card">
+    <div class="plans">
+      <div class="plan-card">
         <h3>Pro Plan</h3>
         <p>Unlimited generations</p>
-        <button id="checkout-pro" class="btn btn-primary">Subscribe Pro</button>
+        <button id="checkout-pro" class="btn-primary">Subscribe Pro</button>
       </div>
-      <div class="card">
+      <div class="plan-card">
         <h3>Team Plan</h3>
         <p>Collaboration & support</p>
-        <button id="checkout-team" class="btn btn-primary">Subscribe Team</button>
+        <button id="checkout-team" class="btn-primary">Subscribe Team</button>
       </div>
     </div>
   </section>
@@ -41,20 +41,6 @@
     <p>© 2025 Codexa AI. All rights reserved.</p>
   </footer>
 
-  <script>
-    const stripe = Stripe("pk_live_51SEW0g50pz2SntAR9AD7gJop6Ld4LgZVVve4enxE7GkyD8mV4RaAm6tOaovxtWBMMQXfOrPopueiXya0R5nMTSVJ00PJ7m7y3v");
-
-    document.getElementById("checkout-pro").addEventListener("click", () => {
-      fetch("/create-checkout-session?price=price_1SFFMf50pz2SntAR9RG9WteF")
-        .then(res => res.json())
-        .then(session => stripe.redirectToCheckout({ sessionId: session.id }));
-    });
-
-    document.getElementById("checkout-team").addEventListener("click", () => {
-      fetch("/create-checkout-session?price=price_1SFFP950pz2SntARpYHyaZEi")
-        .then(res => res.json())
-        .then(session => stripe.redirectToCheckout({ sessionId: session.id }));
-    });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>

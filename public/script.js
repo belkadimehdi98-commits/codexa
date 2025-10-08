@@ -1,31 +1,33 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const checkoutPro = document.getElementById("checkout-pro");
-  const checkoutTeam = document.getElementById("checkout-team");
+// Stripe setup
+const stripe = Stripe("pk_live_51SEW0g50pz2SntAR9AD7gJop6Ld4LgZVVve4enxE7GkyD8mV4RaAm6tOaovxtWBMMQXfOrPopueiXya0R5nMTSVJ00PJ7m7y3v");
 
-  async function redirectToCheckout(priceId) {
-    const res = await fetch("/create-checkout-session", {
+// Helper function to create checkout session
+async function createCheckout(priceId) {
+  try {
+    const response = await fetch("/create-checkout-session", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ priceId }),
+      body: JSON.stringify({ priceId })
     });
 
-    const data = await res.json();
-    if (data.url) {
-      window.location.href = data.url;
+    const session = await response.json();
+
+    if (session.id) {
+      stripe.redirectToCheckout({ sessionId: session.id });
     } else {
-      alert("⚠️ Payment failed: " + data.error);
+      alert("Error creating checkout session.");
     }
+  } catch (error) {
+    console.error("Checkout error:", error);
+    alert("Something went wrong. Try again.");
   }
+}
 
-  if (checkoutPro) {
-    checkoutPro.addEventListener("click", () => {
-      redirectToCheckout("price_1SFFMf50pz2SntAR9RG9WteF"); // ✅ Pro price ID
-    });
-  }
+// Attach event listeners
+document.addEventListener("DOMContentLoaded", () => {
+  const proBtn = document.getElementById("checkout-pro");
+  const teamBtn = document.getElementById("checkout-team");
 
-  if (checkoutTeam) {
-    checkoutTeam.addEventListener("click", () => {
-      redirectToCheckout("price_1SFFP950pz2SntARpYHyaZEi"); // ✅ Team price ID
-    });
-  }
+  if (proBtn) proBtn.addEventListener("click", () => createCheckout("price_1SFFMf50pz2SntAR9RG9WteF"));
+  if (teamBtn) teamBtn.addEventListener("click", () => createCheckout("price_1SFFP950pz2SntARpYHyaZEi"));
 });

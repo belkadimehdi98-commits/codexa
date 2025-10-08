@@ -3,48 +3,52 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Codexa AI</title>
+  <title>Codexa</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <!-- Header -->
   <header>
     <nav class="navbar">
       <div class="logo">
-        <img src="logo.png" alt="Codexa AI Logo" />
-        <h1>Codexa AI</h1>
+        <img src="logo.png" alt="Codexa Logo" />
+        <h1>Codexa</h1>
       </div>
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="features.html">Features</a></li>
         <li><a href="pricing.html">Pricing</a></li>
-        <li><a href="chat.html">Chat</a></li>
+        <li><a href="chat.html">Start Coding</a></li>
       </ul>
     </nav>
   </header>
 
+  <!-- Hero -->
   <main>
     <section class="hero">
       <h2>Generate Code in Seconds</h2>
-      <p>Your AI coding assistant — fast, reliable, professional.</p>
+      <p>Your coding assistant — fast, reliable, professional.</p>
       <a href="chat.html" class="btn">Start Coding</a>
     </section>
 
+    <!-- Features -->
     <section class="features">
       <h2>✨ Features</h2>
       <ul>
-        <li>⚡ Real-time AI chat (streaming)</li>
+        <li>⚡ Real-time interactive chat (streaming)</li>
         <li>📦 One-click code generation with Copy & Download</li>
-        <li>📂 Export chat history & reset sessions</li>
-        <li>📱 Optimized for mobile & tablets</li>
+        <li>📂 Save & export chat history</li>
+        <li>📱 Works beautifully on all devices</li>
       </ul>
     </section>
 
+    <!-- Pricing -->
     <section class="pricing">
       <h2>💰 Pricing</h2>
       <div class="plans">
         <div class="plan">
           <h3>Free</h3>
-          <p>Limited generations</p>
+          <p>Try Codexa with limited generations</p>
           <a href="chat.html" class="btn">Try Free</a>
         </div>
         <div class="plan">
@@ -61,23 +65,33 @@
     </section>
   </main>
 
+  <!-- Footer -->
   <footer>
-    <p>© 2025 Codexa AI. All rights reserved.</p>
+    <p>© 2025 Codexa. All rights reserved.</p>
   </footer>
 
   <script>
     async function subscribe(plan) {
       let priceId = "";
-      if (plan === "pro") priceId = "price_1SFFMf50pz2SntAR9RG9WteF";
-      if (plan === "team") priceId = "price_1SFFP950pz2SntARpYHyaZEi";
+      if (plan === "pro") priceId = "price_XXXX_PRO";   // replace with real Pro price
+      if (plan === "team") priceId = "price_XXXX_TEAM"; // replace with real Team price
 
-      const res = await fetch("/create-checkout-session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ priceId })
-      });
-      const data = await res.json();
-      if (data.url) window.location.href = data.url;
+      try {
+        const res = await fetch("/create-checkout-session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ priceId })
+        });
+        const data = await res.json();
+        if (data.url) {
+          window.location.href = data.url;
+        } else {
+          alert("Payment setup failed. Please try again.");
+        }
+      } catch (err) {
+        console.error("Checkout error:", err);
+        alert("Something went wrong.");
+      }
     }
   </script>
 </body>

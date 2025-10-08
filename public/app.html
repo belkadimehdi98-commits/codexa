@@ -1,58 +1,201 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Codexa AI App</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Codexa AI Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #0d1117;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    header {
+      background: #161b22;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    header img {
+      height: 32px;
+    }
+    .trial-badge {
+      background: #3b82f6;
+      padding: 0.3rem 0.8rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 1rem;
+      gap: 1rem;
+    }
+    #chatBox {
+      flex: 1;
+      background: #161b22;
+      border-radius: 8px;
+      padding: 1rem;
+      overflow-y: auto;
+    }
+    .msg {
+      margin: 0.6rem 0;
+      line-height: 1.5;
+    }
+    .msg.user { color: #3b82f6; }
+    .msg.ai { color: #22c55e; }
+    #controls {
+      display: flex;
+      gap: 0.5rem;
+    }
+    #prompt {
+      flex: 1;
+      padding: 0.8rem;
+      border-radius: 6px;
+      border: none;
+      background: #1e2633;
+      color: #fff;
+    }
+    button {
+      padding: 0.8rem 1.4rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+    .btn-blue { background: #3b82f6; color: #fff; }
+    .btn-green { background: #22c55e; color: #fff; }
+    .btn-purple { background: #a855f7; color: #fff; }
+    #tools {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    footer {
+      background: #161b22;
+      text-align: center;
+      padding: 1rem;
+      color: #aaa;
+      font-size: 0.85rem;
+    }
+  </style>
 </head>
 <body>
-  <!-- Navbar -->
-  <header class="navbar">
-    <div class="logo">
-      <img src="logo.png" alt="Codexa Logo">
-      <span>Codexa AI</span>
+  <header>
+    <div style="display:flex; align-items:center; gap:0.5rem;">
+      <img src="/logo.png" alt="Codexa Logo"/>
+      Codexa AI
     </div>
-    <nav id="menu">
-      <a href="index.html">Home</a>
-      <a href="features.html">Features</a>
-      <a href="pricing.html">Pricing</a>
-      <a href="app.html">Open App</a>
-    </nav>
-    <div class="hamburger" onclick="toggleMenu()">☰</div>
+    <div class="trial-badge" id="trialBadge">Free trial: 2/2 left</div>
   </header>
 
-  <!-- Chat/Code Generator -->
-  <main class="chat-container">
-    <div id="chat-box">
-      <div class="bot-message">Hello! How can I assist you today?</div>
+  <main>
+    <div id="chatBox"></div>
+    <div id="controls">
+      <input id="prompt" placeholder="Type your message..."/>
+      <button id="chatBtn" class="btn-blue">💬 Chat</button>
+      <button id="genBtn" class="btn-green" style="display:none;">💻 Generate Code</button>
     </div>
-
-    <div class="chat-input">
-      <textarea id="user-input" placeholder="Type your message..."></textarea>
-      <div class="sticky-buttons">
-        <button class="btn chat-btn" onclick="sendMessage()">Chat</button>
-        <button class="btn code-btn" onclick="generateCode()">Generate Code</button>
-      </div>
-    </div>
-
-    <div class="extra-actions">
-      <button onclick="copyCode()">Copy</button>
-      <button onclick="downloadCode()">Download</button>
-      <button onclick="exportChat()">Export Chat</button>
-      <button onclick="resetChat()">Reset</button>
+    <div id="tools" style="display:none;">
+      <button class="btn-purple" onclick="copyCode()">Copy</button>
+      <button class="btn-green" onclick="downloadCode()">Download</button>
     </div>
   </main>
 
-  <!-- Footer -->
-  <footer>
-    <p>Powered by Codexa AI</p>
-  </footer>
+  <footer>© 2025 Codexa AI. All rights reserved.</footer>
 
-  <script src="app.js"></script>
   <script>
-    function toggleMenu() {
-      document.getElementById("menu").classList.toggle("active");
+    const MAX_FREE_TRIALS = 2;
+    let used = parseInt(localStorage.getItem("generationCount") || "0");
+    let generatedCode = "";
+
+    function updateTrialBadge() {
+      const left = Math.max(0, MAX_FREE_TRIALS - used);
+      document.getElementById("trialBadge").innerText = `Free trial: ${left}/${MAX_FREE_TRIALS} left`;
+    }
+    updateTrialBadge();
+
+    function addMsg(text, cls="ai") {
+      const div = document.createElement("div");
+      div.className = `msg ${cls}`;
+      div.innerText = text;
+      document.getElementById("chatBox").appendChild(div);
+      document.getElementById("chatBox").scrollTop = document.getElementById("chatBox").scrollHeight;
+    }
+
+    async function chat(prompt, generate=false) {
+      if (!prompt) return;
+      addMsg(prompt, "user");
+      document.getElementById("prompt").value = "";
+      let aiMsg = document.createElement("div");
+      aiMsg.className = "msg ai";
+      aiMsg.innerText = "⌛ Typing...";
+      document.getElementById("chatBox").appendChild(aiMsg);
+
+      // free trial check
+      if (generate && used >= MAX_FREE_TRIALS) {
+        aiMsg.innerText = "⚠️ Free trial limit reached. Please upgrade.";
+        window.location.href = "/checkout.html";
+        return;
+      }
+
+      const url = generate ? "/generate" : "/chat";
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt })
+      });
+      const data = await response.json();
+
+      if (data.error) {
+        aiMsg.innerText = "❌ Error: " + data.error;
+        return;
+      }
+      if (generate) {
+        used++;
+        localStorage.setItem("generationCount", used);
+        updateTrialBadge();
+        generatedCode = data.code;
+        aiMsg.innerText = "✅ Code generated below:";
+        addMsg(data.code, "ai");
+        document.getElementById("tools").style.display = "flex";
+      } else {
+        aiMsg.innerText = data.reply;
+        document.getElementById("genBtn").style.display = "inline-block";
+      }
+    }
+
+    document.getElementById("chatBtn").addEventListener("click", () => {
+      chat(document.getElementById("prompt").value);
+    });
+
+    document.getElementById("genBtn").addEventListener("click", () => {
+      chat(document.getElementById("prompt").value, true);
+    });
+
+    document.getElementById("prompt").addEventListener("keypress", e => {
+      if (e.key === "Enter") document.getElementById("chatBtn").click();
+    });
+
+    function copyCode() {
+      navigator.clipboard.writeText(generatedCode);
+      alert("Copied!");
+    }
+    function downloadCode() {
+      const blob = new Blob([generatedCode], { type: "text/html" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "index.html";
+      a.click();
     }
   </script>
 </body>

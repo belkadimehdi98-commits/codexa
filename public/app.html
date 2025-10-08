@@ -1,18 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Codexa AI App</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
 <body>
   <!-- Navbar -->
   <header class="navbar">
-    <div class="logo-container">
-      <img src="assets/logo.png" alt="Codexa Logo" class="logo">
-      <span class="brand">Codexa AI</span>
-    </div>
+    <img src="logo.png" alt="Codexa Logo" class="logo">
+    <h1>Codexa AI</h1>
     <nav>
       <a href="index.html">Home</a>
       <a href="index.html#features">Features</a>
@@ -20,28 +19,23 @@
     </nav>
   </header>
 
-  <!-- Chat App -->
-  <main class="chat-layout">
-    <div id="chat-container">
-      <!-- Messages will appear here -->
+  <!-- Chat Box -->
+  <main class="chat-container">
+    <div class="chat-box" id="chat-box"></div>
+    <div class="chat-input">
+      <input type="text" id="user-input" placeholder="Type your message...">
+      <button onclick="sendMessage()">Chat</button>
+      <button onclick="generateCode()">Generate Code</button>
     </div>
-
-    <!-- Controls always visible -->
-    <div id="controls">
-      <input type="text" id="user-input" placeholder="Type your message..." />
-      <button id="chat-btn" class="btn-green">Chat</button>
-      <button id="gen-btn" class="btn-blue">Generate Code</button>
-    </div>
-
-    <!-- Extra buttons above footer -->
-    <div id="chat-actions">
-      <button class="btn-dark">Copy</button>
-      <button class="btn-dark">Download</button>
-      <button class="btn-dark">Export Chat</button>
-      <button class="btn-dark">Reset</button>
+    <div class="chat-actions">
+      <button onclick="copyChat()">Copy</button>
+      <button onclick="downloadChat()">Download</button>
+      <button onclick="exportChat()">Export Chat</button>
+      <button onclick="resetChat()">Reset</button>
     </div>
   </main>
 
+  <!-- Footer -->
   <footer>
     <p>© 2025 Codexa AI. All rights reserved.</p>
   </footer>

@@ -1,38 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Checkout - Codexa AI</title>
-  <link rel="stylesheet" href="styles.css" />
-  <script src="https://js.stripe.com/v3/"></script>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="navbar">
-    <div class="logo">
-      <img src="logo.png" alt="Codexa Logo" />
-      <span>Codexa AI</span>
-    </div>
+  <header>
     <nav>
-      <a href="index.html">Home</a>
-      <a href="index.html#pricing">Pricing</a>
-      <a href="app.html">Open App</a>
+      <img src="logo.png" alt="Codexa Logo" class="logo">
+      <span class="brand">Codexa AI</span>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#pricing">Pricing</a>
+      </div>
     </nav>
   </header>
 
   <section class="checkout">
-    <h2>Upgrade Your Plan</h2>
+    <h1>Upgrade Your Plan</h1>
     <p>Select a plan and complete payment securely.</p>
     <div class="plans">
       <div class="plan-card">
         <h3>Pro Plan</h3>
         <p>Unlimited generations</p>
-        <button id="checkout-pro" class="btn-primary">Subscribe Pro</button>
+        <button class="plan-btn" onclick="subscribe('price_1SFFMf50pz2SntAR9RG9WteF')">Subscribe Pro</button>
       </div>
       <div class="plan-card">
         <h3>Team Plan</h3>
         <p>Collaboration & support</p>
-        <button id="checkout-team" class="btn-primary">Subscribe Team</button>
+        <button class="plan-btn" onclick="subscribe('price_1SFFP950pz2SntARpYHyaZEi')">Subscribe Team</button>
       </div>
     </div>
   </section>
@@ -41,6 +39,24 @@
     <p>© 2025 Codexa AI. All rights reserved.</p>
   </footer>
 
-  <script src="script.js"></script>
+  <script>
+    async function subscribe(priceId) {
+      try {
+        const response = await fetch("/create-checkout-session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ priceId })
+        });
+        const session = await response.json();
+        if (session.url) {
+          window.location.href = session.url;
+        } else {
+          alert("Error creating checkout session: " + (session.error || "Unknown error"));
+        }
+      } catch (err) {
+        alert("Payment error: " + err.message);
+      }
+    }
+  </script>
 </body>
 </html>

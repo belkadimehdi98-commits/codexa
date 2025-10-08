@@ -1,22 +1,24 @@
-<section class="pricing" id="pricing">
+<section id="pricing" class="pricing-section">
   <h2>💰 Pricing</h2>
   <div class="pricing-container">
     <div class="pricing-card">
       <h3>Free</h3>
       <p>Limited generations</p>
-      <button class="btn-primary">Try Free</button>
+      <button class="btn-outline">Try Free</button>
     </div>
-
     <div class="pricing-card">
       <h3>Pro</h3>
       <p>Unlimited generations</p>
-      <button class="btn-primary" onclick="checkout('pro')">Upgrade to Pro</button>
+      <button class="btn-primary" onclick="window.location.href='checkout.html?plan=pro'">
+        Upgrade to Pro
+      </button>
     </div>
-
     <div class="pricing-card">
       <h3>Team</h3>
       <p>Collaboration & support</p>
-      <button class="btn-primary" onclick="checkout('team')">Get Team Plan</button>
+      <button class="btn-primary" onclick="window.location.href='checkout.html?plan=team'">
+        Get Team Plan
+      </button>
     </div>
   </div>
 </section>

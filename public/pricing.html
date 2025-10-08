@@ -1,58 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pricing - Codexa AI</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <!-- Navbar -->
-  <header class="navbar">
-    <div class="logo">
-      <img src="logo.png" alt="Codexa Logo">
-      <span>Codexa AI</span>
+<section class="pricing" id="pricing">
+  <h2>💰 Pricing</h2>
+  <div class="pricing-container">
+    <div class="pricing-card">
+      <h3>Free</h3>
+      <p>Limited generations</p>
+      <button class="btn-primary">Try Free</button>
     </div>
-    <nav id="menu">
-      <a href="index.html">Home</a>
-      <a href="features.html">Features</a>
-      <a href="pricing.html">Pricing</a>
-      <a href="app.html">Open App</a>
-    </nav>
-    <div class="hamburger" onclick="toggleMenu()">☰</div>
-  </header>
 
-  <!-- Pricing Section -->
-  <section class="pricing">
-    <h2>Pricing</h2>
-    <div class="plans">
-      <div class="plan">
-        <h3>Free</h3>
-        <p>Limited generations</p>
-        <button>Try Free</button>
-      </div>
-      <div class="plan">
-        <h3>Pro</h3>
-        <p>Unlimited generations</p>
-        <button>Upgrade to Pro</button>
-      </div>
-      <div class="plan">
-        <h3>Team</h3>
-        <p>Collaboration & Support</p>
-        <button>Get Team Plan</button>
-      </div>
+    <div class="pricing-card">
+      <h3>Pro</h3>
+      <p>Unlimited generations</p>
+      <button class="btn-primary" onclick="checkout('pro')">Upgrade to Pro</button>
     </div>
-  </section>
 
-  <!-- Footer -->
-  <footer>
-    <p>Powered by Codexa AI</p>
-  </footer>
-
-  <script>
-    function toggleMenu() {
-      document.getElementById("menu").classList.toggle("active");
-    }
-  </script>
-</body>
-</html>
+    <div class="pricing-card">
+      <h3>Team</h3>
+      <p>Collaboration & support</p>
+      <button class="btn-primary" onclick="checkout('team')">Get Team Plan</button>
+    </div>
+  </div>
+</section>

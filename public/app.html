@@ -7,40 +7,101 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Navbar -->
-  <nav class="navbar">
-    <div class="nav-left">
-      <img src="assets/logo.png" alt="Codexa Logo" class="logo">
-      <span class="brand">Codexa AI</span>
+  <header>
+    <div class="logo">
+      <img src="codexa-logo.png" alt="Codexa Logo"> Codexa AI
     </div>
-    <div class="nav-right">
+    <nav>
       <a href="index.html">Home</a>
       <a href="index.html#features">Features</a>
       <a href="index.html#pricing">Pricing</a>
-    </div>
-  </nav>
+    </nav>
+  </header>
 
-  <!-- Chat Section -->
-  <section class="chat-section">
+  <div class="chat-container">
     <div class="chat-box" id="chat-box">
-      <div class="chat-message bot">Hello! How can I assist you today?</div>
+      <div class="message bot">Hello! How can I assist you today?</div>
     </div>
-    <div class="chat-input">
-      <input type="text" id="user-input" placeholder="Type your message...">
-      <button class="btn chat-btn">Chat</button>
-      <button class="btn generate-btn">Generate Code</button>
-    </div>
-    <div class="chat-buttons">
-      <button class="copy-btn">📋 Copy</button>
-      <button class="download-btn">⬇️ Download</button>
-      <button class="export-btn">📂 Export Chat</button>
-      <button class="reset-btn">🔄 Reset</button>
-    </div>
-  </section>
 
-  <!-- Footer -->
+    <div class="input-container">
+      <input id="user-input" type="text" placeholder="Type your message... (Press Enter to send)">
+      <button class="send-btn" onclick="sendMessage()">Chat</button>
+      <button class="code-btn" onclick="generateCode()">Generate Code</button>
+    </div>
+
+    <div style="display:flex; gap:10px; margin-top:10px; justify-content:center;">
+      <button onclick="copyChat()">Copy</button>
+      <button onclick="downloadChat()">Download</button>
+      <button onclick="exportChat()">Export Chat</button>
+      <button onclick="resetChat()">Reset</button>
+    </div>
+  </div>
+
   <footer>
-    <p>© 2025 Codexa AI. All rights reserved.</p>
+    © 2025 Codexa AI. All rights reserved.
   </footer>
+
+  <script>
+    const chatBox = document.getElementById("chat-box");
+    const userInput = document.getElementById("user-input");
+
+    function appendMessage(content, sender) {
+      const msg = document.createElement("div");
+      msg.className = "message " + sender;
+      msg.innerText = content;
+      chatBox.appendChild(msg);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function sendMessage() {
+      const text = userInput.value.trim();
+      if (!text) return;
+      appendMessage(text, "user");
+      userInput.value = "";
+
+      // Placeholder bot reply
+      setTimeout(() => {
+        appendMessage("Codexa AI is thinking...", "bot");
+      }, 500);
+    }
+
+    function generateCode() {
+      appendMessage("Generated sample code here...", "bot");
+    }
+
+    function copyChat() {
+      navigator.clipboard.writeText(chatBox.innerText);
+      alert("Chat copied!");
+    }
+
+    function downloadChat() {
+      const blob = new Blob([chatBox.innerText], { type: "text/plain" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "chat.txt";
+      link.click();
+    }
+
+    function exportChat() {
+      const data = chatBox.innerText;
+      const blob = new Blob([JSON.stringify({ chat: data })], { type: "application/json" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "chat.json";
+      link.click();
+    }
+
+    function resetChat() {
+      chatBox.innerHTML = "";
+      appendMessage("Hello! How can I assist you today?", "bot");
+    }
+
+    // ENTER key to send
+    userInput.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        sendMessage();
+      }
+    });
+  </script>
 </body>
 </html>

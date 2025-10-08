@@ -4,40 +4,40 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Codexa AI App</title>
-  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header>
-    <nav class="navbar">
-      <img src="/assets/codexa-logo.png" alt="Codexa Logo" class="logo" />
-      <span class="brand">Codexa AI</span>
-      <ul class="nav-links">
-        <li><a href="/">Home</a></li>
-        <li><a href="/#features">Features</a></li>
-        <li><a href="/#pricing">Pricing</a></li>
-      </ul>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="logo">
+      <img src="codexa-logo.png" alt="Codexa Logo" />
+      <span>Codexa AI</span>
+    </div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="index.html#features">Features</a>
+      <a href="index.html#pricing">Pricing</a>
     </nav>
   </header>
 
+  <!-- Chat App -->
   <main class="chat-container">
-    <div id="chat-box"></div>
-    <div class="chat-controls">
+    <div id="chat-box" class="chat-box"></div>
+    <div class="chat-input">
       <input type="text" id="user-input" placeholder="Type your message..." />
-      <button id="chat-btn" class="btn-secondary">Chat</button>
-      <button id="generate-btn" class="btn-primary">Generate Code</button>
+      <button id="send-btn" class="btn primary">Chat</button>
+      <button id="gen-btn" class="btn secondary">Generate Code</button>
     </div>
-    <div class="export-buttons">
-      <button id="copy-btn">Copy</button>
-      <button id="download-btn">Download</button>
-      <button id="export-btn">Export Chat</button>
-      <button id="reset-btn">Reset</button>
+    <div class="chat-tools">
+      <button class="btn tool">Copy</button>
+      <button class="btn tool">Download</button>
+      <button class="btn tool">Export Chat</button>
+      <button class="btn tool">Reset</button>
     </div>
   </main>
 
   <footer>
     <p>© 2025 Codexa AI. All rights reserved.</p>
   </footer>
-
-  <script src="/script.js"></script>
 </body>
 </html>

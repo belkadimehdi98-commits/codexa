@@ -1,257 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="auto">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Codexa AI</title>
-<link rel="icon" href="/logo.png"/>
-<style>
-:root{
-  --bg:#0d1117; --panel:#0b1322; --muted:#9aa4b2; --text:#e5e7eb;
-  --border:#1f2937; --brand:#60a5fa; --green:#22c55e; --purple:#a855f7;
-  --bubble:#111827; --bubbleMe:#2563eb;
-  --code:#0f172a; --codeBorder:#1e293b;
-}
-*{box-sizing:border-box}
-html,body{height:100%}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Arial,sans-serif;display:flex;flex-direction:column}
-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--panel);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:5}
-.brand{display:flex;gap:10px;align-items:center;font-weight:800;font-size:20px}
-.brand img{height:26px;width:auto}
-nav a{color:var(--text);text-decoration:none;margin-left:16px;opacity:.9}
-nav a:hover{opacity:1}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-#chat{flex:1;overflow:auto;padding:18px 18px 110px}
-.msg{max-width:820px;margin:10px 0;padding:12px 14px;border-radius:12px;background:var(--bubble);border:1px solid var(--border);line-height:1.55}
-.me{margin-left:auto;background:var(--bubbleMe);border-color:#1e40af}
-.meta{font-size:12px;color:var(--muted);margin-bottom:6px}
-.codewrap{position:relative;margin:8px 0;border:1px solid var(--codeBorder);border-radius:10px;background:var(--code)}
-pre{margin:0;padding:14px;overflow:auto;color:#cbd5e1;font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;white-space:pre}
-.toolbar{position:absolute;top:8px;right:8px;display:flex;gap:8px}
-.tbtn{border:1px solid var(--codeBorder);background:#0b1322;color:var(--text);padding:6px 10px;border-radius:8px;cursor:pointer;font-size:12px}
-.tbtn:hover{opacity:.9}
+  <title>Codexa AI — Build websites at the speed of thought</title>
+  <meta name="description" content="Chat with Codexa AI, generate clean code, copy or download, and deploy in minutes." />
+  <meta name="theme-color" content="#0d1117" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <link rel="icon" href="/logo.png" />
 
-.footer{position:fixed;left:0;right:0;bottom:0;background:var(--panel);border-top:1px solid var(--border);padding:10px}
-.row{max-width:1000px;margin:0 auto;display:flex;gap:10px}
-#input{flex:1;border:1px solid var(--border);background:#0f172a;color:var(--text);padding:12px 14px;border-radius:12px;height:46px}
-.action{display:flex;gap:10px}
-.btn{border:1px solid var(--border);background:var(--brand);color:#0b1220;padding:0 16px;border-radius:10px;cursor:pointer;font-weight:700;display:flex;align-items:center}
-.btn.secondary{background:transparent;color:var(--text)}
-.smallbar{max-width:1000px;margin:6px auto 0;display:flex;gap:8px;justify-content:flex-end}
-.smallbar button{background:transparent;border:1px solid var(--border);color:var(--muted);padding:6px 10px;border-radius:8px;cursor:pointer}
-.typing{display:inline-block;opacity:.75;padding:4px 10px;border-radius:999px;border:1px dashed var(--border);font-size:12px;background:#0f172a;margin-top:6px}
-.hidden{display:none}
-@media (max-width:780px){
-  .row{flex-direction:column}
-  #input{height:50px}
-  .action{justify-content:space-between}
-}
-</style>
+  <!-- PWA-ready hooks (optional to add later): -->
+  <!-- <link rel="manifest" href="/manifest.json"> -->
+
+  <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
-<header>
-  <div class="brand"><img src="/logo.png" alt="Codexa">Codexa AI</div>
-  <nav>
-    <a href="/">Home</a>
-    <a href="/tutorial.html">Tutorial</a>
-  </nav>
-</header>
+  <!-- Header -->
+  <header class="nav">
+    <a class="brand" href="/">
+      <img src="/logo.png" alt="Codexa Logo" />
+      <span>Codexa AI</span>
+    </a>
 
-<main id="chat">
-  <div class="msg">
-    Hello! How can I assist you today?
-  </div>
-</main>
+    <div class="nav-actions">
+      <button id="themeToggle" class="btn ghost" aria-label="Toggle theme">🌙</button>
+      <a href="/" class="link">Home</a>
+      <a href="/tutorial.html" class="link">Tutorial</a>
+    </div>
+  </header>
 
-<div class="footer">
-  <div class="row">
-    <input id="input" placeholder="Type your message… (Enter = send, Shift+Enter = new line)" />
-    <div class="action">
-      <button id="sendBtn" class="btn">💬 Chat</button>
+  <!-- Onboarding Modal -->
+  <div id="onboarding" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="ob-title">
+    <div class="modal-card">
+      <h2 id="ob-title">Welcome to Codexa</h2>
+      <ol class="checklist">
+        <li><b>Chat</b> naturally: describe your idea, ask questions, refine.</li>
+        <li>When Codexa returns code (with <b>Copy</b>/<b>Download</b>), save it and test.</li>
+      </ol>
+      <div class="modal-actions">
+        <label class="switch">
+          <input type="checkbox" id="dontShowAgain" />
+          <span>Don’t show again</span>
+        </label>
+        <button id="obClose" class="btn primary">Got it</button>
+      </div>
     </div>
   </div>
-  <div class="smallbar">
-    <button id="exportBtn">Export chat</button>
-    <button id="resetBtn">Reset</button>
-  </div>
-</div>
 
-<script>
-// ---------- Utilities ----------
-const chat = document.getElementById('chat');
-const input = document.getElementById('input');
-const sendBtn = document.getElementById('sendBtn');
-const exportBtn = document.getElementById('exportBtn');
-const resetBtn = document.getElementById('resetBtn');
-
-const LS_KEY = 'codexa_chat_history_v1';
-
-function saveHistory() {
-  const items = [...document.querySelectorAll('.msg')].map(el => ({
-    html: el.innerHTML,
-    me: el.classList.contains('me'),
-  }));
-  localStorage.setItem(LS_KEY, JSON.stringify(items.slice(-40)));
-}
-function loadHistory() {
-  const raw = localStorage.getItem(LS_KEY);
-  if (!raw) return;
-  try {
-    const arr = JSON.parse(raw);
-    chat.innerHTML = '';
-    for (const it of arr) {
-      const d = document.createElement('div');
-      d.className = 'msg' + (it.me ? ' me' : '');
-      d.innerHTML = it.html;
-      chat.appendChild(d);
-    }
-  } catch {}
-}
-function scrollBottom() {
-  chat.scrollTop = chat.scrollHeight;
-}
-
-// ---------- Renderers ----------
-function escapeHTML(s){return s.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
-
-function renderMarkdown(text) {
-  // simple fenced code transform
-  const parts = text.split(/```/);
-  if (parts.length === 1) return `<div>${text.replace(/\n/g,'<br>')}</div>`;
-  let html = '';
-  for (let i=0;i<parts.length;i++){
-    if (i % 2 === 0) {
-      html += `<div>${parts[i].replace(/\n/g,'<br>')}</div>`;
-    } else {
-      // code fence part – could start with "lang\n"
-      const firstNL = parts[i].indexOf('\n');
-      const lang = firstNL > -1 ? parts[i].slice(0, firstNL).trim() : '';
-      const code = firstNL > -1 ? parts[i].slice(firstNL+1) : parts[i];
-      html += codeBlock(lang, code);
-    }
-  }
-  return html;
-}
-
-function codeBlock(lang, codeRaw){
-  const code = escapeHTML(codeRaw);
-  const filename = (lang || 'code') + (lang && lang.toLowerCase().includes('html') ? '.html' : lang && lang.toLowerCase().includes('css') ? '.css' : lang && lang.toLowerCase().includes('js') ? '.js' : '.txt');
-  const id = 'c'+Math.random().toString(36).slice(2);
-  return `
-  <div class="codewrap">
-    <div class="toolbar">
-      <button class="tbtn" onclick="copyCode('${id}')">Copy</button>
-      <button class="tbtn" onclick="downloadCode('${id}','${filename}')">Download</button>
+  <!-- Main -->
+  <main id="chat" class="chat">
+    <div class="msg ai">
+      <div class="meta">💡 Codexa AI</div>
+      <div class="bubble">Hello! I’m Codexa AI. Tell me what you want to build and I’ll guide you — and generate clean code when you’re ready.</div>
     </div>
-    <pre id="${id}"><code>${code}</code></pre>
-  </div>`;
-}
+  </main>
 
-window.copyCode = async function(id){
-  const el = document.getElementById(id);
-  const txt = el.innerText;
-  try { await navigator.clipboard.writeText(txt); } catch {}
-}
+  <!-- Sticky composer -->
+  <div class="composer">
+    <div class="composer-row">
+      <textarea id="input" rows="1" placeholder="Type your message… (Enter = send, Shift+Enter = new line)"></textarea>
+      <button id="sendBtn" class="btn primary">💬 Chat</button>
+    </div>
+    <div class="composer-tools">
+      <button id="exportBtn" class="btn ghost">Export chat</button>
+      <button id="resetBtn" class="btn ghost">Reset</button>
+    </div>
+  </div>
 
-window.downloadCode = function(id, filename){
-  const el = document.getElementById(id);
-  const blob = new Blob([el.innerText], {type:'text/plain'});
-  const url = URL.createObjectURL(blob);
-  const a = Object.assign(document.createElement('a'), {href:url, download:filename});
-  document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-}
+  <footer class="foot">
+    <div>© 2025 Codexa • <a href="/terms.html" class="link">Terms</a> • <a href="/privacy.html" class="link">Privacy</a></div>
+  </footer>
 
-// ---------- Chat flow ----------
-function addBubble(content, me=false){
-  const d = document.createElement('div');
-  d.className = 'msg' + (me ? ' me' : '');
-  d.innerHTML = content;
-  chat.appendChild(d);
-  scrollBottom();
-  saveHistory();
-  return d;
-}
-
-function addTyping(){
-  const t = document.createElement('div');
-  t.className = 'msg';
-  t.innerHTML = `<span class="typing">typing…</span>`;
-  chat.appendChild(t);
-  scrollBottom();
-  return t;
-}
-
-async function streamChat(prompt){
-  const typing = addTyping();
-  let target = addBubble('', false); // where tokens accumulate
-  target.innerHTML = ''; // ensure empty
-
-  const es = new EventSource(`/chat-stream?prompt=${encodeURIComponent(prompt)}`);
-
-  let buffer = '';
-
-  es.onmessage = (e) => {
-    try {
-      const data = JSON.parse(e.data);
-      if (data.token) {
-        buffer += data.token;
-        // live render (cheap): only convert backticks, leave the rest raw
-        target.innerHTML = renderMarkdown(buffer);
-        scrollBottom();
-      }
-      saveHistory();
-    } catch {}
-  };
-
-  es.addEventListener('done', () => {
-    typing.remove();
-    es.close();
-    saveHistory();
-  });
-
-  es.onerror = () => {
-    typing.remove();
-    es.close();
-    if (!buffer) {
-      target.innerHTML = '⚠️ Connection issue. Please try again.';
-      saveHistory();
-    }
-  };
-}
-
-function send(){
-  const val = input.value.trim();
-  if (!val) return;
-  addBubble(escapeHTML(val), true);
-  input.value = '';
-  streamChat(val);
-}
-
-input.addEventListener('keydown', (e)=>{
-  if (e.key === 'Enter' && !e.shiftKey) {
-    e.preventDefault();
-    send();
-  }
-});
-sendBtn.onclick = send;
-
-exportBtn.onclick = ()=>{
-  const text = [...document.querySelectorAll('.msg')]
-    .map(el => (el.classList.contains('me') ? 'You: ' : 'Codexa: ') + el.innerText)
-    .join('\n\n');
-  const blob = new Blob([text], {type:'text/plain'});
-  const url = URL.createObjectURL(blob);
-  const a = Object.assign(document.createElement('a'), {href:url, download:'codexa-chat.txt'});
-  document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-};
-
-resetBtn.onclick = ()=>{
-  localStorage.removeItem(LS_KEY);
-  chat.innerHTML = `<div class="msg">New session started. How can I help?</div>`;
-};
-
-loadHistory();
-scrollBottom();
-</script>
+  <script src="/app.js"></script>
 </body>
 </html>

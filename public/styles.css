@@ -1,144 +1,101 @@
-/* ===== Global Reset ===== */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+:root{
+  /* Dark theme (default) */
+  --bg:#0d1117; --panel:#0b1322; --text:#e5e7eb; --muted:#9aa4b2;
+  --border:#1f2937; --bubble:#111827; --bubbleMe:#2563eb;
+  --codeBg:#0f172a; --codeBorder:#1e293b;
+  --brand:#60a5fa; --brandText:#0b1220; --good:#22c55e; --warn:#f59e0b;
+}
+:root[data-theme="light"]{
+  --bg:#ffffff; --panel:#f8fafc; --text:#0b1220; --muted:#536174;
+  --border:#e5e7eb; --bubble:#f3f4f6; --bubbleMe:#2563eb;
+  --codeBg:#f5f7fb; --codeBorder:#e5e7eb;
+  --brand:#2563eb; --brandText:#ffffff; --good:#16a34a; --warn:#d97706;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  display:flex; flex-direction:column;
 }
 
-body {
-  font-family: Arial, sans-serif;
-  background: #0d1117;
-  color: #fff;
-  line-height: 1.6;
+/* Header */
+.nav{
+  position:sticky; top:0; z-index:5;
+  display:flex; align-items:center; justify-content:space-between;
+  gap:12px; padding:12px 16px; background:var(--panel);
+  border-bottom:1px solid var(--border);
+}
+.brand{display:flex; align-items:center; gap:10px; color:var(--text); text-decoration:none; font-weight:800}
+.brand img{height:28px; width:auto}
+.nav-actions{display:flex; align-items:center; gap:12px}
+.link{color:var(--text); opacity:.85; text-decoration:none}
+.link:hover{opacity:1}
+
+/* Buttons */
+.btn{border:1px solid var(--border); border-radius:10px; padding:10px 14px; cursor:pointer; font-weight:700}
+.btn.primary{background:var(--brand); color:var(--brandText); border-color:transparent}
+.btn.primary:hover{filter:brightness(1.05)}
+.btn.ghost{background:transparent; color:var(--text)}
+.btn.ghost:hover{background:rgba(127,127,127,.08)}
+
+/* Chat */
+.chat{flex:1; overflow:auto; padding:18px 18px 120px}
+.msg{max-width:960px; margin:12px auto}
+.meta{font-size:12px; color:var(--muted); margin-bottom:6px}
+.bubble{
+  background:var(--bubble); border:1px solid var(--border); border-radius:12px;
+  padding:12px 14px; line-height:1.55; word-wrap:break-word; white-space:pre-wrap;
+}
+.msg.me .bubble{
+  background:var(--bubbleMe); color:#fff; border-color:transparent;
+}
+.msg.me{display:flex; flex-direction:column; align-items:flex-end}
+
+/* Code blocks */
+.codewrap{
+  position:relative; margin:10px 0; background:var(--codeBg);
+  border:1px solid var(--codeBorder); border-radius:12px;
+}
+.code-toolbar{
+  position:absolute; top:8px; right:8px; display:flex; gap:8px;
+}
+.codebtn{
+  border:1px solid var(--codeBorder); border-radius:8px;
+  background:transparent; color:var(--text); padding:6px 10px; cursor:pointer; font-weight:700; font-size:12px;
+}
+.codebtn:hover{background:rgba(127,127,127,.08)}
+pre{margin:0; padding:14px; overflow:auto; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; color:inherit}
+code{color:inherit}
+
+/* Composer */
+.composer{
+  position:sticky; bottom:0; left:0; right:0;
+  background:var(--panel); border-top:1px solid var(--border);
+  padding:10px 12px;
+}
+.composer-row{display:flex; gap:10px; max-width:1000px; margin:0 auto}
+#input{
+  flex:1; min-height:46px; max-height:140px; resize:vertical;
+  border:1px solid var(--border); border-radius:12px; padding:10px 12px;
+  background: var(--codeBg); color: var(--text);
+}
+.composer-tools{
+  max-width:1000px; margin:6px auto 0; display:flex; gap:8px; justify-content:flex-end;
 }
 
-/* ===== Header ===== */
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  background: #161b22;
-}
+/* Modal */
+.modal{position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,.45)}
+.modal.hidden{display:none}
+.modal-card{width:min(560px,94vw); background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:18px}
+.checklist{color:var(--muted); line-height:1.6}
+.modal-actions{display:flex; justify-content:space-between; align-items:center; margin-top:12px}
+.switch{display:flex; align-items:center; gap:8px; color:var(--muted)}
 
-header img {
-  height: 40px;
-}
+/* Typing badge */
+.typing{display:inline-block; opacity:.8; font-size:12px; padding:4px 10px; border:1px dashed var(--border); border-radius:999px; background:var(--codeBg);}
 
-nav a {
-  color: #fff;
-  margin-left: 1.5rem;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s ease;
-}
-
-nav a:hover {
-  color: #3b82f6;
-}
-
-/* ===== Hero Section ===== */
-.hero {
-  text-align: center;
-  padding: 6rem 2rem;
-  background: #0d1117;
-}
-
-.hero h1 {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-}
-
-.hero p {
-  font-size: 1.2rem;
-  margin-bottom: 2rem;
-  color: #ccc;
-}
-
-/* ===== Buttons ===== */
-.btn {
-  padding: 0.8rem 1.6rem;
-  margin: 0.3rem;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: 0.2s;
-  font-size: 1rem;
-}
-
-.btn:hover {
-  opacity: 0.9;
-  transform: translateY(-2px);
-}
-
-.btn-green { background: #22c55e; color: #fff; }
-.btn-blue { background: #3b82f6; color: #fff; }
-.btn-purple { background: #a855f7; color: #fff; }
-
-/* ===== Sections ===== */
-section {
-  padding: 4rem 2rem;
-  text-align: center;
-}
-
-section h2 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-
-section p {
-  max-width: 700px;
-  margin: auto;
-  color: #bbb;
-}
-
-/* ===== Footer ===== */
-footer {
-  text-align: center;
-  padding: 2rem;
-  background: #161b22;
-  color: #aaa;
-  margin-top: 3rem;
-}
-
-/* ===== Center Layout for Simple Pages (success, cancel, free) ===== */
-.center {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  text-align: center;
-}
-
-.center h1 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-
-.center p {
-  margin-bottom: 1.5rem;
-  font-size: 1.1rem;
-  color: #ccc;
-}
-
-/* ===== App Page ===== */
-textarea {
-  width: 90%;
-  max-width: 600px;
-  height: 120px;
-  margin-bottom: 1rem;
-  padding: 1rem;
-  border-radius: 6px;
-  border: none;
-  background: #161b22;
-  color: #fff;
-  font-size: 1rem;
-  resize: none;
-}
-
-#status {
-  margin-top: 1rem;
-  font-weight: bold;
+/* Mobile tweaks */
+@media (max-width:760px){
+  .composer-tools{justify-content:space-between}
 }

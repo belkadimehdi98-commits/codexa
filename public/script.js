@@ -17,28 +17,33 @@ function addMessage(sender, text) {
   msg.className = sender === "user" ? "user-msg" : "ai-msg";
   msg.innerText = text;
   chatBox.appendChild(msg);
-  chatBox.scrollTop = chatBox.scrollHeight; // auto scroll
+  chatBox.scrollTop = chatBox.scrollHeight;
   chatHistory.push({ sender, text });
 }
 
-// Mock AI reply (replace later with OpenAI API call)
-function aiReply(userText) {
-  return `🤖 Codexa AI: I received your request — "${userText}"`;
-}
-
-// Handle chat
-function handleChat() {
+// Send user input to backend
+async function handleChat() {
   const text = userInput.value.trim();
   if (!text) return;
   addMessage("user", text);
   userInput.value = "";
 
-  // AI response
-  const reply = aiReply(text);
-  setTimeout(() => addMessage("ai", reply), 600);
+  try {
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: text }),
+    });
+
+    const data = await res.json();
+    addMessage("ai", data.reply || "⚠️ No reply from Codexa AI.");
+  } catch (err) {
+    addMessage("ai", "❌ Error connecting to server.");
+    console.error(err);
+  }
 }
 
-// Copy chat to clipboard
+// Copy chat
 function copyChat() {
   const text = chatHistory.map(m => `${m.sender}: ${m.text}`).join("\n");
   navigator.clipboard.writeText(text).then(() => {
@@ -46,7 +51,7 @@ function copyChat() {
   });
 }
 
-// Download chat as .txt
+// Download chat
 function downloadChat() {
   const text = chatHistory.map(m => `${m.sender}: ${m.text}`).join("\n");
   const blob = new Blob([text], { type: "text/plain" });
@@ -56,7 +61,7 @@ function downloadChat() {
   link.click();
 }
 
-// Export chat as JSON
+// Export chat
 function exportChat() {
   const blob = new Blob([JSON.stringify(chatHistory, null, 2)], {
     type: "application/json",
@@ -81,7 +86,6 @@ downloadBtn.addEventListener("click", downloadChat);
 exportBtn.addEventListener("click", exportChat);
 resetBtn.addEventListener("click", resetChat);
 
-// Enter key support
 userInput.addEventListener("keypress", (e) => {
   if (e.key === "Enter") handleChat();
 });

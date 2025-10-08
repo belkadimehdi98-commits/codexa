@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Codexa AI</title>
   <link rel="stylesheet" href="styles.css" />
-  <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
   <header>
@@ -18,47 +17,45 @@
         <li><a href="index.html">Home</a></li>
         <li><a href="features.html">Features</a></li>
         <li><a href="pricing.html">Pricing</a></li>
+        <li><a href="chat.html">Chat</a></li>
       </ul>
     </nav>
   </header>
 
   <main>
-    <!-- Hero -->
     <section class="hero">
       <h2>Generate Code in Seconds</h2>
       <p>Your AI coding assistant — fast, reliable, professional.</p>
-      <a href="free.html" class="btn">🚀 Try it Free</a>
+      <a href="chat.html" class="btn">Start Coding</a>
     </section>
 
-    <!-- Features -->
     <section class="features">
       <h2>✨ Features</h2>
       <ul>
-        <li>⚡ Real-time Codexa AI chat (streaming)</li>
+        <li>⚡ Real-time AI chat (streaming)</li>
         <li>📦 One-click code generation with Copy & Download</li>
         <li>📂 Export chat history & reset sessions</li>
-        <li>📱 Mobile & tablet optimized</li>
+        <li>📱 Optimized for mobile & tablets</li>
       </ul>
     </section>
 
-    <!-- Pricing -->
     <section class="pricing">
       <h2>💰 Pricing</h2>
       <div class="plans">
         <div class="plan">
           <h3>Free</h3>
           <p>Limited generations</p>
-          <a href="free.html" class="btn">Try Free</a>
+          <a href="chat.html" class="btn">Try Free</a>
         </div>
         <div class="plan">
           <h3>Pro</h3>
           <p>Unlimited generations</p>
-          <button id="proBtn" class="btn-pro">Upgrade to Pro</button>
+          <button class="btn" onclick="subscribe('pro')">Get Pro</button>
         </div>
         <div class="plan">
           <h3>Team</h3>
           <p>Collaboration & support</p>
-          <button id="teamBtn" class="btn-team">Upgrade to Team</button>
+          <button class="btn" onclick="subscribe('team')">Get Team</button>
         </div>
       </div>
     </section>
@@ -69,29 +66,19 @@
   </footer>
 
   <script>
-    const stripe = Stripe("pk_live_51SEW0g50pz2SntAR9AD7gJop6Ld4LgZVVve4enxE7GkyD8mV4RaAm6tOaovxtWBMMQXfOrPopueiXya0R5nMTSVJ00PJ7m7y3v");
+    async function subscribe(plan) {
+      let priceId = "";
+      if (plan === "pro") priceId = "price_1SFFMf50pz2SntAR9RG9WteF";
+      if (plan === "team") priceId = "price_1SFFP950pz2SntARpYHyaZEi";
 
-    async function redirectToCheckout(priceId) {
       const res = await fetch("/create-checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ priceId })
       });
       const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        alert("Error creating checkout session");
-      }
+      if (data.url) window.location.href = data.url;
     }
-
-    document.getElementById("proBtn").addEventListener("click", () => {
-      redirectToCheckout("price_1SFFMf50pz2SntAR9RG9WteF");
-    });
-
-    document.getElementById("teamBtn").addEventListener("click", () => {
-      redirectToCheckout("price_1SFFP950pz2SntARpYHyaZEi");
-    });
   </script>
 </body>
 </html>

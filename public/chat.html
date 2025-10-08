@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Codexa Chat</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="logo">
+        <img src="logo.png" alt="Codexa Logo" />
+        <h1>Codexa AI</h1>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="chat-container">
+    <div id="chat-box"></div>
+    <div class="chat-controls">
+      <input type="text" id="user-input" placeholder="Type your message..." />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+    <div class="chat-actions">
+      <button onclick="copyChat()">📋 Copy</button>
+      <button onclick="downloadChat()">⬇ Download</button>
+      <button onclick="clearChat()">🗑 Reset</button>
+    </div>
+  </main>
+
+  <script src="chat.js"></script>
+</body>
+</html>

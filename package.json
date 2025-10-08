@@ -2,7 +2,6 @@
   "name": "codexa",
   "version": "1.0.0",
   "description": "Codexa AI web app with Stripe and OpenAI integration",
-  "type": "module",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"

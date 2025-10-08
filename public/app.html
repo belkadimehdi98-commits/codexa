@@ -4,35 +4,41 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Codexa AI App</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <!-- Navbar -->
   <header class="navbar">
-    <div class="logo">
-      <img src="codexa-logo.png" alt="Codexa Logo" />
-      <span>Codexa AI</span>
+    <div class="logo-container">
+      <img src="assets/logo.png" alt="Codexa Logo" class="logo">
+      <span class="brand">Codexa AI</span>
     </div>
     <nav>
-      <a href="/">Home</a>
+      <a href="index.html">Home</a>
       <a href="index.html#features">Features</a>
       <a href="index.html#pricing">Pricing</a>
     </nav>
   </header>
 
   <!-- Chat App -->
-  <main class="chat-container">
-    <div id="chat-box" class="chat-box"></div>
-    <div class="chat-input">
-      <input type="text" id="user-input" placeholder="Type your message..." />
-      <button id="send-btn" class="btn primary">Chat</button>
-      <button id="gen-btn" class="btn secondary">Generate Code</button>
+  <main class="chat-layout">
+    <div id="chat-container">
+      <!-- Messages will appear here -->
     </div>
-    <div class="chat-tools">
-      <button class="btn tool">Copy</button>
-      <button class="btn tool">Download</button>
-      <button class="btn tool">Export Chat</button>
-      <button class="btn tool">Reset</button>
+
+    <!-- Controls always visible -->
+    <div id="controls">
+      <input type="text" id="user-input" placeholder="Type your message..." />
+      <button id="chat-btn" class="btn-green">Chat</button>
+      <button id="gen-btn" class="btn-blue">Generate Code</button>
+    </div>
+
+    <!-- Extra buttons above footer -->
+    <div id="chat-actions">
+      <button class="btn-dark">Copy</button>
+      <button class="btn-dark">Download</button>
+      <button class="btn-dark">Export Chat</button>
+      <button class="btn-dark">Reset</button>
     </div>
   </main>
 

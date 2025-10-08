@@ -1,69 +1,87 @@
-const chatContainer = document.getElementById("chat-container");
+// DOM elements
+const chatBox = document.getElementById("chat-box");
 const userInput = document.getElementById("user-input");
 const chatBtn = document.getElementById("chat-btn");
+const generateBtn = document.getElementById("generate-btn");
+const copyBtn = document.getElementById("copy-btn");
+const downloadBtn = document.getElementById("download-btn");
+const exportBtn = document.getElementById("export-btn");
+const resetBtn = document.getElementById("reset-btn");
 
-// Add message to chat
-function addMessage(content, sender = "ai") {
+// Store chat history
+let chatHistory = [];
+
+// Utility: add message to chat
+function addMessage(sender, text) {
   const msg = document.createElement("div");
-  msg.className = "message " + sender;
-  msg.innerHTML = content;
-  chatContainer.appendChild(msg);
-  chatContainer.scrollTop = chatContainer.scrollHeight;
-  return msg;
+  msg.className = sender === "user" ? "user-msg" : "ai-msg";
+  msg.innerText = text;
+  chatBox.appendChild(msg);
+  chatBox.scrollTop = chatBox.scrollHeight; // auto scroll
+  chatHistory.push({ sender, text });
 }
 
-// Handle user input
-async function sendMessage() {
-  const prompt = userInput.value.trim();
-  if (!prompt) return;
+// Mock AI reply (replace later with OpenAI API call)
+function aiReply(userText) {
+  return `🤖 Codexa AI: I received your request — "${userText}"`;
+}
 
-  addMessage(prompt, "user");
+// Handle chat
+function handleChat() {
+  const text = userInput.value.trim();
+  if (!text) return;
+  addMessage("user", text);
   userInput.value = "";
 
-  const aiMsg = addMessage("<i>Typing...</i>", "ai");
-
-  try {
-    const res = await fetch(`/chat-stream?prompt=${encodeURIComponent(prompt)}`);
-    if (!res.ok) throw new Error("Network error");
-
-    const reader = res.body.getReader();
-    const decoder = new TextDecoder();
-    let text = "";
-
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      const chunk = decoder.decode(value, { stream: true });
-      const lines = chunk.split("\n").filter(l => l.trim());
-      for (const line of lines) {
-        if (line.includes("[DONE]")) break;
-        if (line.startsWith("data:")) {
-          try {
-            const data = JSON.parse(line.replace("data:", "").trim());
-            if (data.token) {
-              text += data.token;
-              aiMsg.innerHTML = text;
-              chatContainer.scrollTop = chatContainer.scrollHeight;
-            }
-            if (data.error) {
-              aiMsg.innerHTML = `⚠️ Oops! ${data.error}`;
-            }
-          } catch {}
-        }
-      }
-    }
-  } catch (err) {
-    aiMsg.innerHTML = "⚠️ Something went wrong. Please try again.";
-  }
+  // AI response
+  const reply = aiReply(text);
+  setTimeout(() => addMessage("ai", reply), 600);
 }
 
-// Send on button click
-chatBtn.addEventListener("click", sendMessage);
+// Copy chat to clipboard
+function copyChat() {
+  const text = chatHistory.map(m => `${m.sender}: ${m.text}`).join("\n");
+  navigator.clipboard.writeText(text).then(() => {
+    alert("Chat copied to clipboard!");
+  });
+}
 
-// Send on Enter
+// Download chat as .txt
+function downloadChat() {
+  const text = chatHistory.map(m => `${m.sender}: ${m.text}`).join("\n");
+  const blob = new Blob([text], { type: "text/plain" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "codexa_chat.txt";
+  link.click();
+}
+
+// Export chat as JSON
+function exportChat() {
+  const blob = new Blob([JSON.stringify(chatHistory, null, 2)], {
+    type: "application/json",
+  });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "codexa_chat.json";
+  link.click();
+}
+
+// Reset chat
+function resetChat() {
+  chatBox.innerHTML = "";
+  chatHistory = [];
+}
+
+// Event listeners
+chatBtn.addEventListener("click", handleChat);
+generateBtn.addEventListener("click", handleChat);
+copyBtn.addEventListener("click", copyChat);
+downloadBtn.addEventListener("click", downloadChat);
+exportBtn.addEventListener("click", exportChat);
+resetBtn.addEventListener("click", resetChat);
+
+// Enter key support
 userInput.addEventListener("keypress", (e) => {
-  if (e.key === "Enter") {
-    e.preventDefault();
-    sendMessage();
-  }
+  if (e.key === "Enter") handleChat();
 });

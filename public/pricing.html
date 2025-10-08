@@ -4,45 +4,43 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pricing - Codexa AI</title>
-  <link rel="stylesheet" href="styles.css">
-  <script src="https://js.stripe.com/v3/"></script>
-  <script src="script.js" defer></script>
+  <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   <header>
-    <img src="logo.png" alt="Codexa Logo" class="logo">
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="features.html">Features</a>
-      <a href="pricing.html" class="active">Pricing</a>
-      <a href="app.html">Open App</a>
+    <nav class="navbar">
+      <div class="logo">
+        <img src="/logo.png" alt="Codexa Logo">
+        <span>Codexa AI</span>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="features.html">Features</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+      </ul>
     </nav>
   </header>
 
-  <main>
-    <section class="pricing">
-      <h2>💰 Pricing</h2>
-      <div class="pricing-cards">
-        <div class="card">
-          <h3>Free</h3>
-          <p>Limited generations</p>
-          <button onclick="window.location.href='free.html'" class="btn btn-secondary">Try Free</button>
-        </div>
-
-        <div class="card">
-          <h3>Pro</h3>
-          <p>Unlimited generations</p>
-          <button onclick="redirectToCheckout('pro')" class="btn btn-primary">Upgrade to Pro</button>
-        </div>
-
-        <div class="card">
-          <h3>Team</h3>
-          <p>Collaboration & support</p>
-          <button onclick="redirectToCheckout('team')" class="btn btn-primary">Get Team Plan</button>
-        </div>
+  <section class="pricing">
+    <h1>💰 Choose Your Plan</h1>
+    <div class="pricing-cards">
+      <div class="card">
+        <h3>Free</h3>
+        <p>Limited generations</p>
+        <a href="free.html" class="btn-secondary">Try Free</a>
       </div>
-    </section>
-  </main>
+      <div class="card">
+        <h3>Pro</h3>
+        <p>Unlimited generations</p>
+        <a href="checkout.html" class="btn-primary">Upgrade to Pro</a>
+      </div>
+      <div class="card">
+        <h3>Team</h3>
+        <p>Collaboration & support</p>
+        <a href="checkout.html" class="btn-primary">Get Team Plan</a>
+      </div>
+    </div>
+  </section>
 
   <footer>
     <p>© 2025 Codexa AI. All rights reserved.</p>

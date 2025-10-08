@@ -4,33 +4,36 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Checkout - Codexa AI</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
   <header>
-    <nav>
-      <img src="logo.png" alt="Codexa Logo" class="logo">
-      <span class="brand">Codexa AI</span>
-      <div class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="index.html#pricing">Pricing</a>
+    <nav class="navbar">
+      <div class="logo">
+        <img src="/logo.png" alt="Codexa Logo">
+        <span>Codexa AI</span>
       </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+      </ul>
     </nav>
   </header>
 
   <section class="checkout">
     <h1>Upgrade Your Plan</h1>
     <p>Select a plan and complete payment securely.</p>
-    <div class="plans">
-      <div class="plan-card">
+    <div class="checkout-cards">
+      <div class="card">
         <h3>Pro Plan</h3>
         <p>Unlimited generations</p>
-        <button class="plan-btn" onclick="subscribe('price_1SFFMf50pz2SntAR9RG9WteF')">Subscribe Pro</button>
+        <button id="checkout-pro" class="btn-primary">Subscribe Pro</button>
       </div>
-      <div class="plan-card">
+      <div class="card">
         <h3>Team Plan</h3>
         <p>Collaboration & support</p>
-        <button class="plan-btn" onclick="subscribe('price_1SFFP950pz2SntARpYHyaZEi')">Subscribe Team</button>
+        <button id="checkout-team" class="btn-primary">Subscribe Team</button>
       </div>
     </div>
   </section>
@@ -40,23 +43,30 @@
   </footer>
 
   <script>
-    async function subscribe(priceId) {
-      try {
-        const response = await fetch("/create-checkout-session", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ priceId })
-        });
-        const session = await response.json();
-        if (session.url) {
-          window.location.href = session.url;
-        } else {
-          alert("Error creating checkout session: " + (session.error || "Unknown error"));
-        }
-      } catch (err) {
-        alert("Payment error: " + err.message);
+    const stripe = Stripe("pk_live_51SEW0g50pz2SntAR9AD7gJop6Ld4LgZVVve4enxE7GkyD8mV4RaAm6tOaovxtWBMMQXfOrPopueiXya0R5nMTSVJ00PJ7m7y3v");
+
+    async function createCheckout(priceId) {
+      const response = await fetch("/create-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ priceId })
+      });
+
+      const session = await response.json();
+      if (session.id) {
+        stripe.redirectToCheckout({ sessionId: session.id });
+      } else {
+        alert("Error creating checkout session.");
       }
     }
+
+    document.getElementById("checkout-pro").addEventListener("click", () => {
+      createCheckout("price_1SFFMf50pz2SntAR9RG9WteF");
+    });
+
+    document.getElementById("checkout-team").addEventListener("click", () => {
+      createCheckout("price_1SFFP950pz2SntARpYHyaZEi");
+    });
   </script>
 </body>
 </html>

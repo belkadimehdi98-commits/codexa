@@ -6,11 +6,12 @@
   <title>Checkout - Codexa AI</title>
   <link rel="stylesheet" href="styles.css">
   <script src="https://js.stripe.com/v3/"></script>
+  <script src="script.js" defer></script>
 </head>
 <body>
   <header>
     <img src="logo.png" alt="Codexa Logo" class="logo">
-    <h1>Codexa AI</h1>
+    <span class="brand">Codexa AI</span>
     <nav>
       <a href="index.html">Home</a>
       <a href="pricing.html">Pricing</a>
@@ -18,44 +19,28 @@
     </nav>
   </header>
 
-  <main class="checkout-page">
-    <h2>Upgrade Your Plan</h2>
-    <p>Select a plan and complete payment securely.</p>
+  <main>
+    <section class="pricing">
+      <h2>Upgrade Your Plan</h2>
+      <p>Select a plan and complete payment securely.</p>
+      <div class="pricing-cards">
+        <div class="card">
+          <h3>Pro Plan</h3>
+          <p>Unlimited generations</p>
+          <button onclick="redirectToCheckout('pro')" class="btn btn-primary">Subscribe Pro</button>
+        </div>
 
-    <div class="checkout-container">
-      <div class="pricing-card">
-        <h3>Pro Plan</h3>
-        <p>Unlimited generations</p>
-        <button class="btn-primary" id="checkout-pro">Subscribe Pro</button>
+        <div class="card">
+          <h3>Team Plan</h3>
+          <p>Collaboration & support</p>
+          <button onclick="redirectToCheckout('team')" class="btn btn-primary">Subscribe Team</button>
+        </div>
       </div>
-      <div class="pricing-card">
-        <h3>Team Plan</h3>
-        <p>Collaboration & support</p>
-        <button class="btn-primary" id="checkout-team">Subscribe Team</button>
-      </div>
-    </div>
+    </section>
   </main>
 
-  <script>
-    const stripe = Stripe("pk_live_51SEW0g50pz2SntAR9AD7gJop6Ld4LgZVVve4enxE7GkyD8mV4RaAm6tOaovxtWBMMQXfOrPopueiXya0R5nMTSVJ00PJ7m7y3v");
-
-    document.getElementById("checkout-pro").addEventListener("click", () => {
-      stripe.redirectToCheckout({
-        lineItems: [{ price: "price_1SFFMf50pz2SntAR9RG9WteF", quantity: 1 }],
-        mode: "subscription",
-        successUrl: "https://codexa.codes/success.html",
-        cancelUrl: "https://codexa.codes/cancel.html",
-      });
-    });
-
-    document.getElementById("checkout-team").addEventListener("click", () => {
-      stripe.redirectToCheckout({
-        lineItems: [{ price: "price_1SFFP950pz2SntARpYHyaZEi", quantity: 1 }],
-        mode: "subscription",
-        successUrl: "https://codexa.codes/success.html",
-        cancelUrl: "https://codexa.codes/cancel.html",
-      });
-    });
-  </script>
+  <footer>
+    <p>© 2025 Codexa AI. All rights reserved.</p>
+  </footer>
 </body>
 </html>

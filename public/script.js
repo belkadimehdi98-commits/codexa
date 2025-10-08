@@ -1,18 +1,21 @@
-async function checkout(plan) {
-  try {
-    const res = await fetch("/create-checkout-session", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ plan }),
-    });
+const stripe = Stripe("pk_live_51SEW0g50pz2SntAR9AD7gJop6Ld4LgZVVve4enxE7GkyD8mV4RaAm6tOaovxtWBMMQXfOrPopueiXya0R5nMTSVJ00PJ7m7y3v");
 
-    const data = await res.json();
-    if (data.url) {
-      window.location.href = data.url;
-    } else {
-      alert("Error: " + (data.error || "Checkout failed"));
+function redirectToCheckout(plan) {
+    let priceId = "";
+    if (plan === "pro") {
+        priceId = "price_1SFFMf50pz2SntAR9RG9WteF";  // Pro Plan
+    } else if (plan === "team") {
+        priceId = "price_1SFFP950pz2SntARpYHyaZEi";  // Team Plan
     }
-  } catch (err) {
-    console.error("Checkout error", err);
-  }
+
+    stripe.redirectToCheckout({
+        lineItems: [{ price: priceId, quantity: 1 }],
+        mode: "subscription",
+        successUrl: "https://codexa.codes/success.html",
+        cancelUrl: "https://codexa.codes/cancel.html",
+    }).then(function (result) {
+        if (result.error) {
+            alert(result.error.message);
+        }
+    });
 }

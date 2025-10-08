@@ -1,24 +1,51 @@
-<section id="pricing" class="pricing-section">
-  <h2>💰 Pricing</h2>
-  <div class="pricing-container">
-    <div class="pricing-card">
-      <h3>Free</h3>
-      <p>Limited generations</p>
-      <button class="btn-outline">Try Free</button>
-    </div>
-    <div class="pricing-card">
-      <h3>Pro</h3>
-      <p>Unlimited generations</p>
-      <button class="btn-primary" onclick="window.location.href='checkout.html?plan=pro'">
-        Upgrade to Pro
-      </button>
-    </div>
-    <div class="pricing-card">
-      <h3>Team</h3>
-      <p>Collaboration & support</p>
-      <button class="btn-primary" onclick="window.location.href='checkout.html?plan=team'">
-        Get Team Plan
-      </button>
-    </div>
-  </div>
-</section>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pricing - Codexa AI</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://js.stripe.com/v3/"></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header>
+    <img src="logo.png" alt="Codexa Logo" class="logo">
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="features.html">Features</a>
+      <a href="pricing.html" class="active">Pricing</a>
+      <a href="app.html">Open App</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="pricing">
+      <h2>💰 Pricing</h2>
+      <div class="pricing-cards">
+        <div class="card">
+          <h3>Free</h3>
+          <p>Limited generations</p>
+          <button onclick="window.location.href='free.html'" class="btn btn-secondary">Try Free</button>
+        </div>
+
+        <div class="card">
+          <h3>Pro</h3>
+          <p>Unlimited generations</p>
+          <button onclick="redirectToCheckout('pro')" class="btn btn-primary">Upgrade to Pro</button>
+        </div>
+
+        <div class="card">
+          <h3>Team</h3>
+          <p>Collaboration & support</p>
+          <button onclick="redirectToCheckout('team')" class="btn btn-primary">Get Team Plan</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Codexa AI. All rights reserved.</p>
+  </footer>
+</body>
+</html>

@@ -1,86 +1,111 @@
 /* Reset */
-* { margin: 0; padding: 0; box-sizing: border-box; }
 body {
+  margin: 0;
   font-family: Arial, sans-serif;
-  background: #0d1117;
-  color: #e6edf3;
-  line-height: 1.6;
+  background: #0f172a;
+  color: #fff;
 }
 
 /* Navbar */
 .navbar {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  background: #161b22;
-  padding: 10px 20px;
+  align-items: center;
+  padding: 15px 40px;
+  background: #1e293b;
 }
-.logo { height: 35px; margin-right: 10px; }
-.brand { font-size: 1.2rem; font-weight: bold; }
-.nav-links { list-style: none; display: flex; gap: 15px; }
-.nav-links li a { color: #58a6ff; text-decoration: none; }
 
-/* Hero Section */
+.nav-left {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 40px;
+  margin-right: 10px;
+}
+
+.brand {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.nav-links a {
+  margin: 0 10px;
+  color: #fff;
+  text-decoration: none;
+}
+
+.btn-nav {
+  background: #2563eb;
+  padding: 8px 16px;
+  border-radius: 6px;
+  color: #fff;
+  font-weight: bold;
+}
+
+/* Hero */
 .hero {
   text-align: center;
   padding: 60px 20px;
 }
-.hero h1 { font-size: 2.5rem; margin-bottom: 10px; }
-.hero p { margin-bottom: 20px; font-size: 1.2rem; }
 
-/* Buttons */
-.btn-primary, .btn-secondary {
-  padding: 10px 20px;
+.btn-primary {
+  background: #22c55e;
+  padding: 12px 24px;
   border-radius: 6px;
+  color: #fff;
   text-decoration: none;
   font-weight: bold;
-  transition: 0.3s;
 }
-.btn-primary { background: #238636; color: white; }
-.btn-secondary { background: #58a6ff; color: black; }
-.btn-primary:hover, .btn-secondary:hover { opacity: 0.85; }
 
-/* Features & Pricing */
-section { padding: 40px 20px; text-align: center; }
+/* Features */
+.features {
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.feature-list div {
+  margin: 10px 0;
+  font-size: 1.1rem;
+}
+
+/* Pricing */
+.pricing {
+  text-align: center;
+  padding: 50px 20px;
+}
+
 .pricing-cards {
   display: flex;
   justify-content: center;
   gap: 20px;
-}
-.card {
-  background: #161b22;
-  padding: 20px;
-  border-radius: 8px;
-  width: 200px;
+  margin-top: 20px;
+  flex-wrap: wrap;
 }
 
-/* Chat */
-.chat-container {
-  max-width: 800px;
-  margin: auto;
+.card {
+  background: #1e293b;
   padding: 20px;
+  border-radius: 10px;
+  width: 250px;
 }
-#chat-box {
-  height: 400px;
-  overflow-y: auto;
-  background: #161b22;
-  padding: 15px;
+
+.btn-secondary {
+  display: inline-block;
+  margin-top: 10px;
+  background: #3b82f6;
+  padding: 10px 20px;
   border-radius: 6px;
-  margin-bottom: 10px;
+  color: #fff;
+  font-weight: bold;
+  text-decoration: none;
 }
-.chat-controls { display: flex; gap: 10px; margin-bottom: 10px; }
-.chat-controls input {
-  flex: 1;
-  padding: 10px;
-  border-radius: 6px;
-  border: none;
-}
-.export-buttons { display: flex; gap: 10px; justify-content: center; }
 
 /* Footer */
-footer {
-  background: #161b22;
+.footer {
   text-align: center;
   padding: 20px;
-  margin-top: 20px;
+  background: #0f172a;
+  color: #94a3b8;
 }

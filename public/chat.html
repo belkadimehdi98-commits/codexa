@@ -1,28 +1,212 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Codexa — Chat</title>
-  <link rel="stylesheet" href="/chat.css" />
-  <link rel="icon" href="/logo.png" type="image/png" />
-</head>
-<body>
-  <div class="chat-container">
-    <header class="chat-header">
-      <h1>💻 Codexa Assistant</h1>
-    </header>
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+}
 
-    <main id="chat-box" class="chat-box">
-      <!-- Messages will go here -->
-    </main>
+body {
+  background: #0d1117;
+  color: #f0f6fc;
+  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
 
-    <form id="chat-form" class="chat-form">
-      <input type="text" id="user-input" placeholder="Type your code request..." required />
-      <button type="submit">Send</button>
-    </form>
-  </div>
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #161b22;
+  padding: 1rem 2rem;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.logo img {
+  height: 40px;
+}
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+.nav-links a {
+  color: #58a6ff;
+  text-decoration: none;
+  font-weight: bold;
+}
+.nav-links a:hover {
+  color: #1f6feb;
+}
 
-  <script src="/script.js"></script>
-</body>
-</html>
+/* Hero */
+.hero {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+.hero h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+.hero p {
+  margin-bottom: 1.5rem;
+  font-size: 1.2rem;
+}
+
+/* Buttons */
+.btn {
+  background: #238636;
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.btn:hover {
+  background: #2ea043;
+}
+
+/* Features */
+.features {
+  padding: 2rem;
+}
+.features h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Pricing */
+.pricing {
+  padding: 2rem;
+  text-align: center;
+}
+.plans {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+.plan {
+  background: #161b22;
+  padding: 1.5rem;
+  border-radius: 10px;
+  width: 250px;
+}
+
+/* Chat (merged chat.css) */
+.chat-container {
+  background: #1e293b;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 800px;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+.chat-header {
+  padding: 16px;
+  border-bottom: 1px solid #334155;
+  text-align: center;
+}
+.chat-header h1 {
+  font-size: 1.2rem;
+  color: #38bdf8; /* cyan accent */
+}
+
+#chat-box,
+.chat-box {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  background: #161b22;
+}
+
+.message,
+.msg {
+  margin: 8px 0;
+  padding: 12px 16px;
+  border-radius: 12px;
+  max-width: 80%;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+
+.message.user,
+.msg.user {
+  background: #38bdf8;
+  color: #0f172a;
+  align-self: flex-end;
+  text-align: right;
+}
+
+.message.bot,
+.msg.bot {
+  background: #334155;
+  color: #f8fafc;
+  align-self: flex-start;
+}
+
+.message.loading {
+  font-style: italic;
+  opacity: 0.7;
+}
+
+.chat-controls,
+.chat-form {
+  display: flex;
+  gap: 10px;
+  padding: 12px;
+  border-top: 1px solid #334155;
+}
+
+.chat-controls input,
+.chat-form input,
+.chat-form textarea {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  background: #0d1117;
+  color: white;
+}
+
+.chat-controls button,
+.chat-form button {
+  margin-left: 8px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  background: #238636;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.chat-controls button:hover,
+.chat-form button:hover {
+  background: #0ea5e9;
+}
+
+.chat-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}

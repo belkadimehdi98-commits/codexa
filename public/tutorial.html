@@ -4,30 +4,20 @@
   <meta charset="UTF-8">
   <title>Codexa Tutorials</title>
   <link rel="stylesheet" href="styles.css">
-  <style>
-    .brand-tagline {
-      font-size: 0.75rem;
-      color: var(--muted);
-      display: block;
-      margin-top: -4px;
-    }
-  </style>
 </head>
 <body>
   <!-- Navbar -->
   <nav class="navbar">
     <div class="logo">
       <img src="images/logo.png" alt="Codexa Logo" />
-      <div>
-        <span>Codexa</span>
-        <span class="brand-tagline">AI that codes & creates</span>
-      </div>
+      <span>Codexa</span>
     </div>
     <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
       <li><a href="index.html#features">Features</a></li>
       <li><a href="index.html#pricing">Pricing</a></li>
       <li><a href="chat.html">Chat</a></li>
+      <li><button id="theme-toggle" class="theme-toggle">🌙</button></li>
     </ul>
   </nav>
 
@@ -37,13 +27,13 @@
 
     <!-- Scrollable tutorial box -->
     <div class="chat-box" id="tutorial-box">
-      <p class="message bot">👋 I'm Codexa! Ask me for a tutorial, like:<br>
+      <p class="message bot">👋 Ask me for a tutorial, like:<br>
       - "Build a landing page in React"<br>
       - "Learn CSS Flexbox basics"<br>
       - "How to connect Node.js with PostgreSQL"</p>
     </div>
 
-    <!-- Fixed form at bottom of container -->
+    <!-- Fixed form at bottom -->
     <form id="tutorial-form" class="chat-form">
       <input type="text" id="tutorial-input" placeholder="Ask Codexa for a tutorial..." required />
       <button type="submit">Generate</button>
@@ -51,9 +41,10 @@
   </main>
 
   <footer>
-    <p>© 2025 Codexa — AI that codes & creates. All rights reserved.</p>
+    <p>© 2025 Codexa. All rights reserved.</p>
   </footer>
 
   <script src="tutorials.js"></script>
+  <script src="theme.js"></script>
 </body>
 </html>

@@ -5,13 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Codexa AI</title>
   <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="images/logo.png" type="image/png" /> <!-- ✅ Favicon -->
 </head>
 <body>
   <!-- Navbar -->
   <nav class="navbar">
     <div class="logo">
-      <img src="images/logo.png" alt="Codexa Logo" /> <!-- ✅ make sure logo.png is inside /public/images -->
+      <img src="logo.png" alt="Codexa Logo" />
     </div>
     <ul class="nav-links">
       <li><a href="#features">Features</a></li>
@@ -29,12 +28,12 @@
   <!-- Features -->
   <section id="features" class="features">
     <h2>✨ Features</h2>
-    <ul>
-      <li>⚡ Real-time interactive chat (streaming)</li>
-      <li>📦 One-click code generation with Copy & Download</li>
-      <li>📂 Save & export chat history</li>
-      <li>📱 Works beautifully on all devices</li>
-    </ul>
+    <div class="feature-grid">
+      <div class="feature-card">⚡ Real-time interactive chat (streaming)</div>
+      <div class="feature-card">📦 One-click code generation with Copy & Download</div>
+      <div class="feature-card">📂 Save & export chat history</div>
+      <div class="feature-card">📱 Works beautifully on all devices</div>
+    </div>
   </section>
 
   <!-- Pricing -->
@@ -63,7 +62,6 @@
     <p>© 2025 Codexa. All rights reserved.</p>
   </footer>
 
-  <!-- ✅ Stripe Checkout JS -->
   <script src="checkout.js"></script>
 </body>
 </html>

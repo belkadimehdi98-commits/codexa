@@ -1,43 +1,45 @@
-document.addEventListener("DOMContentLoaded", () => {
-  // Free plan: just go to free.html
-  const freeBtn = document.getElementById("free-btn");
-  if (freeBtn) {
-    freeBtn.addEventListener("click", () => {
-      window.location.href = "free.html";
+// Handle Stripe checkout
+async function handleCheckout(priceId) {
+  try {
+    const res = await fetch("/create-checkout-session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ priceId }),
     });
-  }
 
-  // Pro & Team via Stripe Checkout
-  const handleCheckout = async (priceId) => {
-    try {
-      const res = await fetch("/create-checkout-session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ priceId })
-      });
-
-      const data = await res.json();
-      if (data?.url) {
-        window.location.href = data.url;
-      } else {
-        alert("Error: " + (data?.error || "Unknown error"));
-      }
-    } catch (err) {
-      alert("Something went wrong: " + err.message);
+    const data = await res.json();
+    if (data.url) {
+      // Redirect user to Stripe Checkout
+      window.location.href = data.url;
+    } else {
+      alert("Payment setup failed. Please try again.");
     }
-  };
-
-  const proBtn = document.getElementById("pro-btn");
-  if (proBtn) {
-    proBtn.addEventListener("click", () => {
-      handleCheckout("price_PRO_ID");   // TODO: replace with your real Stripe price id
-    });
+  } catch (err) {
+    console.error("Checkout error:", err);
+    alert("Something went wrong. Please try again later.");
   }
+}
 
-  const teamBtn = document.getElementById("team-btn");
-  if (teamBtn) {
-    teamBtn.addEventListener("click", () => {
-      handleCheckout("price_TEAM_ID");  // TODO: replace with your real Stripe price id
-    });
-  }
-});
+// ✅ Free Plan → redirect to confirmation page
+const freeBtn = document.getElementById("free-btn");
+if (freeBtn) {
+  freeBtn.addEventListener("click", () => {
+    window.location.href = "free.html";
+  });
+}
+
+// ✅ Pro Plan → Stripe Checkout
+const proBtn = document.getElementById("pro-btn");
+if (proBtn) {
+  proBtn.addEventListener("click", () => {
+    handleCheckout("price_1SFFMf50pz2SntAR9RG9WteF"); // Your real Pro price ID
+  });
+}
+
+// ✅ Team Plan → Stripe Checkout
+const teamBtn = document.getElementById("team-btn");
+if (teamBtn) {
+  teamBtn.addEventListener("click", () => {
+    handleCheckout("price_1SFFP950pz2SntARpYHyaZEi"); // Your real Team price ID
+  });
+}

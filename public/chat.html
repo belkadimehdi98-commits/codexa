@@ -2,49 +2,49 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Codexa Chat</title>
   <link rel="stylesheet" href="styles.css">
+  <script defer src="chat.js"></script>
 </head>
 <body>
   <!-- Navbar -->
   <nav class="navbar">
     <div class="logo">
-      <img src="images/logo.png" alt="Codexa Logo" />
+      <img src="logo.png" alt="Codexa Logo" />
       <span>Codexa</span>
     </div>
     <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
       <li><a href="index.html#features">Features</a></li>
       <li><a href="index.html#pricing">Pricing</a></li>
-      <li><a href="tutorials.html">Tutorials</a></li>
+      <li><a href="tutorial.html">Tutorials</a></li>
     </ul>
   </nav>
 
-  <!-- Chat -->
-  <main class="chat-container">
+  <!-- Chat Container -->
+  <div class="chat-container">
     <div class="chat-header">💬 Codexa AI Assistant</div>
 
-    <!-- Mode buttons -->
-    <div class="chat-modes">
-      <button class="mode-btn active" data-mode="chat">💬 Chat</button>
-      <button class="mode-btn" data-mode="code">💻 Code</button>
-      <button class="mode-btn" data-mode="image">🖼️ Image</button>
+    <!-- Mode Toggle -->
+    <div class="mode-toggle">
+      <button id="mode-chat" class="btn btn-green">💬 Chat</button>
+      <button id="mode-code" class="btn btn-blue">📘 Code</button>
+      <button id="mode-image" class="btn btn-red">🖼️ Image</button>
     </div>
 
-    <!-- Chat messages -->
+    <!-- Messages -->
     <div id="chat-box" class="chat-box"></div>
 
-    <!-- Input form -->
+    <!-- Input -->
     <form id="chat-form" class="chat-form">
       <input type="text" id="user-input" placeholder="Ask Codexa..." required />
       <button type="submit">Send</button>
     </form>
-  </main>
+  </div>
 
   <footer>
     <p>© 2025 Codexa. All rights reserved.</p>
   </footer>
-
-  <script src="chat.js"></script>
 </body>
 </html>

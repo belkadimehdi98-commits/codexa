@@ -22,13 +22,24 @@
   --shadow: 0 8px 18px rgba(0, 0, 0, .35);
 }
 
+/* Light Mode */
+body.light {
+  --bg: #f8f9fb;
+  --panel: #ffffff;
+  --text: #1e1e1e;
+  --muted: #555;
+  --border: #ddd;
+  --link: #2d7ef7;
+  --link-2: #1d6ae5;
+}
+
+/* Global */
 html, body {
   background: var(--bg);
   color: var(--text);
   font-family: "Segoe UI", Roboto, Arial, sans-serif;
   line-height: 1.6;
   height: 100%;
-  overflow-x: hidden;
 }
 
 /* Navbar */
@@ -57,18 +68,21 @@ html, body {
   display: block;
 }
 
-.nav-links {
-  list-style: none;
-  display: flex;
-  gap: 22px;
+.logo span {
+  font-size: 1.2rem;
 }
 
-.nav-links a {
-  color: var(--link);
-  text-decoration: none;
-  font-weight: 600;
+.tagline {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-top: -4px;
 }
-.nav-links a:hover { color: var(--link-2); }
+
+/* Toggle theme button */
+.theme-toggle {
+  cursor: pointer;
+  font-size: 1.2rem;
+}
 
 /* Hero */
 .hero {
@@ -77,15 +91,16 @@ html, body {
   max-width: 1000px;
   margin: 0 auto;
 }
+
 .hero h1 {
   font-size: clamp(1.8rem, 3.6vw, 2.8rem);
   margin-bottom: 10px;
   letter-spacing: .5px;
 }
-.tagline {
-  font-size: 1.2rem;
+
+.hero p {
   color: var(--muted);
-  margin-top: 8px;
+  font-size: 1.1rem;
 }
 
 /* Features */
@@ -94,30 +109,41 @@ html, body {
   max-width: 1100px;
   margin: 0 auto;
 }
+
 .features h2 {
   text-align: center;
-  margin-bottom: 18px;
+  margin-bottom: 24px;
   font-size: clamp(1.3rem, 3vw, 2rem);
 }
+
 .features-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 18px;
+  gap: 20px;
   margin-top: 16px;
 }
+
 .feature-card {
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 18px;
+  padding: 20px;
   text-align: center;
   box-shadow: var(--shadow);
-  transition: transform .18s ease, background .18s ease, border-color .18s ease;
-  font-size: 1.05rem;
+  transition: transform .18s ease, border-color .18s ease;
 }
+
 .feature-card:hover {
   transform: translateY(-4px);
   border-color: var(--link);
+}
+
+.feature-card svg {
+  width: 36px;
+  height: 36px;
+  margin-bottom: 12px;
+  stroke-width: 1.8;
+  color: var(--blue);
 }
 
 /* Pricing */
@@ -126,17 +152,14 @@ html, body {
   max-width: 1100px;
   margin: 0 auto;
 }
-.pricing h2 {
-  text-align: center;
-  margin-bottom: 24px;
-  font-size: clamp(1.3rem, 3vw, 2rem);
-}
+
 .plans {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 24px;
 }
+
 .plan {
   width: 300px;
   background: var(--panel);
@@ -145,18 +168,6 @@ html, body {
   padding: 22px;
   text-align: center;
   box-shadow: var(--shadow);
-}
-.plan h3 {
-  font-size: 1.4rem;
-  margin-bottom: 6px;
-}
-.plan p {
-  color: var(--muted);
-  margin-bottom: 18px;
-  min-height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 /* Buttons */
@@ -180,10 +191,10 @@ html, body {
 .btn-red { background: var(--red); }
 .btn-red:hover { background: var(--red-2); }
 
-/* Chat & Tutorial Containers */
+/* Chat & Tutorial Pages */
 .chat-container {
   max-width: 960px;
-  margin: 28px auto;
+  margin: 28px auto 60px;
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: 14px;
@@ -191,7 +202,7 @@ html, body {
   padding: 18px;
   display: flex;
   flex-direction: column;
-  height: 80vh; /* ensures enough height */
+  height: calc(100vh - 140px);
 }
 
 .chat-header {
@@ -200,8 +211,9 @@ html, body {
   margin-bottom: 10px;
 }
 
+/* Chat Box */
 .chat-box {
-  flex: 1; /* takes available space */
+  flex: 1;
   overflow-y: auto;
   border: 1px solid var(--border);
   border-radius: 10px;
@@ -210,7 +222,7 @@ html, body {
   background: var(--bg);
 }
 
-/* Mode Toggle (Chat / Code / Image) */
+/* Mode Toggle */
 .mode-toggle {
   display: flex;
   justify-content: center;
@@ -260,28 +272,7 @@ html, body {
   margin-right: auto;
 }
 
-/* Code actions */
-.code-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 6px;
-}
-.copy-btn,
-.download-btn {
-  padding: 4px 10px;
-  font-size: 0.8rem;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  background: var(--blue);
-  color: #fff;
-  transition: background .2s ease;
-}
-.copy-btn:hover { background: var(--blue-2); }
-.download-btn { background: var(--green); }
-.download-btn:hover { background: var(--green-2); }
-
-/* Chat Form (fixed at bottom of container) */
+/* Chat Form */
 .chat-form {
   display: flex;
   gap: 10px;
@@ -315,8 +306,9 @@ footer {
   border-top: 1px solid var(--border);
 }
 
-/* Responsive */
+/* Small screens */
 @media (max-width: 520px) {
   .nav-links { gap: 14px; }
   .logo span { display: none; }
+  .tagline { display: none; }
 }

@@ -1,71 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Codexa AI</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8">
+  <title>Codexa</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <!-- Navbar -->
   <nav class="navbar">
     <div class="logo">
-      <img src="images/logo.png" alt="Codexa Logo" />
-      <span>Codexa</span>
+      <img src="images/logo.png" alt="Codexa Logo">
+      <div>
+        <span>Codexa</span>
+        <div class="tagline">AI that codes & creates</div>
+      </div>
     </div>
     <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
       <li><a href="#features">Features</a></li>
       <li><a href="#pricing">Pricing</a></li>
       <li><a href="chat.html">Chat</a></li>
       <li><a href="tutorial.html">Tutorials</a></li>
     </ul>
+    <div class="theme-toggle" id="theme-toggle">🌙</div>
   </nav>
 
   <!-- Hero -->
-  <header class="hero">
-    <h1>Welcome to Codexa AI</h1>
-    <p class="tagline">Code smarter. Create faster. Learn endlessly.</p>
-  </header>
+  <section class="hero">
+    <h1>Code smarter. Create faster. Learn endlessly.</h1>
+    <p>Build websites, generate images, and learn with Codexa’s AI-powered assistant.</p>
+  </section>
 
   <!-- Features -->
   <section id="features" class="features">
-    <h2>✨ Features</h2>
+    <h2>Features</h2>
     <div class="features-grid">
-      <div class="feature-card">⚡ Real-time interactive chat (streaming)</div>
-      <div class="feature-card">📦 One-click code generation with Copy & Download</div>
-      <div class="feature-card">📂 Save & export chat history</div>
-      <div class="feature-card">📱 Works beautifully on all devices</div>
-      <div class="feature-card">🖼️ AI-powered image generation</div>
-      <div class="feature-card">📘 Step-by-step coding tutorials</div>
+      <div class="feature-card">
+        <!-- Code icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 18l6-6-6-6M8 6l-6 6 6 6"/>
+        </svg>
+        <h3>Code Generation</h3>
+        <p>Instantly generate ready-to-use website code with one request.</p>
+      </div>
+      <div class="feature-card">
+        <!-- Image icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h18M3 19h18M5 5v14M19 5v14M8 11l3 3 5-5 5 5"/>
+        </svg>
+        <h3>Image Creation</h3>
+        <p>Generate unique, high-quality images for your projects in seconds.</p>
+      </div>
+      <div class="feature-card">
+        <!-- Book / Learn icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 16v-2m8-6h2M2 12h2m15.07 7.07l1.41-1.41M4.93 6.93L3.51 5.51m0 12.02l1.42-1.42M19.07 4.93l1.41 1.41"/>
+        </svg>
+        <h3>Tutorials</h3>
+        <p>Learn step by step with AI-powered coding and design tutorials.</p>
+      </div>
     </div>
   </section>
 
   <!-- Pricing -->
   <section id="pricing" class="pricing">
-    <h2>💰 Pricing</h2>
+    <h2>Pricing</h2>
     <div class="plans">
       <div class="plan">
-        <h3>Free</h3>
-        <p>Try Codexa with limited generations</p>
-        <button id="free-btn" class="btn btn-green">Try Free</button>
+        <h3>Pro Plan</h3>
+        <p>For developers who want to build and create faster.</p>
+        <button class="btn btn-green" id="checkout-pro">Get Pro</button>
       </div>
       <div class="plan">
-        <h3>Pro</h3>
-        <p>Unlimited generations</p>
-        <button id="pro-btn" class="btn btn-blue">Get Pro</button>
-      </div>
-      <div class="plan">
-        <h3>Team</h3>
-        <p>Collaboration & support</p>
-        <button id="team-btn" class="btn btn-red">Get Team</button>
+        <h3>Team Plan</h3>
+        <p>Collaborate with your team and accelerate projects.</p>
+        <button class="btn btn-blue" id="checkout-team">Get Team</button>
       </div>
     </div>
   </section>
 
+  <!-- Footer -->
   <footer>
     <p>© 2025 Codexa. All rights reserved.</p>
   </footer>
 
   <script src="checkout.js"></script>
+  <script>
+    // Theme toggle
+    const toggle = document.getElementById("theme-toggle");
+    toggle.addEventListener("click", () => {
+      document.body.classList.toggle("light");
+      toggle.textContent = document.body.classList.contains("light") ? "🌙" : "☀️";
+    });
+  </script>
 </body>
 </html>

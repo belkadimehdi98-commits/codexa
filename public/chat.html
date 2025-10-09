@@ -3,36 +3,74 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Codexa Chat</title>
-  <link rel="stylesheet" href="styles.css" />
+  <title>Codexa — AI Coding Assistant</title>
+  <link rel="stylesheet" href="chat.css" />
+  <link rel="icon" href="favicon.ico" />
 </head>
 <body>
-  <header>
-    <nav class="navbar">
-      <div class="logo">
-        <img src="logo.png" alt="Codexa Logo" />
-        <h1>Codexa AI</h1>
-      </div>
-      <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="pricing.html">Pricing</a></li>
-      </ul>
-    </nav>
-  </header>
+  <div class="chat-container">
+    <header class="chat-header">
+      <h1>💻 Codexa Assistant</h1>
+    </header>
 
-  <main class="chat-container">
-    <div id="chat-box"></div>
-    <div class="chat-controls">
-      <input type="text" id="user-input" placeholder="Type your message..." />
-      <button onclick="sendMessage()">Send</button>
-    </div>
-    <div class="chat-actions">
-      <button onclick="copyChat()">📋 Copy</button>
-      <button onclick="downloadChat()">⬇ Download</button>
-      <button onclick="clearChat()">🗑 Reset</button>
-    </div>
-  </main>
+    <main id="chat-box" class="chat-box">
+      <!-- Messages will be injected here -->
+    </main>
 
-  <script src="chat.js"></script>
+    <form id="chat-form" class="chat-form">
+      <input 
+        type="text" 
+        id="user-input" 
+        placeholder="Type your code request..." 
+        autocomplete="off"
+        required
+      />
+      <button type="submit">Send</button>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById("chat-form");
+    const input = document.getElementById("user-input");
+    const chatBox = document.getElementById("chat-box");
+
+    function appendMessage(sender, text) {
+      const msg = document.createElement("div");
+      msg.className = `message ${sender}`;
+      msg.innerHTML = `<p>${text}</p>`;
+      chatBox.appendChild(msg);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const text = input.value.trim();
+      if (!text) return;
+
+      appendMessage("user", text);
+      input.value = "";
+
+      appendMessage("loading", "⏳ Thinking...");
+
+      try {
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: text }),
+        });
+        const data = await res.json();
+
+        // remove loading
+        const loadingMsg = document.querySelector(".message.loading");
+        if (loadingMsg) loadingMsg.remove();
+
+        appendMessage("bot", data.reply || "⚠️ No response");
+      } catch (err) {
+        const loadingMsg = document.querySelector(".message.loading");
+        if (loadingMsg) loadingMsg.remove();
+        appendMessage("bot", "❌ Error connecting to Codexa API.");
+      }
+    });
+  </script>
 </body>
 </html>

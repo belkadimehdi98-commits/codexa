@@ -4,15 +4,16 @@
   <meta charset="UTF-8">
   <title>Codexa Tutorials</title>
   <link rel="stylesheet" href="styles.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
   <!-- Navbar -->
   <nav class="navbar">
     <div class="logo">
-      <img src="images/logo.png" alt="Codexa Logo" />
-      <div>
+      <img src="./images/logo.png" alt="Codexa Logo">
+      <div class="brand">
         <span>Codexa</span>
-        <div class="tagline">AI that codes & creates</div>
+        <small>AI that codes & creates</small>
       </div>
     </div>
     <ul class="nav-links">
@@ -21,25 +22,19 @@
       <li><a href="index.html#pricing">Pricing</a></li>
       <li><a href="chat.html">Chat</a></li>
     </ul>
-    <div class="theme-toggle" id="theme-toggle">🌙</div>
+    <button id="theme-toggle" class="theme-toggle">🌙</button>
   </nav>
 
   <!-- Tutorials container -->
   <main class="chat-container">
-    <div class="chat-header">
-      <!-- Book icon -->
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="28" height="28">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 16v-2m8-6h2M2 12h2m15.07 7.07l1.41-1.41M4.93 6.93L3.51 5.51m0 12.02l1.42-1.42M19.07 4.93l1.41 1.41"/>
-      </svg>
-      Codexa Tutorials
-    </div>
+    <h2 class="chat-header">📘 Codexa Tutorials</h2>
 
     <!-- Scrollable tutorial box -->
     <div class="chat-box" id="tutorial-box">
       <p class="message bot">👋 Ask me for a tutorial, like:<br>
-      - "Build a landing page in React"<br>
-      - "Learn CSS Flexbox basics"<br>
-      - "How to connect Node.js with PostgreSQL"</p>
+        - "Build a landing page in React"<br>
+        - "Learn CSS Flexbox basics"<br>
+        - "How to connect Node.js with PostgreSQL"</p>
     </div>
 
     <!-- Fixed form at bottom of container -->
@@ -55,12 +50,7 @@
 
   <script src="tutorials.js"></script>
   <script>
-    // Theme toggle
-    const toggle = document.getElementById("theme-toggle");
-    toggle.addEventListener("click", () => {
-      document.body.classList.toggle("light");
-      toggle.textContent = document.body.classList.contains("light") ? "🌙" : "☀️";
-    });
+    lucide.createIcons();
   </script>
 </body>
 </html>

@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Codexa AI</title>
   <link rel="stylesheet" href="styles.css" />
-  <script defer src="toggle.js"></script>
+  <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
   <!-- Navbar -->
@@ -29,43 +30,33 @@
   <!-- Hero -->
   <header class="hero">
     <h1>Welcome to Codexa AI</h1>
-    <p class="tagline">Code smarter. Create faster. Learn endlessly.</p>
-    <p class="subtagline">Build websites, generate images, and learn with Codexa’s AI-powered assistant.</p>
+    <p>Code smarter. Create faster. Learn endlessly.</p>
+    <p>Build websites, generate images, and learn with Codexa’s AI-powered assistant.</p>
   </header>
 
   <!-- Features -->
   <section id="features" class="features">
     <h2>✨ Features</h2>
-    <div class="features-grid">
+    <div class="feature-grid">
       <div class="feature-card">
-        <span class="icon">⚡</span>
-        <h3>Real-time Chat</h3>
-        <p>Instant, interactive AI chat responses with streaming.</p>
+        <i>⚡</i>
+        <h3>Real-time AI Chat</h3>
+        <p>Ask anything and get instant responses.</p>
       </div>
       <div class="feature-card">
-        <span class="icon">💻</span>
+        <i>💻</i>
         <h3>Code Generation</h3>
-        <p>One-click ready-to-use code with Copy & Download.</p>
+        <p>Generate ready-to-use code in one click.</p>
       </div>
       <div class="feature-card">
-        <span class="icon">🖼️</span>
+        <i>🖼️</i>
         <h3>Image Creation</h3>
-        <p>Generate unique, high-quality images in seconds.</p>
+        <p>Create high-quality images for your projects.</p>
       </div>
       <div class="feature-card">
-        <span class="icon">📘</span>
+        <i>📘</i>
         <h3>Tutorials</h3>
-        <p>Learn step by step with AI-powered coding guides.</p>
-      </div>
-      <div class="feature-card">
-        <span class="icon">💾</span>
-        <h3>Save & Export</h3>
-        <p>Save chat history and export your results easily.</p>
-      </div>
-      <div class="feature-card">
-        <span class="icon">📱</span>
-        <h3>Works Everywhere</h3>
-        <p>Seamless experience across all your devices.</p>
+        <p>Step-by-step coding and design guidance.</p>
       </div>
     </div>
   </section>
@@ -73,38 +64,46 @@
   <!-- Pricing -->
   <section id="pricing" class="pricing">
     <h2>💳 Pricing</h2>
-    <div class="plans">
-      <!-- Free Plan -->
+    <div class="plan-grid">
       <div class="plan">
         <h3>Free Plan</h3>
-        <p>Explore Codexa with basic chat and limited usage.</p>
-        <form action="chat.html">
-          <button type="submit" class="btn btn-green">Try Free</button>
-        </form>
+        <p>Basic access to chat and tutorials.</p>
+        <button class="free" onclick="redirectToCheckout('price_FREE_PLAN_ID')">Get Free</button>
       </div>
-      <!-- Pro Plan -->
       <div class="plan">
         <h3>Pro Plan</h3>
         <p>For developers who want to build and create faster.</p>
-        <form action="/create-checkout-session" method="POST">
-          <input type="hidden" name="plan" value="pro">
-          <button type="submit" class="btn btn-blue">Get Pro</button>
-        </form>
+        <button class="pro" onclick="redirectToCheckout('price_PRO_PLAN_ID')">Get Pro</button>
       </div>
-      <!-- Team Plan -->
       <div class="plan">
         <h3>Team Plan</h3>
         <p>Collaborate with your team and accelerate projects.</p>
-        <form action="/create-checkout-session" method="POST">
-          <input type="hidden" name="plan" value="team">
-          <button type="submit" class="btn btn-red">Get Team</button>
-        </form>
+        <button class="team" onclick="redirectToCheckout('price_TEAM_PLAN_ID')">Get Team</button>
       </div>
     </div>
   </section>
 
+  <!-- Footer -->
   <footer>
     <p>© 2025 Codexa. All rights reserved.</p>
   </footer>
+
+  <script src="theme.js"></script>
+  <script>
+    const stripe = Stripe("pk_test_12345"); // replace with your actual STRIPE PUBLIC KEY
+
+    function redirectToCheckout(priceId) {
+      stripe.redirectToCheckout({
+        lineItems: [{ price: priceId, quantity: 1 }],
+        mode: "subscription",
+        successUrl: window.location.origin + "/success.html",
+        cancelUrl: window.location.origin + "/cancel.html"
+      }).then(function (result) {
+        if (result.error) {
+          alert(result.error.message);
+        }
+      });
+    }
+  </script>
 </body>
 </html>

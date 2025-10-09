@@ -3,74 +3,37 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pricing - Codexa AI</title>
-  <link rel="stylesheet" href="styles.css" />
-  <script src="https://js.stripe.com/v3/"></script>
+  <title>Codexa — Pricing</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" href="/logo.png" type="image/png" />
 </head>
 <body>
   <header>
-    <nav class="navbar">
-      <div class="logo">
-        <img src="logo.png" alt="Codexa AI Logo" />
-        <h1>Codexa AI</h1>
-      </div>
-      <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="features.html">Features</a></li>
-        <li><a href="pricing.html">Pricing</a></li>
-      </ul>
-    </nav>
+    <h1>Pricing</h1>
   </header>
 
   <main>
     <section class="pricing">
-      <h2>💰 Choose Your Plan</h2>
+      <h2>Plans</h2>
       <div class="plans">
         <div class="plan">
           <h3>Free</h3>
-          <p>Try Codexa with limited generations.</p>
-          <a href="free.html" class="btn">Try Free</a>
+          <p>Try Codexa with limited generations</p>
         </div>
         <div class="plan">
           <h3>Pro</h3>
-          <p>Unlimited generations for individuals.</p>
-          <button id="pro-btn" class="btn-pro">Upgrade to Pro</button>
+          <p>Unlimited generations</p>
         </div>
         <div class="plan">
           <h3>Team</h3>
-          <p>Collaborate & scale with team access.</p>
-          <button id="team-btn" class="btn-team">Upgrade to Team</button>
+          <p>Collaboration & support</p>
         </div>
       </div>
     </section>
   </main>
 
   <footer>
-    <p>© 2025 Codexa AI. All rights reserved.</p>
+    <p>© 2025 Codexa</p>
   </footer>
-
-  <script>
-    const stripe = Stripe("<?= process.env.STRIPE_PUBLISHABLE_KEY ?>");
-
-    document.getElementById("pro-btn").addEventListener("click", async () => {
-      const res = await fetch("/create-checkout-session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ priceId: "<?= process.env.PRICE_PRO ?>" }),
-      });
-      const data = await res.json();
-      window.location.href = data.url;
-    });
-
-    document.getElementById("team-btn").addEventListener("click", async () => {
-      const res = await fetch("/create-checkout-session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ priceId: "<?= process.env.PRICE_TEAM ?>" }),
-      });
-      const data = await res.json();
-      window.location.href = data.url;
-    });
-  </script>
 </body>
 </html>

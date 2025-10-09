@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Codexa</title>
-  <!-- Use root-relative path for static assets -->
   <link rel="stylesheet" href="/styles.css" />
   <link rel="icon" href="/logo.png" type="image/png" />
 </head>
@@ -72,29 +71,6 @@
     <p>© 2025 Codexa. All rights reserved.</p>
   </footer>
 
-  <script>
-    async function subscribe(plan) {
-      let priceId = "";
-      if (plan === "pro") priceId = "price_XXXX_PRO";   // replace with real Pro price
-      if (plan === "team") priceId = "price_XXXX_TEAM"; // replace with real Team price
-
-      try {
-        const res = await fetch("/create-checkout-session", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ priceId })
-        });
-        const data = await res.json();
-        if (data.url) {
-          window.location.href = data.url;
-        } else {
-          alert("Payment setup failed. Please try again.");
-        }
-      } catch (err) {
-        console.error("Checkout error:", err);
-        alert("Something went wrong.");
-      }
-    }
-  </script>
+  <script src="/script.js"></script>
 </body>
 </html>

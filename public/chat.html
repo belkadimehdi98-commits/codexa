@@ -4,13 +4,24 @@
   <meta charset="UTF-8">
   <title>Codexa Chat</title>
   <link rel="stylesheet" href="styles.css">
+  <style>
+    .brand-tagline {
+      font-size: 0.75rem;
+      color: var(--muted);
+      display: block;
+      margin-top: -4px;
+    }
+  </style>
 </head>
 <body>
   <!-- Navbar -->
   <nav class="navbar">
     <div class="logo">
       <img src="images/logo.png" alt="Codexa Logo" />
-      <span>Codexa</span>
+      <div>
+        <span>Codexa</span>
+        <span class="brand-tagline">AI that codes & creates</span>
+      </div>
     </div>
     <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
@@ -33,7 +44,7 @@
 
     <!-- Chat Box -->
     <div id="chat-box" class="chat-box">
-      <div class="message bot">Hello! How can I assist you today?</div>
+      <div class="message bot">Hello! I'm Codexa. How can I assist you today?</div>
     </div>
 
     <!-- Chat Form -->
@@ -44,7 +55,7 @@
   </main>
 
   <footer>
-    <p>© 2025 Codexa. All rights reserved.</p>
+    <p>© 2025 Codexa — AI that codes & creates. All rights reserved.</p>
   </footer>
 
   <script src="chat.js"></script>

@@ -1,201 +1,54 @@
-/* Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Segoe UI", Roboto, Arial, sans-serif;
-}
-
-body {
-  background: #0d1117;
-  color: #f0f6fc;
-  line-height: 1.6;
-}
-
-/* Navbar */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #161b22;
-  padding: 1rem 2rem;
-}
-
-.navbar .logo img {
-  height: 40px;
-}
-
-.nav-links {
-  list-style: none;
-  display: flex;
-  gap: 20px;
-}
-
-.nav-links a {
-  color: #58a6ff;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.nav-links a:hover {
-  color: #1f6feb;
-}
-
-/* Hero */
-.hero {
-  text-align: center;
-  padding: 4rem 2rem;
-}
-
-.hero h2 {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-}
-
-/* Features */
-.features {
-  padding: 3rem 2rem;
-  text-align: center;
-}
-
-.feature-grid {
+/* Features grid */
+.features-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1.5rem;
-  margin-top: 2rem;
+  margin-top: 1.5rem;
 }
 
 .feature-card {
   background: #161b22;
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+  padding: 1.2rem;
+  border-radius: 10px;
+  text-align: center;
   font-size: 1.1rem;
+  border: 1px solid #30363d;
+  transition: transform 0.2s, background 0.2s;
+}
+.feature-card:hover {
+  background: #23863622;
+  transform: translateY(-4px);
 }
 
-/* Pricing */
-.pricing {
-  padding: 3rem 2rem;
-  text-align: center;
-}
-
-.plans {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  flex-wrap: wrap;
-  margin-top: 2rem;
-}
-
-.plan {
-  background: #161b22;
-  border-radius: 12px;
-  padding: 2rem;
-  width: 280px;
-  text-align: center;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-}
-
-.plan h3 {
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.plan p {
-  margin-bottom: 1rem;
-  color: #ccc;
-}
-
-/* Buttons */
+/* Buttons styling */
 .btn {
-  padding: 12px 20px;
+  padding: 10px 20px;
   border: none;
   border-radius: 8px;
-  font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
-  transition: 0.3s;
+  transition: 0.2s;
+  color: white;
   width: 100%;
 }
 
-#free-btn {
+.btn.green {
   background: #2ea043;
-  color: white;
 }
-#free-btn:hover {
-  background: #248a3d;
-}
-
-#pro-btn {
-  background: #2d7ef7;
-  color: white;
-}
-#pro-btn:hover {
-  background: #1d6ae5;
+.btn.green:hover {
+  background: #238636;
 }
 
-#team-btn {
-  background: #ff6f61;
-  color: white;
+.btn.blue {
+  background: #0ea5e9;
 }
-#team-btn:hover {
-  background: #e55b50;
-}
-
-/* Chat */
-.chat-container {
-  max-width: 900px;
-  margin: 2rem auto;
-  background: #161b22;
-  border-radius: 12px;
-  padding: 1rem;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+.btn.blue:hover {
+  background: #0284c7;
 }
 
-.chat-header {
-  text-align: center;
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
+.btn.red {
+  background: #f87171;
 }
-
-.chat-box {
-  height: 400px;
-  overflow-y: auto;
-  border: 1px solid #30363d;
-  border-radius: 8px;
-  padding: 1rem;
-  margin-bottom: 1rem;
-}
-
-.chat-form {
-  display: flex;
-  gap: 1rem;
-}
-
-.chat-form input {
-  flex: 1;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #30363d;
-}
-
-.chat-form button {
-  background: #2ea043;
-  color: white;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-.chat-form button:hover {
-  background: #248a3d;
-}
-
-/* Footer */
-footer {
-  text-align: center;
-  padding: 1rem;
-  background: #161b22;
-  margin-top: 2rem;
+.btn.red:hover {
+  background: #ef4444;
 }

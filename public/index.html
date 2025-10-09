@@ -4,13 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Codexa AI</title>
-  <link rel="stylesheet" href="styles.css" />
+  <!-- cache-bust to avoid stale CSS -->
+  <link rel="stylesheet" href="styles.css?v=3" />
 </head>
 <body>
   <!-- Navbar -->
   <nav class="navbar">
     <div class="logo">
+      <!-- Your logo is at /public/logo.png -->
       <img src="logo.png" alt="Codexa Logo" />
+      <span>Codexa</span>
     </div>
     <ul class="nav-links">
       <li><a href="#features">Features</a></li>
@@ -21,7 +24,7 @@
 
   <!-- Hero -->
   <header class="hero">
-    <h2>Welcome to Codexa AI</h2>
+    <h1>Welcome to Codexa AI</h1>
     <p>Your AI-powered code assistant 🚀</p>
   </header>
 
@@ -43,17 +46,17 @@
       <div class="plan">
         <h3>Free</h3>
         <p>Try Codexa with limited generations</p>
-        <button id="free-btn" class="btn green">Try Free</button>
+        <button id="free-btn" class="btn btn-green">Try Free</button>
       </div>
       <div class="plan">
         <h3>Pro</h3>
         <p>Unlimited generations</p>
-        <button id="pro-btn" class="btn blue">Get Pro</button>
+        <button id="pro-btn" class="btn btn-blue">Get Pro</button>
       </div>
       <div class="plan">
         <h3>Team</h3>
         <p>Collaboration & support</p>
-        <button id="team-btn" class="btn red">Get Team</button>
+        <button id="team-btn" class="btn btn-red">Get Team</button>
       </div>
     </div>
   </section>
@@ -62,6 +65,7 @@
     <p>© 2025 Codexa. All rights reserved.</p>
   </footer>
 
-  <script src="checkout.js"></script>
+  <!-- cache-bust to avoid stale JS -->
+  <script src="checkout.js?v=2"></script>
 </body>
 </html>

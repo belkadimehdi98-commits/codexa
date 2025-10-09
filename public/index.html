@@ -1,27 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Codexa AI</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="images/logo.png" type="image/png" /> <!-- ✅ Favicon -->
 </head>
 <body>
   <!-- Navbar -->
   <nav class="navbar">
-    <div class="logo">Codexa</div>
+    <div class="logo">
+      <img src="images/logo.png" alt="Codexa Logo" /> <!-- ✅ make sure logo.png is inside /public/images -->
+    </div>
     <ul class="nav-links">
       <li><a href="#features">Features</a></li>
       <li><a href="#pricing">Pricing</a></li>
-      <li><a href="/chat.html">Chat</a></li>
+      <li><a href="chat.html">Chat</a></li>
     </ul>
   </nav>
 
   <!-- Hero -->
-  <section class="hero">
-    <h1>Welcome to Codexa AI</h1>
+  <header class="hero">
+    <h2>Welcome to Codexa AI</h2>
     <p>Your AI-powered code assistant 🚀</p>
-  </section>
+  </header>
 
   <!-- Features -->
   <section id="features" class="features">
@@ -38,32 +41,29 @@
   <section id="pricing" class="pricing">
     <h2>💰 Pricing</h2>
     <div class="plans">
-      <!-- Free -->
       <div class="plan">
         <h3>Free</h3>
         <p>Try Codexa with limited generations</p>
-        <a href="/chat.html" class="btn">Try Free</a>
+        <button id="free-btn" class="btn">Try Free</button>
       </div>
-      <!-- Pro -->
       <div class="plan">
         <h3>Pro</h3>
         <p>Unlimited generations</p>
-        <button class="btn" id="checkout-pro">Get Pro</button>
+        <button id="pro-btn" class="btn">Get Pro</button>
       </div>
-      <!-- Team -->
       <div class="plan">
         <h3>Team</h3>
         <p>Collaboration & support</p>
-        <button class="btn" id="checkout-team">Get Team</button>
+        <button id="team-btn" class="btn">Get Team</button>
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
   <footer>
     <p>© 2025 Codexa. All rights reserved.</p>
   </footer>
 
-  <script src="script.js"></script>
+  <!-- ✅ Stripe Checkout JS -->
+  <script src="checkout.js"></script>
 </body>
 </html>

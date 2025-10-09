@@ -2,8 +2,8 @@
   "name": "codexa",
   "version": "1.0.0",
   "description": "Codexa AI web app with Stripe and OpenAI integration",
-  "type": "module",
   "main": "server.js",
+  "type": "commonjs",
   "scripts": {
     "start": "node server.js"
   },
@@ -11,6 +11,7 @@
     "archiver": "^7.0.1",
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
+    "debug": "^4.3.7",
     "dotenv": "^16.6.1",
     "express": "^4.21.2",
     "morgan": "^1.10.0",
@@ -21,22 +22,15 @@
   "engines": {
     "node": ">=18.x"
   },
-  "author": "Mehdi",
+  "author": "",
   "license": "ISC",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/belkadimehdi98-commits/codexa.git"
   },
-  "keywords": [
-    "AI",
-    "code",
-    "generator",
-    "Stripe",
-    "OpenAI",
-    "Codexa"
-  ],
+  "keywords": [],
   "bugs": {
     "url": "https://github.com/belkadimehdi98-commits/codexa/issues"
   },
-  "homepage": "https://codexa.codes"
+  "homepage": "https://github.com/belkadimehdi98-commits/codexa#readme"
 }

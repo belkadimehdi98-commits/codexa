@@ -14,17 +14,15 @@ const app = express();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-// ✅ Debug requests
+// Middleware
 app.use((req, res, next) => {
   console.log(`➡️ Request: ${req.method} ${req.url}`);
   next();
 });
-
-// ✅ Static files
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 
-// ✅ Stripe checkout session
+// Stripe checkout
 app.post("/create-checkout-session", async (req, res) => {
   try {
     const { priceId } = req.body;
@@ -44,47 +42,32 @@ app.post("/create-checkout-session", async (req, res) => {
   }
 });
 
-// ✅ Codexa AI chat route
+// AI Chat / Code / Image
 app.post("/api/chat", async (req, res) => {
-  const { prompt, mode } = req.body;
+  const { message, mode } = req.body;
 
   try {
     if (mode === "image") {
       // Generate image
       const response = await openai.images.generate({
         model: "gpt-image-1",
-        prompt,
+        prompt: message,
         size: "512x512"
       });
-
       return res.json({ imageUrl: response.data[0].url });
     }
 
-    // Chat or Code mode → use text completion
+    // For chat and code
     const response = await openai.chat.completions.create({
       model: "gpt-4o-mini",
-      messages: [
-        {
-          role: "system",
-          content:
-            mode === "code"
-              ? "You are Codexa, an AI coding assistant. Always reply with clear code blocks and minimal explanation."
-              : "You are Codexa, a helpful AI assistant for coding and general questions."
-        },
-        { role: "user", content: prompt }
-      ]
+      messages: [{ role: "user", content: message }],
     });
 
     const reply = response.choices[0].message.content;
-
-    if (mode === "code") {
-      return res.json({ code: reply });
-    } else {
-      return res.json({ reply });
-    }
-  } catch (err) {
-    console.error("❌ Chat API error:", err);
-    res.status(500).json({ error: "AI request failed" });
+    res.json({ reply });
+  } catch (error) {
+    console.error("❌ OpenAI error:", error);
+    res.status(500).json({ error: error.message });
   }
 });
 

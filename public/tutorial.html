@@ -10,20 +10,29 @@
   <nav class="navbar">
     <div class="logo">
       <img src="images/logo.png" alt="Codexa Logo" />
-      <span>Codexa</span>
+      <div>
+        <span>Codexa</span>
+        <div class="tagline">AI that codes & creates</div>
+      </div>
     </div>
     <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
       <li><a href="index.html#features">Features</a></li>
       <li><a href="index.html#pricing">Pricing</a></li>
       <li><a href="chat.html">Chat</a></li>
-      <li><button id="theme-toggle" class="theme-toggle">🌙</button></li>
     </ul>
+    <div class="theme-toggle" id="theme-toggle">🌙</div>
   </nav>
 
   <!-- Tutorials container -->
   <main class="chat-container">
-    <div class="chat-header">📘 Codexa Tutorials</div>
+    <div class="chat-header">
+      <!-- Book icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="28" height="28">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 16v-2m8-6h2M2 12h2m15.07 7.07l1.41-1.41M4.93 6.93L3.51 5.51m0 12.02l1.42-1.42M19.07 4.93l1.41 1.41"/>
+      </svg>
+      Codexa Tutorials
+    </div>
 
     <!-- Scrollable tutorial box -->
     <div class="chat-box" id="tutorial-box">
@@ -33,7 +42,7 @@
       - "How to connect Node.js with PostgreSQL"</p>
     </div>
 
-    <!-- Fixed form at bottom -->
+    <!-- Fixed form at bottom of container -->
     <form id="tutorial-form" class="chat-form">
       <input type="text" id="tutorial-input" placeholder="Ask Codexa for a tutorial..." required />
       <button type="submit">Generate</button>
@@ -45,6 +54,13 @@
   </footer>
 
   <script src="tutorials.js"></script>
-  <script src="theme.js"></script>
+  <script>
+    // Theme toggle
+    const toggle = document.getElementById("theme-toggle");
+    toggle.addEventListener("click", () => {
+      document.body.classList.toggle("light");
+      toggle.textContent = document.body.classList.contains("light") ? "🌙" : "☀️";
+    });
+  </script>
 </body>
 </html>

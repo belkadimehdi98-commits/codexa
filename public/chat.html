@@ -10,15 +10,18 @@
   <nav class="navbar">
     <div class="logo">
       <img src="images/logo.png" alt="Codexa Logo">
-      <span>Codexa</span>
+      <div>
+        <span>Codexa</span>
+        <div class="tagline">AI that codes & creates</div>
+      </div>
     </div>
     <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
       <li><a href="index.html#features">Features</a></li>
       <li><a href="index.html#pricing">Pricing</a></li>
       <li><a href="tutorial.html">Tutorials</a></li>
-      <li><button id="theme-toggle" class="theme-toggle">🌙</button></li>
     </ul>
+    <div class="theme-toggle" id="theme-toggle">🌙</div>
   </nav>
 
   <!-- Chat Container -->
@@ -27,14 +30,29 @@
 
     <!-- Mode Toggle -->
     <div class="mode-toggle">
-      <button id="chat-mode" class="mode-btn active">💬 Chat</button>
-      <button id="code-mode" class="mode-btn">📘 Code</button>
-      <button id="image-mode" class="mode-btn">🖼️ Image</button>
+      <button id="chat-mode" class="mode-btn active">
+        <!-- Chat bubble icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8-1.61 0-3.115-.39-4.415-1.073L3 20l1.073-4.415A7.96 7.96 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+        </svg> Chat
+      </button>
+      <button id="code-mode" class="mode-btn">
+        <!-- Code icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 18l6-6-6-6M8 6l-6 6 6 6"/>
+        </svg> Code
+      </button>
+      <button id="image-mode" class="mode-btn">
+        <!-- Image icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h18M3 19h18M5 5v14M19 5v14M8 11l3 3 5-5 5 5"/>
+        </svg> Image
+      </button>
     </div>
 
     <!-- Chat Box -->
     <div id="chat-box" class="chat-box">
-      <div class="message bot">Hello! I can chat, generate code, and create images. What do you need?</div>
+      <div class="message bot">Hello! How can I assist you today?</div>
     </div>
 
     <!-- Chat Form -->
@@ -49,6 +67,13 @@
   </footer>
 
   <script src="chat.js"></script>
-  <script src="theme.js"></script>
+  <script>
+    // Theme toggle
+    const toggle = document.getElementById("theme-toggle");
+    toggle.addEventListener("click", () => {
+      document.body.classList.toggle("light");
+      toggle.textContent = document.body.classList.contains("light") ? "🌙" : "☀️";
+    });
+  </script>
 </body>
 </html>

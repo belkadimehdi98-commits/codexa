@@ -1,54 +1,46 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Tutorial — Codexa AI</title>
-  <link rel="icon" href="/logo.png"/>
-  <link rel="stylesheet" href="/style.css"/>
-  <script>
-    document.addEventListener('DOMContentLoaded',()=>{const s=localStorage.getItem('theme'); if(s) document.documentElement.setAttribute('data-theme',s);});
-    function toggleTheme(){const r=document.documentElement;const cur=r.getAttribute('data-theme')||'dark';const n=cur==='dark'?'light':'dark';r.setAttribute('data-theme',n);localStorage.setItem('theme',n);}
-  </script>
+  <meta charset="UTF-8">
+  <title>Codexa Tutorials</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="nav">
-    <div class="nav-left">
-      <img src="/logo.png" class="logo" alt="Codexa"/>
-      <a href="/" class="brand">Codexa AI</a>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">
+      <img src="images/logo.png" alt="Codexa Logo" />
+      <span>Codexa</span>
     </div>
-    <nav class="nav-links">
-      <a href="/">Home</a>
-      <a href="/app.html">Open App</a>
-      <button class="btn-ghost" onclick="toggleTheme()" aria-label="Toggle theme">🌓</button>
-    </nav>
-  </header>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#features">Features</a></li>
+      <li><a href="index.html#pricing">Pricing</a></li>
+      <li><a href="chat.html">Chat</a></li>
+    </ul>
+  </nav>
 
-  <main class="tutorial">
-    <h1>Quick Start</h1>
-    <div class="step">
-      <b>1) Chat with Codexa</b><br/>Describe your idea. Ask questions. Iterate until it’s right.
+  <!-- Tutorials container -->
+  <main class="chat-container">
+    <div class="chat-header">📘 Codexa Tutorials</div>
+
+    <div class="chat-box" id="tutorial-box">
+      <p class="message bot">👋 Ask me for a tutorial, like:<br>
+      - "Build a landing page in React"<br>
+      - "Learn CSS Flexbox basics"<br>
+      - "How to connect Node.js with PostgreSQL"</p>
     </div>
-    <div class="step">
-      <b>2) Generate Code</b><br/>Click <i>Generate Code</i>. Use the Copy/Download buttons to save the file as <code>index.html</code>.
-    </div>
-    <div class="step">
-      <b>3) Preview Locally</b><br/>Double-click <code>index.html</code> to open in your browser.
-    </div>
-    <div class="step">
-      <b>4) Deploy Online</b><br/>
-      Free hosting options:
-      <ul>
-        <li><a href="https://www.netlify.com/" target="_blank" rel="noopener">Netlify</a></li>
-        <li><a href="https://vercel.com/" target="_blank" rel="noopener">Vercel</a></li>
-        <li><a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a></li>
-      </ul>
-    </div>
-    <div class="step">
-      <b>Need help?</b> Contact <a href="mailto:support@codexa.codes">support@codexa.codes</a>.
-    </div>
+
+    <form id="tutorial-form" class="chat-form">
+      <input type="text" id="tutorial-input" placeholder="Ask Codexa for a tutorial..." required />
+      <button type="submit">Generate</button>
+    </form>
   </main>
 
-  <footer class="footer">© 2025 Codexa — Crafted with Precision. • <a href="/privacy.html">Privacy</a> • <a href="/terms.html">Terms</a> • <a href="/about.html">About</a></footer>
+  <footer>
+    <p>© 2025 Codexa. All rights reserved.</p>
+  </footer>
+
+  <script src="tutorials.js"></script>
 </body>
 </html>

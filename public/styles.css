@@ -22,26 +22,13 @@
   --shadow: 0 8px 18px rgba(0, 0, 0, .35);
 }
 
-/* Light theme overrides */
-body.light {
-  --bg: #ffffff;
-  --panel: #f5f5f5;
-  --text: #111;
-  --muted: #444;
-  --border: #ddd;
-  --link: #2d7ef7;
-  --link-2: #1d6ae5;
-  --shadow: 0 6px 12px rgba(0, 0, 0, .1);
-}
-
 html, body {
   background: var(--bg);
   color: var(--text);
   font-family: "Segoe UI", Roboto, Arial, sans-serif;
   line-height: 1.6;
   height: 100%;
-  display: flex;
-  flex-direction: column;
+  overflow-x: hidden;
 }
 
 /* Navbar */
@@ -74,7 +61,6 @@ html, body {
   list-style: none;
   display: flex;
   gap: 22px;
-  align-items: center;
 }
 
 .nav-links a {
@@ -82,21 +68,7 @@ html, body {
   text-decoration: none;
   font-weight: 600;
 }
-
-.nav-links a:hover {
-  color: var(--link-2);
-}
-
-/* Theme toggle button */
-.theme-toggle {
-  background: none;
-  border: none;
-  font-size: 1.2rem;
-  cursor: pointer;
-  color: var(--link);
-  transition: transform .2s ease;
-}
-.theme-toggle:hover { transform: rotate(15deg); }
+.nav-links a:hover { color: var(--link-2); }
 
 /* Hero */
 .hero {
@@ -105,11 +77,15 @@ html, body {
   max-width: 1000px;
   margin: 0 auto;
 }
-
 .hero h1 {
   font-size: clamp(1.8rem, 3.6vw, 2.8rem);
   margin-bottom: 10px;
   letter-spacing: .5px;
+}
+.tagline {
+  font-size: 1.2rem;
+  color: var(--muted);
+  margin-top: 8px;
 }
 
 /* Features */
@@ -118,20 +94,17 @@ html, body {
   max-width: 1100px;
   margin: 0 auto;
 }
-
 .features h2 {
   text-align: center;
   margin-bottom: 18px;
   font-size: clamp(1.3rem, 3vw, 2rem);
 }
-
 .features-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 18px;
   margin-top: 16px;
 }
-
 .feature-card {
   background: var(--panel);
   border: 1px solid var(--border);
@@ -139,7 +112,7 @@ html, body {
   padding: 18px;
   text-align: center;
   box-shadow: var(--shadow);
-  transition: transform .18s ease, border-color .18s ease;
+  transition: transform .18s ease, background .18s ease, border-color .18s ease;
   font-size: 1.05rem;
 }
 .feature-card:hover {
@@ -153,20 +126,17 @@ html, body {
   max-width: 1100px;
   margin: 0 auto;
 }
-
 .pricing h2 {
   text-align: center;
   margin-bottom: 24px;
   font-size: clamp(1.3rem, 3vw, 2rem);
 }
-
 .plans {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 24px;
 }
-
 .plan {
   width: 300px;
   background: var(--panel);
@@ -176,12 +146,10 @@ html, body {
   text-align: center;
   box-shadow: var(--shadow);
 }
-
 .plan h3 {
   font-size: 1.4rem;
   margin-bottom: 6px;
 }
-
 .plan p {
   color: var(--muted);
   margin-bottom: 18px;
@@ -205,19 +173,15 @@ html, body {
   color: #fff;
 }
 .btn:active { transform: translateY(1px); }
-
 .btn-green { background: var(--green); }
 .btn-green:hover { background: var(--green-2); }
-
 .btn-blue { background: var(--blue); }
 .btn-blue:hover { background: var(--blue-2); }
-
 .btn-red { background: var(--red); }
 .btn-red:hover { background: var(--red-2); }
 
-/* Chat & Tutorial containers */
+/* Chat & Tutorial Containers */
 .chat-container {
-  flex: 1;
   max-width: 960px;
   margin: 28px auto;
   background: var(--panel);
@@ -227,6 +191,7 @@ html, body {
   padding: 18px;
   display: flex;
   flex-direction: column;
+  height: 80vh; /* ensures enough height */
 }
 
 .chat-header {
@@ -236,7 +201,7 @@ html, body {
 }
 
 .chat-box {
-  flex: 1;
+  flex: 1; /* takes available space */
   overflow-y: auto;
   border: 1px solid var(--border);
   border-radius: 10px;
@@ -248,6 +213,7 @@ html, body {
 /* Mode Toggle (Chat / Code / Image) */
 .mode-toggle {
   display: flex;
+  justify-content: center;
   margin-bottom: 14px;
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -255,7 +221,6 @@ html, body {
   background: var(--panel);
   box-shadow: var(--shadow);
 }
-
 .mode-btn {
   flex: 1;
   padding: 10px 16px;
@@ -276,7 +241,7 @@ html, body {
   color: #fff;
 }
 
-/* Chat Messages */
+/* Messages */
 .message {
   padding: 10px 14px;
   margin: 8px 0;
@@ -295,7 +260,7 @@ html, body {
   margin-right: auto;
 }
 
-/* Copy & Download buttons */
+/* Code actions */
 .code-actions {
   display: flex;
   gap: 10px;
@@ -316,7 +281,7 @@ html, body {
 .download-btn { background: var(--green); }
 .download-btn:hover { background: var(--green-2); }
 
-/* Chat Form */
+/* Chat Form (fixed at bottom of container) */
 .chat-form {
   display: flex;
   gap: 10px;
@@ -350,7 +315,7 @@ footer {
   border-top: 1px solid var(--border);
 }
 
-/* Small screens */
+/* Responsive */
 @media (max-width: 520px) {
   .nav-links { gap: 14px; }
   .logo span { display: none; }

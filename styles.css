@@ -17,6 +17,8 @@ html, body {
   --card-bg: #f9fafb;
   --muted: #6b7280;
   --primary: #2563eb;
+  --logo-color: #2563eb; /* logo default */
+  --logo-accent: #ffffff;
 }
 
 /* ---------- Dark theme overrides ---------- */
@@ -27,6 +29,8 @@ body.dark {
   --card-bg: #1f2937;
   --muted: #9ca3af;
   --primary: #3b82f6;
+  --logo-color: #ffffff; /* logo turns white */
+  --logo-accent: #2563eb; /* optional accent in dark */
 }
 
 /* ---------- General ---------- */
@@ -52,7 +56,13 @@ section { padding: 60px 0; }
   align-items: center;
   justify-content: space-between;
 }
-.logo-img { height: 64px; width: auto; display:block; }
+.logo img {
+  height: 64px;
+  width: auto;
+  display:block;
+  color: var(--logo-color);
+  fill: var(--logo-color);
+}
 .nav-links { display: flex; gap: 24px; list-style: none; }
 .nav-links a { color: var(--text); font-weight: 500; }
 .nav-links a:hover { color: var(--primary); }

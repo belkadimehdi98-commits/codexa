@@ -2,11 +2,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="200" height="60" viewBox="0 0 200 60">
   <!-- Hexagon Icon -->
   <polygon points="30,5 55,20 55,50 30,65 5,50 5,20"
-           fill="#2563eb" stroke="#1e40af" stroke-width="2"/>
+           fill="currentColor" stroke="currentColor" stroke-width="2"/>
   <text x="30" y="42" font-size="22" font-family="Arial, sans-serif"
         fill="white" text-anchor="middle">C</text>
 
   <!-- Brand Text -->
   <text x="80" y="42" font-size="28" font-weight="bold"
-        font-family="Arial, sans-serif" fill="#111827">Codexa</text>
+        font-family="Arial, sans-serif" fill="currentColor">Codexa</text>
 </svg>

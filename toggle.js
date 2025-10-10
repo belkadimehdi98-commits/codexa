@@ -1,36 +1,25 @@
-// toggle.js — robust for dynamically-included navbar
-(function () {
-  const applySaved = () => {
-    if (localStorage.getItem("theme") === "dark") {
-      document.body.classList.add("dark");
-    }
-  };
-  const setIcon = (btn) => {
-    if (!btn) return;
-    btn.textContent = document.body.classList.contains("dark") ? "☀" : "☾";
-  };
+// toggle.js
+document.addEventListener("DOMContentLoaded", () => {
+  const toggleBtn = document.querySelector(".toggle-btn");
 
   // Apply saved theme on load
-  document.addEventListener("DOMContentLoaded", () => {
-    applySaved();
-    setIcon(document.querySelector(".toggle-btn"));
-  });
+  if (localStorage.getItem("theme") === "dark") {
+    document.body.classList.add("dark");
+    if (toggleBtn) toggleBtn.textContent = "☀"; // sun in dark mode
+  } else {
+    if (toggleBtn) toggleBtn.textContent = "☾"; // moon in light mode
+  }
 
-  // Event delegation so it works even if nav loads later
-  document.addEventListener("click", (e) => {
-    const btn = e.target.closest(".toggle-btn");
-    if (!btn) return;
+  // Toggle theme on click
+  toggleBtn?.addEventListener("click", () => {
     document.body.classList.toggle("dark");
-    localStorage.setItem(
-      "theme",
-      document.body.classList.contains("dark") ? "dark" : "light"
-    );
-    setIcon(btn);
-  });
 
-  // When includes.js injects nav later, update icon
-  const mo = new MutationObserver(() => {
-    setIcon(document.querySelector(".toggle-btn"));
+    if (document.body.classList.contains("dark")) {
+      localStorage.setItem("theme", "dark");
+      toggleBtn.textContent = "☀";
+    } else {
+      localStorage.setItem("theme", "light");
+      toggleBtn.textContent = "☾";
+    }
   });
-  mo.observe(document.documentElement, { childList: true, subtree: true });
-})();
+});

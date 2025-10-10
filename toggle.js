@@ -1,20 +1,18 @@
 // toggle.js
-document.addEventListener("DOMContentLoaded", () => {
+function initToggle() {
   const toggleBtn = document.querySelector(".toggle-btn");
-
   if (!toggleBtn) return;
 
-  // Apply saved theme on load
+  // Apply saved theme
   if (localStorage.getItem("theme") === "dark") {
     document.body.classList.add("dark");
-    toggleBtn.textContent = "☀"; // sun icon
+    toggleBtn.textContent = "☀";
   } else {
-    toggleBtn.textContent = "🌙"; // moon icon
+    toggleBtn.textContent = "🌙";
   }
 
   toggleBtn.addEventListener("click", () => {
     document.body.classList.toggle("dark");
-
     if (document.body.classList.contains("dark")) {
       localStorage.setItem("theme", "dark");
       toggleBtn.textContent = "☀";
@@ -23,4 +21,10 @@ document.addEventListener("DOMContentLoaded", () => {
       toggleBtn.textContent = "🌙";
     }
   });
-});
+}
+
+// Run once DOM ready
+document.addEventListener("DOMContentLoaded", initToggle);
+
+// Run again after includes.js finishes
+document.addEventListener("includesLoaded", initToggle);

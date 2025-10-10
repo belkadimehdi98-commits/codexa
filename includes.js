@@ -21,3 +21,14 @@ document.addEventListener("DOMContentLoaded", () => {
       .catch(err => console.error(err));
   });
 });
+document.addEventListener("scroll", () => {
+  let scrollPos = window.scrollY + 100; 
+  document.querySelectorAll(".nav-links a").forEach(link => {
+    let section = document.querySelector(link.getAttribute("href"));
+    if (section && section.offsetTop <= scrollPos && section.offsetTop + section.offsetHeight > scrollPos) {
+      link.classList.add("active");
+    } else {
+      link.classList.remove("active");
+    }
+  });
+});

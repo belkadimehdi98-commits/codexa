@@ -10,13 +10,14 @@ html, body {
   background: var(--bg);
   color: var(--text);
   line-height: 1.5;
+  transition: background 0.3s, color 0.3s;
 }
 
 /* ---------- Color themes ---------- */
 :root {
   --bg: #ffffff;
   --text: #111827;
-  --nav-bg: #ffffff;   /* light navbar */
+  --nav-bg: #f3f4f6;   /* gray navbar in light mode */
   --card-bg: #f9fafb;
   --muted: #6b7280;
   --primary: #2563eb;
@@ -46,6 +47,7 @@ section { padding: 60px 0; }
   z-index: 100;
   background: var(--nav-bg);
   box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  transition: background 0.3s;
 }
 .nav-container {
   max-width: 1100px;
@@ -57,7 +59,6 @@ section { padding: 60px 0; }
 }
 .logo img {
   height: 120px;   /* bigger logo */
-  max-height: 120px;
   width: auto;
   display: block;
 }
@@ -77,7 +78,7 @@ section { padding: 60px 0; }
   background: none;
   border: none;
   color: var(--text);
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   cursor: pointer;
   margin-left: 20px;
 }

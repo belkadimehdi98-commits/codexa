@@ -12,8 +12,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (document.body.classList.contains("dark")) {
       localStorage.setItem("theme", "dark");
+      toggleBtn.textContent = "☀"; // show sun in dark mode
     } else {
       localStorage.setItem("theme", "light");
+      toggleBtn.textContent = "☾"; // show moon in light mode
     }
   });
+
+  // set initial button icon
+  if (document.body.classList.contains("dark")) {
+    toggleBtn.textContent = "☀";
+  } else {
+    toggleBtn.textContent = "☾";
+  }
 });

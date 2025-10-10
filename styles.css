@@ -56,7 +56,8 @@ section { padding: 60px 0; }
   justify-content: space-between;
 }
 .logo img {
-  height: 48px;   /* bigger logo */
+  height: 80px;   /* bigger logo */
+  max-height: 80px;
   width: auto;
   display: block;
 }
@@ -162,6 +163,22 @@ section { padding: 60px 0; }
   text-align: center;
   font-size: 14px;
   color: var(--muted);
+}
+
+/* ---------- Dark mode ---------- */
+body.dark {
+  background: var(--bg);
+  color: var(--text);
+}
+body.dark .navbar {
+  background: var(--nav-bg);
+}
+body.dark .footer {
+  background: var(--nav-bg);
+  color: var(--text);
+}
+body.dark a {
+  color: var(--primary);
 }
 
 /* ---------- Responsive ---------- */

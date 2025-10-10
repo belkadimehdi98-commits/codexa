@@ -105,6 +105,47 @@ section { padding: 60px 0; }
   position: relative;
 }
 
+/* ---------- Features Section ---------- */
+.features {
+  padding: 80px 20px;
+  background: var(--bg);
+  color: var(--text);
+}
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+}
+.feature-card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 30px 20px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.12);
+}
+.feature-card .icon {
+  margin-bottom: 16px;
+  color: var(--primary);
+}
+.feature-card svg {
+  width: 40px;
+  height: 40px;
+  stroke: currentColor;
+}
+.feature-card h3 {
+  font-size: 1.25rem;
+  margin-bottom: 10px;
+}
+.feature-card p {
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
 /* ---------- Buttons ---------- */
 .btn { display:inline-block; padding:10px 16px; border-radius:8px; font-weight:600; text-align:center; }
 .btn-primary { background:var(--primary); color:#fff; }
@@ -115,7 +156,7 @@ section { padding: 60px 0; }
 /* ---------- Section headers ---------- */
 .section-head { text-align:center; margin-bottom:32px; }
 .section-head h2 { font-size:2rem; margin-bottom:8px; }
-.section-head p { color:var(--muted); }
+.section-head p { color: var(--muted); }
 
 /* ---------- Footer ---------- */
 .footer { background: var(--nav-bg); color: var(--text); padding-top: 40px; }

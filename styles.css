@@ -16,7 +16,7 @@ html, body {
 :root {
   --bg: #ffffff;
   --text: #111827;
-  --nav-bg: #0b1220;   /* dark navbar in light mode */
+  --nav-bg: #ffffff;   /* light navbar */
   --card-bg: #f9fafb;
   --muted: #6b7280;
   --primary: #2563eb;
@@ -24,7 +24,7 @@ html, body {
 .dark {
   --bg: #0b1220;
   --text: #f9fafb;
-  --nav-bg: #0b1220;
+  --nav-bg: #0b1220;   /* dark navbar */
   --card-bg: #1f2937;
   --muted: #9ca3af;
   --primary: #3b82f6;
@@ -56,7 +56,7 @@ section { padding: 60px 0; }
   justify-content: space-between;
 }
 .logo img {
-  height: 120px;   /* much bigger logo */
+  height: 120px;   /* bigger logo */
   max-height: 120px;
   width: auto;
   display: block;

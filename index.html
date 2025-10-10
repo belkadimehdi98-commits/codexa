@@ -1,23 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Codexa</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css" />
+  <script src="toggle.js" defer></script>
+  <script src="includes.js" defer></script>
 </head>
 <body>
-
-  <!-- Modular partials -->
-  <div id="nav"></div>
-  <div id="hero"></div>
-  <div id="features"></div>
-  <div id="pricing"></div>
-  <div id="chat-box"></div>
-  <div id="tutorial-box"></div>
-  <div id="footer"></div>
-
-  <!-- JS loader -->
-  <script src="includes.js"></script>
+  <div data-include="partials/nav.html"></div>
+  <div data-include="partials/hero.html"></div>
+  <div data-include="partials/features.html"></div>
+  <div data-include="partials/pricing.html"></div>
+  <div data-include="partials/chat-box.html"></div>
+  <div data-include="partials/tutorial-box.html"></div>
+  <div data-include="partials/footer.html"></div>
 </body>
 </html>

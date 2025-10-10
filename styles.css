@@ -175,3 +175,118 @@ footer a:hover {
 .nav-links li a.active {
   color: #00bfff;
 }
+/* ---------- Hero ---------- */
+.section { padding: clamp(56px, 8vw, 96px) 0; }
+.container { width: min(1100px, 92%); margin-inline: auto; }
+
+.hero { position: relative; overflow: clip; }
+.hero__bg {
+  position:absolute; inset:-20% -10% 0; z-index:-1;
+  background: radial-gradient(60% 60% at 60% 10%, rgba(80,140,255,.25), transparent 60%),
+              radial-gradient(50% 40% at 0% 100%, rgba(0,255,180,.20), transparent 60%),
+              linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(0,0,0,.06) 100%);
+  filter: blur(6px);
+}
+.hero__wrap { display:grid; grid-template-columns: 1.1fr .9fr; gap: clamp(24px, 4vw, 48px); align-items: center; }
+.hero__text h1 { font-size: clamp(32px, 4.5vw, 56px); line-height: 1.05; margin: 6px 0 12px; letter-spacing: -0.02em; }
+.hero .sub { font-size: clamp(16px, 2.2vw, 20px); color: var(--muted, #5b6577); max-width: 58ch; }
+.eyebrow { font-size: 12px; text-transform: uppercase; letter-spacing: .12em; color: #6b7280; }
+.btn-row { display:flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
+.btn { display:inline-flex; align-items:center; gap:.5rem; border-radius: 12px; padding: 10px 16px; font-weight: 600; border: 1px solid transparent; }
+.btn-primary { background: #0f62fe; color: #fff; }
+.btn-primary:hover { filter: brightness(1.05); }
+.btn-outline { border-color: #d1d5db; color: #111827; background:#fff; }
+.btn-outline:hover { background:#f9fafb; }
+.hero__badges { display:flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; color: #374151; }
+.hero__badges li { padding: 6px 10px; border: 1px solid #e5e7eb; border-radius: 999px; background:#fff; font-size: 13px; }
+.hero__media img { width: 100%; height: auto; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,.12); }
+
+@media (max-width: 900px){
+  .hero__wrap { grid-template-columns: 1fr; }
+  .hero__media { order: -1; }
+}
+/* ---------- Pricing ---------- */
+.section-head { text-align:center; margin-bottom: 28px; }
+.section-head h2 { font-size: clamp(26px, 3.2vw, 40px); margin: 0 0 6px; }
+.section-head p { color: #6b7280; margin: 0; }
+
+.pricing__grid {
+  display:grid; gap: 18px;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+}
+.price-card {
+  background:#fff; border:1px solid #e5e7eb; border-radius: 16px;
+  padding: 20px; display:flex; flex-direction:column; gap: 14px;
+  box-shadow: 0 4px 18px rgba(0,0,0,.04);
+}
+.price-card:hover { transform: translateY(-2px); transition: transform .2s ease; }
+.price-card h3 { margin: 0; font-size: 18px; }
+.price-card .desc { color:#6b7280; margin: 0; }
+.price { display:flex; align-items:baseline; gap: 6px; }
+.price .amount { font-size: 36px; font-weight: 800; letter-spacing:-.01em; }
+.price .per { color:#6b7280; }
+.features { display:grid; gap:8px; padding:0; margin: 6px 0 4px; }
+.features li { list-style:none; display:flex; gap:8px; }
+.features li::before { content:"✓"; font-weight:700; }
+.price-card .btn { margin-top: 4px; width:max-content; }
+
+.price-card--pro { border-color:#0f62fe; position: relative; }
+.price-card--pro .pill {
+  position: absolute; top: -10px; left: 16px;
+  background:#0f62fe; color:#fff; padding:4px 10px; border-radius:999px; font-size:12px;
+}
+
+@media (max-width: 900px){
+  .pricing__grid { grid-template-columns: 1fr; }
+}
+/* ---------- Chat demo ---------- */
+.chat__wrap { background:#0b1220; color:#e5e7eb; border-radius:16px; padding:18px; border:1px solid #1f2937; }
+.chat__pane { display:grid; gap:12px; max-height: 420px; overflow:auto; }
+.msg { display:flex; }
+.msg--user { justify-content:flex-end; }
+.bubble {
+  display:inline-block; padding:10px 14px; border-radius:14px; max-width: 64ch; line-height:1.35;
+  background:#1f2937; color:#e5e7eb; border:1px solid #374151;
+}
+.msg--user .bubble { background:#0f62fe; border-color:#0f62fe; color:#fff; }
+.chat__input { display:flex; gap:8px; margin-top:12px; }
+.chat__input input {
+  flex: 1; padding:10px 12px; border-radius:12px; border:1px solid #334155; background:#111827; color:#e5e7eb;
+}
+.chat__input input::placeholder { color:#6b7280; }
+/* ---------- Tutorials ---------- */
+.tutorials__grid { display:grid; gap:16px; grid-template-columns: repeat(4, minmax(0,1fr)); }
+.t-card { background:#fff; border:1px solid #e5e7eb; border-radius:16px; padding:14px; }
+.t-card h3 { margin:10px 0 6px; font-size:16px; }
+.t-card p { margin:0; color:#6b7280; }
+.t-thumb { position:relative; display:block; border-radius:12px; overflow:hidden; border:1px solid #e5e7eb; }
+.t-thumb img { display:block; width:100%; height:auto; }
+.t-badge {
+  position:absolute; bottom:8px; right:8px; background:#0f62fe; color:#fff; font-size:12px;
+  padding:4px 8px; border-radius:999px;
+}
+@media (max-width: 1100px){ .tutorials__grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px){ .tutorials__grid { grid-template-columns: 1fr; } }
+/* ---------- Footer ---------- */
+.footer { background:#0b1220; color:#e5e7eb; }
+.footer__wrap {
+  display:grid; grid-template-columns: 1.2fr 2fr; gap: 24px; padding: 32px 0;
+}
+.footer__logo { font-weight: 800; font-size: 20px; color:#fff; text-decoration:none; }
+.footer__brand .muted { color:#9ca3af; margin-top: 6px; }
+.footer__links { display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 18px; }
+.footer__links h4 { margin: 0 0 8px; font-size: 14px; color:#cbd5e1; text-transform: uppercase; letter-spacing:.08em; }
+.footer__links a { display:block; color:#e5e7eb; text-decoration:none; padding:6px 0; opacity:.9; }
+.footer__links a:hover { opacity:1; text-decoration: underline; }
+.footer__bar { border-top: 1px solid #1f2937; }
+.footer__bar__inner { display:flex; justify-content: space-between; align-items:center; padding: 14px 0; }
+.footer .muted { color:#9ca3af; }
+
+@media (max-width: 900px){
+  .footer__wrap { grid-template-columns: 1fr; }
+  .footer__links { grid-template-columns: repeat(2,1fr); }
+}
+@media (max-width: 560px){
+  .footer__links { grid-template-columns: 1fr; }
+  .footer__bar__inner { flex-direction: column; gap: 8px; }
+}

@@ -1,0 +1,40 @@
+<footer class="footer">
+  <div class="container footer__wrap">
+    <div class="footer__brand">
+      <a href="#home" class="footer__logo">White Rock</a>
+      <p class="muted">Signal-aware analysis for modern traders.</p>
+    </div>
+
+    <nav class="footer__links" aria-label="Footer">
+      <div>
+        <h4>Product</h4>
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#tutorials">Tutorials</a>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+        <a href="#">Privacy</a>
+      </div>
+      <div>
+        <h4>Social</h4>
+        <a href="#">X</a>
+        <a href="#">YouTube</a>
+        <a href="#">GitHub</a>
+      </div>
+    </nav>
+  </div>
+
+  <div class="footer__bar">
+    <div class="container footer__bar__inner">
+      <small>© <span id="year"></span> White Rock. All rights reserved.</small>
+      <a href="#" class="muted">Terms</a>
+    </div>
+  </div>
+</footer>
+<script>
+  // set year (safe to inline)
+  (function(){ var y = document.getElementById('year'); if (y) y.textContent = new Date().getFullYear(); })();
+</script>

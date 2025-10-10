@@ -1,28 +1,36 @@
-// toggle.js
-document.addEventListener("DOMContentLoaded", () => {
-  const toggleBtn = document.querySelector(".toggle-btn");
+// toggle.js — robust for dynamically-included navbar
+(function () {
+  const applySaved = () => {
+    if (localStorage.getItem("theme") === "dark") {
+      document.body.classList.add("dark");
+    }
+  };
+  const setIcon = (btn) => {
+    if (!btn) return;
+    btn.textContent = document.body.classList.contains("dark") ? "☀" : "☾";
+  };
 
   // Apply saved theme on load
-  if (localStorage.getItem("theme") === "dark") {
-    document.body.classList.add("dark");
-  }
-
-  toggleBtn?.addEventListener("click", () => {
-    document.body.classList.toggle("dark");
-
-    if (document.body.classList.contains("dark")) {
-      localStorage.setItem("theme", "dark");
-      toggleBtn.textContent = "☀"; // show sun in dark mode
-    } else {
-      localStorage.setItem("theme", "light");
-      toggleBtn.textContent = "☾"; // show moon in light mode
-    }
+  document.addEventListener("DOMContentLoaded", () => {
+    applySaved();
+    setIcon(document.querySelector(".toggle-btn"));
   });
 
-  // set initial button icon
-  if (document.body.classList.contains("dark")) {
-    toggleBtn.textContent = "☀";
-  } else {
-    toggleBtn.textContent = "☾";
-  }
-});
+  // Event delegation so it works even if nav loads later
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest(".toggle-btn");
+    if (!btn) return;
+    document.body.classList.toggle("dark");
+    localStorage.setItem(
+      "theme",
+      document.body.classList.contains("dark") ? "dark" : "light"
+    );
+    setIcon(btn);
+  });
+
+  // When includes.js injects nav later, update icon
+  const mo = new MutationObserver(() => {
+    setIcon(document.querySelector(".toggle-btn"));
+  });
+  mo.observe(document.documentElement, { childList: true, subtree: true });
+})();

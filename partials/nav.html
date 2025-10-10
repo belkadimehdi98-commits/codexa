@@ -1,14 +1,25 @@
 <nav class="navbar">
   <div class="nav-container">
-    <a href="#home" class="logo">
-      <img src="assets/logo.png" alt="Codexa logo" />
+    <a href="#home" class="logo" aria-label="Codexa">
+      <!-- Inline SVG logo (no browser overlay) -->
+      <svg class="logo-svg" viewBox="0 0 180 40" role="img" aria-label="Codexa logo">
+        <g class="icon">
+          <polygon points="20,4 34,12 34,28 20,36 6,28 6,12"
+                   fill="none" stroke-width="2.5" stroke-linejoin="round"/>
+          <path d="M26 14 A10 10 0 1 0 26 26"
+                fill="none" stroke-width="3" stroke-linecap="round"/>
+        </g>
+        <text class="word" x="50" y="27" font-size="22" font-weight="700">Codexa</text>
+      </svg>
     </a>
+
     <ul class="nav-links">
       <li><a href="#hero">Home</a></li>
       <li><a href="#features">Features</a></li>
       <li><a href="#pricing">Pricing</a></li>
       <li><a href="#tutorials">Tutorials</a></li>
     </ul>
-    <button class="toggle-btn" aria-label="Toggle dark mode">☾</button>
+
+    <button class="toggle-btn" aria-label="Toggle theme" title="Toggle theme">☾</button>
   </div>
 </nav>
